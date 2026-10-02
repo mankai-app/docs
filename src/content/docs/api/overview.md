@@ -1,12 +1,12 @@
 ---
 title: API reference
-description: Build JavaScript plugins, HTTP plugins, editor integrations, and remote image processors for Mankai.
+description: Build JavaScript plugins, HTTP plugins, editor integrations, remote image processors, and MMA book archives for Mankai.
 sidebar:
   order: 1
 prev: false
 ---
 
-Use these APIs to connect your content or service to Mankai. Choose the integration that matches what you want to build.
+Use these APIs and format specifications to connect your content or service to Mankai or create MMA book archives. Choose the reference that matches what you want to build.
 
 For help setting up and using the app, follow [Quick start](/guides/quick-start/).
 
@@ -18,6 +18,7 @@ For help setting up and using the app, follow [Quick start](/guides/quick-start/
 | A manga server                    | [HTTP plugin API](/api/http-api/)              | HTTP endpoints for serving a collection, authentication, search, and library update checks.                            |
 | Editing for an HTTP source        | [Editor API](/api/editor-api/)                 | Optional endpoints that extend the HTTP plugin API to manage manga, chapter groups, chapters, covers, and page images. |
 | A remote image processing service | [Image processor API](/api/image-processors/)  | A configurable HTTP service that processes reader images, with optional JWT authentication.                            |
+| A portable book archive           | [MMA format](/api/mma-format/)                 | A ZIP archive containing book metadata, chapter groups, and page images.                                               |
 
 ## Example implementations
 

@@ -7,10 +7,10 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 
 Mankai supports two main source types:
 
-| Source type                    | How it works                                                      | Where to use it                                          |
-| ------------------------------ | ----------------------------------------------------------------- | -------------------------------------------------------- |
-| **Stream-based (recommended)** | A required content plugin connects Mankai to an external library. | Add it in **Settings → Plugins**, then open **Library**. |
-| **File-based**                 | Open supported book files on a local filesystem or network share. | Open **Browse** to connect a folder or import files.     |
+| Source type                    | How it works                                                                    | Where to use it                                          |
+| ------------------------------ | ------------------------------------------------------------------------------- | -------------------------------------------------------- |
+| **Stream-based (recommended)** | A required content plugin connects Mankai to an external library.               | Add it in **Settings → Plugins**, then open **Library**. |
+| **File-based**                 | Open supported book files from local folders, network shares, or OPDS catalogs. | Open **Browse** to connect a folder or import files.     |
 
 ## Stream-based sources (recommended)
 
@@ -36,12 +36,14 @@ A File System plugin expects a structured Mankai library. For an ordinary folder
 
 ## File-based sources
 
-File-based sources let you read book files you manage yourself, including CBZ, CBR, EPUB, and PDF. Connect a local filesystem folder or a network share through SMB, SFTP, NFS, or WebDAV. Ordinary file-based sources do not require a content plugin. Open them from **Browse**.
+File-based sources let you read book files you manage yourself, including CBZ, CBR, EPUB, PDF, and MMA. Connect a local filesystem folder or a network share through SMB, SFTP, NFS, or WebDAV. You can also connect an OPDS catalog to open supported book files or stream pages when available. MMA files are not supported through OPDS. Ordinary file-based sources do not require a content plugin. Open them from **Browse**.
+
+**MMA (`.mma`)** stands for Mankai Manga Archive. It packages book metadata, chapter groups, and page images in a ZIP archive. For the archive structure and metadata, see the [MMA format reference](/api/mma-format/).
 
 ### Import a book file
 
 1. Open **Browse** and tap the **Imports** button, shown as an arrow entering a tray.
-2. Tap **Select Files** and choose a book in Files. Supported book formats include CBZ, CBR, EPUB, and PDF.
+2. Tap **Select Files** and choose a book in Files. Supported book formats include CBZ, CBR, EPUB, PDF, and MMA.
 3. Under **Import To**, choose **Local Directory** for a copy stored inside Mankai. Other destinations appear when you have added a source that supports imports.
 4. Tap **Import**. Mankai opens the destination's imports folder when the import succeeds.
 
@@ -104,7 +106,7 @@ If SMB finds only one share or NFS finds only one export, Mankai adds it automat
   lang="en"
 />
 
-## Connect an OPDS catalog
+### Connect an OPDS catalog
 
 OPDS catalogs are available from **Browse**. Mankai can open supported book files or stream pages when the catalog supports page streaming.
 

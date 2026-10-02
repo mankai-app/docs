@@ -1,0 +1,150 @@
+---
+title: MMA 格式
+description: 將漫畫中繼資料、章節群組和依序排列的頁面圖片封裝為 Mankai Manga Archive（.mma）。
+sidebar:
+  order: 6
+---
+
+**MMA（Mankai Manga Archive）**是 Mankai 使用的 ZIP 書籍格式。一個 `.mma` 檔案包含漫畫的中繼資料、章節群組、封面和頁面圖片，可將多個章節的書籍封裝為單一檔案。
+
+如需匯入封存檔，或從本機資料夾或網路共用開啟，請參閱[新增書籍與內容源](/zh-tw/guides/sources/)。
+
+MMA 支援本機資料夾，以及 SMB、SFTP、NFS 和 WebDAV 內容源。目前 OPDS 目錄不支援 MMA 檔案。
+
+<span id="file-identification"></span>
+
+## 檔案識別
+
+| 屬性                          | 值                               |
+| :---------------------------- | :------------------------------- |
+| 副檔名                        | `.mma`                           |
+| MIME 類型                     | `application/vnd.mankai.mma+zip` |
+| Apple Uniform Type Identifier | `app.mankai.mma`                 |
+| 容器                          | ZIP                              |
+
+<span id="archive-layout"></span>
+
+## 封存檔結構
+
+在 ZIP 根目錄放置名稱完全符合 `metadata.json` 的檔案。中繼資料中的封面和頁面路徑皆相對於此根目錄。圖片的資料夾和檔案名稱可自行決定。中繼資料會明確指定要讀取的檔案。
+
+```text
+example.mma
+├── metadata.json
+├── cover.jpg
+└── chapters/
+    ├── chapter-1/
+    │   ├── 001.jpg
+    │   └── 002.jpg
+    └── chapter-2/
+        └── 001.jpg
+```
+
+請勿在 ZIP 內以額外的上層資料夾包住這些項目。僅將 CBZ 或其他書籍檔案重新命名為 `.mma` 並不足夠，檔案必須包含必要的中繼資料及其參照的圖片。
+
+<span id="metadata"></span>
+
+## 中繼資料
+
+`metadata.json` 的根節點是漫畫物件。它使用 Mankai 的詳細漫畫欄位，並要求提供包含章節群組的 `chapters` 陣列，以及每個章節額外的 `images` 陣列。
+
+```json
+{
+  "id": "example-manga",
+  "title": "Example Manga",
+  "cover": "cover.jpg",
+  "status": 1,
+  "readingDirection": 2,
+  "authors": ["Example Author"],
+  "genres": ["adventure"],
+  "description": "A two-chapter example.",
+  "chapters": [
+    {
+      "id": "main",
+      "title": "Main story",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "Chapter 1",
+          "images": ["chapters/chapter-1/001.jpg", "chapters/chapter-1/002.jpg"]
+        },
+        {
+          "id": "chapter-2",
+          "title": "Chapter 2",
+          "images": ["chapters/chapter-2/001.jpg"]
+        }
+      ]
+    }
+  ]
+}
+```
+
+<span id="manga-fields"></span>
+
+### 漫畫欄位
+
+| 欄位               | 型別       | 必填 | 說明                                                                                                                                 |
+| :----------------- | :--------- | :--- | :----------------------------------------------------------------------------------------------------------------------------------- |
+| `id`               | `string`   | 是   | 中繼資料中的漫畫識別碼。檔案式內容源在開啟書籍時會以自己的檔案識別碼取代。                                                           |
+| `title`            | `string`   | 否   | 顯示標題。                                                                                                                           |
+| `cover`            | `string`   | 否   | 封存檔內封面圖片的路徑。                                                                                                             |
+| `status`           | `number`   | 否   | `0` = 不限，`1` = 連載中，`2` = 已完結。                                                                                             |
+| `readingDirection` | `number`   | 否   | `1` = 由左至右，`2` = 由右至左，`3` = 垂直。                                                                                         |
+| `latestChapter`    | `object`   | 否   | 章節參照，包含必填的 `id`，以及可選的 `title` 和 `locked` 欄位。其 ID 必須與 `chapters` 中的某個章節相符。此處不需要 `images` 欄位。 |
+| `description`      | `string`   | 否   | 漫畫簡介。                                                                                                                           |
+| `externalLink`     | `string`   | 否   | 介紹漫畫的外部頁面連結。                                                                                                             |
+| `updatedAt`        | `number`   | 否   | 以**毫秒**為單位的 Unix 時間戳記。                                                                                                   |
+| `authors`          | `string[]` | 否   | 作者名稱。預設為 `[]`。                                                                                                              |
+| `genres`           | `string[]` | 否   | Mankai 的[漫畫類型值](/zh-tw/api/javascript-plugins/#genres)，例如 `action` 或 `adventure`。預設為 `[]`。                            |
+| `chapters`         | `object[]` | 是   | 依序排列的章節群組，整體必須包含至少一個章節。                                                                                       |
+| `remarks`          | `string`   | 否   | 額外備註。                                                                                                                           |
+
+請省略 `meta`：Mankai 會以自己的章節與圖片對應資料取代。共用漫畫模型也接受 `editable`，但 MMA 封存檔不提供編輯器 API 功能。
+
+<span id="chapter-groups"></span>
+
+### 章節群組
+
+頂層 `chapters` 陣列中的每個項目都是一個群組：
+
+| 欄位       | 型別       | 必填 | 說明                                                                     |
+| :--------- | :--------- | :--- | :----------------------------------------------------------------------- |
+| `id`       | `string`   | 否   | 群組識別碼。                                                             |
+| `title`    | `string`   | 是   | 群組標題。                                                               |
+| `chapters` | `object[]` | 是   | 群組內依序排列的章節。群組可以是空的，但封存檔整體必須包含至少一個章節。 |
+
+<span id="chapters"></span>
+
+### 章節
+
+群組內的每個章節包含以下欄位：
+
+| 欄位     | 型別       | 必填 | 說明                                                                     |
+| :------- | :--------- | :--- | :----------------------------------------------------------------------- |
+| `id`     | `string`   | 是   | 非空的章節 ID，必須在封存檔的**所有群組**中保持唯一。                    |
+| `title`  | `string`   | 否   | 章節標題。                                                               |
+| `locked` | `boolean`  | 否   | 章節在應用程式中是否已鎖定。可閱讀的章節請省略此欄位，或設為 `false`。   |
+| `images` | `string[]` | 是   | 按閱讀順序排列、相對於封存檔根目錄的圖片路徑清單，至少必須包含一個路徑。 |
+
+Mankai 會保留群組和章節陣列的順序。頁面完全依照各章節 `images` 陣列的順序顯示。不會按檔案名稱排序，也不會自動加入未列出的圖片。
+
+省略 `latestChapter` 時，Mankai 會按照提供的群組順序將章節展平，並使用最後一個章節。若有提供，其 ID 必須參照封存檔中某個已存在的章節。
+
+<span id="image-paths-and-covers"></span>
+
+## 圖片路徑與封面
+
+使用以正斜線分隔、與 ZIP 內一般檔案項目相符的路徑，例如 `cover.jpg` 或 `chapters/chapter-1/001.jpg`。圖片格式須為用戶端平台支援的格式，例如 JPEG 和 PNG。
+
+`cover` 和每個 `images` 項目都必須符合以下規則：
+
+- 路徑不能為空，且必須相對於 ZIP 根目錄。不能以 `/` 開頭。
+- 路徑的任何組成部分都不能為空、`.` 或 `..`。開頭、結尾或重複的斜線均無效。
+- 禁止使用反斜線和空字元。
+- 第一個組成部分不能包含 `:`。絕對 URL 和含磁碟機前綴的路徑均無效。
+
+例如，`/cover.jpg`、`../cover.jpg`、`./cover.jpg`、`pages//001.jpg` 和 `https://example.com/cover.jpg` 都是無效路徑。路徑是封存檔項目名稱，而非 URL。空格和其他檔案名稱字元請直接使用，無需 URL 編碼。
+
+封面為可選。省略時，Mankai 不會自動將第一頁設為 MMA 封面。系統縮圖處理常式也會使用 `metadata.json` 中的 `cover` 路徑。
+
+Mankai 會在解析中繼資料時檢查路徑語法，並在載入封面或頁面時尋找所參照的項目。因此，即使中繼資料一開始能夠載入，缺少圖片仍可能導致後續載入失敗。

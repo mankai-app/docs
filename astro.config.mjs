@@ -71,6 +71,7 @@ export default defineConfig({
             { slug: 'api/http-api' },
             { slug: 'api/editor-api' },
             { slug: 'api/image-processors' },
+            { slug: 'api/mma-format' },
           ],
         },
       ],

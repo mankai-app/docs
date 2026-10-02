@@ -1,0 +1,136 @@
+---
+title: MMA format
+description: Package manga metadata, chapter groups, and ordered page images in a Mankai Manga Archive (.mma).
+sidebar:
+  order: 6
+---
+
+**MMA (Mankai Manga Archive)** is a ZIP-based book format for Mankai. One `.mma` file contains a manga's metadata, chapter groups, cover, and page images. Use it to package a book with multiple chapters in a single file.
+
+For importing or opening an archive from a local folder or network share, see [Add books and sources](/guides/sources/).
+
+MMA is supported by local folders and SMB, SFTP, NFS, and WebDAV sources. OPDS catalogs do not currently support MMA files.
+
+## File identification
+
+| Property                      | Value                            |
+| :---------------------------- | :------------------------------- |
+| Extension                     | `.mma`                           |
+| MIME type                     | `application/vnd.mankai.mma+zip` |
+| Apple Uniform Type Identifier | `app.mankai.mma`                 |
+| Container                     | ZIP                              |
+
+## Archive layout
+
+Place a file named exactly `metadata.json` at the ZIP root. Cover and page paths in the metadata are relative to that root. Image folders and filenames are up to you. The metadata explicitly identifies the files to read.
+
+```text
+example.mma
+├── metadata.json
+├── cover.jpg
+└── chapters/
+    ├── chapter-1/
+    │   ├── 001.jpg
+    │   └── 002.jpg
+    └── chapter-2/
+        └── 001.jpg
+```
+
+Do not wrap these entries in an extra parent folder inside the ZIP. Renaming a CBZ or another book to `.mma` is insufficient unless it contains the required metadata and referenced images.
+
+## Metadata
+
+The root of `metadata.json` is a manga object. It uses Mankai's detailed manga fields, with a required `chapters` array of chapter groups and an additional `images` array on each chapter.
+
+```json
+{
+  "id": "example-manga",
+  "title": "Example Manga",
+  "cover": "cover.jpg",
+  "status": 1,
+  "readingDirection": 2,
+  "authors": ["Example Author"],
+  "genres": ["adventure"],
+  "description": "A two-chapter example.",
+  "chapters": [
+    {
+      "id": "main",
+      "title": "Main story",
+      "chapters": [
+        {
+          "id": "chapter-1",
+          "title": "Chapter 1",
+          "images": ["chapters/chapter-1/001.jpg", "chapters/chapter-1/002.jpg"]
+        },
+        {
+          "id": "chapter-2",
+          "title": "Chapter 2",
+          "images": ["chapters/chapter-2/001.jpg"]
+        }
+      ]
+    }
+  ]
+}
+```
+
+### Manga fields
+
+| Field              | Type       | Required | Meaning                                                                                                                                                         |
+| :----------------- | :--------- | :------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`               | `string`   | Yes      | Manga identifier in the metadata. File-based sources replace it with their own file identity when opening the book.                                             |
+| `title`            | `string`   | No       | Display title.                                                                                                                                                  |
+| `cover`            | `string`   | No       | Path to a cover image inside the archive.                                                                                                                       |
+| `status`           | `number`   | No       | `0` = any, `1` = ongoing, `2` = completed.                                                                                                                      |
+| `readingDirection` | `number`   | No       | `1` = left to right, `2` = right to left, `3` = vertical.                                                                                                       |
+| `latestChapter`    | `object`   | No       | A chapter reference with required `id` and optional `title` and `locked` fields. Its ID must match a chapter in `chapters`. No `images` field is required here. |
+| `description`      | `string`   | No       | Manga description.                                                                                                                                              |
+| `externalLink`     | `string`   | No       | Link to an external page about the manga.                                                                                                                       |
+| `updatedAt`        | `number`   | No       | Unix timestamp in **milliseconds**.                                                                                                                             |
+| `authors`          | `string[]` | No       | Author names. Defaults to `[]`.                                                                                                                                 |
+| `genres`           | `string[]` | No       | Mankai [genre values](/api/javascript-plugins/#genres), such as `action` or `adventure`. Defaults to `[]`.                                                      |
+| `chapters`         | `object[]` | Yes      | Ordered chapter groups, containing at least one chapter overall.                                                                                                |
+| `remarks`          | `string`   | No       | Additional remarks.                                                                                                                                             |
+
+Omit `meta`: Mankai replaces it with its own chapter-to-image mapping. The shared manga model also accepts `editable`, but an MMA archive does not provide editor API capabilities.
+
+### Chapter groups
+
+Each entry in the top-level `chapters` array is a group:
+
+| Field      | Type       | Required | Meaning                                                                                                          |
+| :--------- | :--------- | :------- | :--------------------------------------------------------------------------------------------------------------- |
+| `id`       | `string`   | No       | Group identifier.                                                                                                |
+| `title`    | `string`   | Yes      | Group title.                                                                                                     |
+| `chapters` | `object[]` | Yes      | Ordered chapters in this group. A group may be empty, but the archive must contain at least one chapter overall. |
+
+### Chapters
+
+Each chapter in a group has these fields:
+
+| Field    | Type       | Required | Meaning                                                                                 |
+| :------- | :--------- | :------- | :-------------------------------------------------------------------------------------- |
+| `id`     | `string`   | Yes      | Nonempty chapter ID, unique across **all groups** in the archive.                       |
+| `title`  | `string`   | No       | Chapter title.                                                                          |
+| `locked` | `boolean`  | No       | Whether the chapter is locked in the app. Omit it or use `false` for readable chapters. |
+| `images` | `string[]` | Yes      | Nonempty list of archive-relative image paths in reading order.                         |
+
+Mankai preserves group and chapter array order. Pages follow the exact order of each chapter's `images` array. Filenames are not sorted and unlisted images are not added automatically.
+
+When `latestChapter` is omitted, Mankai uses the last chapter after flattening the groups in their supplied order. If you include it, its ID must refer to an existing chapter anywhere in the archive.
+
+## Image paths and covers
+
+Use forward-slash paths that match regular file entries in the ZIP, such as `cover.jpg` or `chapters/chapter-1/001.jpg`. Use the image formats supported by the client platform, such as JPEG and PNG.
+
+Both `cover` and every `images` entry must satisfy these rules:
+
+- The path is nonempty and relative to the ZIP root. It cannot start with `/`.
+- No component is empty, `.` or `..`. Leading, trailing, and repeated slashes are invalid.
+- Backslashes and null characters are forbidden.
+- The first component cannot contain `:`. Absolute URLs and drive-prefixed paths are invalid.
+
+For example, `/cover.jpg`, `../cover.jpg`, `./cover.jpg`, `pages//001.jpg`, and `https://example.com/cover.jpg` are invalid. Paths are archive entry names, not URLs. Use spaces and other filename characters directly rather than URL-encoding them.
+
+The cover is optional. If you omit it, Mankai does not automatically choose the first page as the MMA cover. The system thumbnail handler also uses the `cover` path from `metadata.json`.
+
+Mankai checks path syntax while parsing metadata. It looks up the referenced entry when loading a cover or page, so a missing image can fail later even if the metadata initially loads.
