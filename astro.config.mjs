@@ -18,7 +18,7 @@ export default defineConfig({
       description:
         'Get started with Mankai, organize your books, and read across your devices.',
       logo: {
-        src: './src/assets/mankai-icon.png',
+        src: './public/icon.png',
         alt: '',
         replacesTitle: false,
       },
