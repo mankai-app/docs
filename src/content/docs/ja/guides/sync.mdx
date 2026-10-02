@@ -15,6 +15,18 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 2. **同期エンジン**を選びます。同期が不要な場合は**なし**のままで構いません。
 3. 選んだサービスに応じて、以下の手順で設定します。
 
+<DeviceScreenshots
+  id="sync-configuration"
+  title="同期サービスを設定する"
+  phone="iPhone の同期設定画面。同期エンジンのメニューと HTTP の設定項目が表示されています。"
+  tablet="iPad の同期設定画面。同期エンジンのメニューと HTTP の設定項目が表示されています。"
+  lang="ja"
+/>
+
+### iCloud（近日公開）
+
+iCloud 同期は近日公開予定で、まだ利用できません。現在、デバイス間で同期するには HTTP または Supabase を選んでください。
+
 ### HTTP
 
 HTTP 同期を使う前に、以下のいずれかのリポジトリを使って、互換性のあるサーバーを用意してください。
@@ -37,18 +49,6 @@ Supabase 同期を使う前に、Supabase プロジェクトを作成し、[Mank
 2. **設定を保存**をタップします。
 3. プロジェクトで設定されている認証プロバイダーを選び、**ログイン**をタップします。
 4. ログインを完了し、Mankai に戻ります。
-
-<DeviceScreenshots
-  id="sync-configuration"
-  title="同期サービスを設定する"
-  phone="iPhone の同期設定画面。同期エンジンのメニューと HTTP の設定項目が表示されています。"
-  tablet="iPad の同期設定画面。同期エンジンのメニューと HTTP の設定項目が表示されています。"
-  lang="ja"
-/>
-
-### iCloud（近日公開）
-
-iCloud 同期は近日公開予定で、まだ利用できません。現在、デバイス間で同期するには HTTP または Supabase を選んでください。
 
 ## 両方のデバイスを同期する
 

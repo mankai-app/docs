@@ -15,6 +15,18 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 2. 选择**同步引擎**。如果不需要同步，请保留为**无**。
 3. 按照下方对应的步骤完成设置。
 
+<DeviceScreenshots
+  id="sync-configuration"
+  title="配置同步服务"
+  phone="iPhone 同步引擎菜单和 HTTP 配置。"
+  tablet="iPad 同步引擎菜单和 HTTP 配置。"
+  lang="zh-cn"
+/>
+
+### iCloud（即将推出）
+
+iCloud 同步即将推出，目前尚不可用。现在请使用 HTTP 或 Supabase 在设备间同步。
+
 ### HTTP
 
 使用 HTTP 同步之前，请先通过以下任一仓库搭建兼容的服务器：
@@ -37,18 +49,6 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 2. 轻点**保存配置**。
 3. 选择该项目配置的登录提供商，再轻点**登录**。
 4. 完成登录流程并返回 Mankai。
-
-<DeviceScreenshots
-  id="sync-configuration"
-  title="配置同步服务"
-  phone="iPhone 同步引擎菜单和 HTTP 配置。"
-  tablet="iPad 同步引擎菜单和 HTTP 配置。"
-  lang="zh-cn"
-/>
-
-### iCloud（即将推出）
-
-iCloud 同步即将推出，目前尚不可用。现在请使用 HTTP 或 Supabase 在设备间同步。
 
 ## 同步两台设备
 
