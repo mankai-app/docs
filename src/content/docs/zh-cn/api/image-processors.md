@@ -5,6 +5,8 @@ description: 远程图片处理器的元数据、配置、图片处理与可选 
 
 本规范定义 Mankai 远程图片处理器使用的 HTTP API。用户在**设置 → 图片处理**中添加服务器基础网址。Mankai 读取处理器元数据、显示服务器定义的配置字段，并在处理器启用时将阅读器中的每张图片发送到服务器。
 
+应用中的设置和使用方法请参阅[图片处理](/zh-cn/guides/image-processing/)。
+
 <span id="endpoints"></span>
 
 ## 端点

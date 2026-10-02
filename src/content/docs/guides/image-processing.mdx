@@ -1,0 +1,76 @@
+---
+title: Image processing
+description: Upscale reader images, reduce memory usage, adjust page colors, and connect remote image processors.
+---
+
+import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
+
+Open **Settings → Image Processing** to choose how Mankai processes pages in the reader. You can enable processors, adjust their settings, and arrange the order in which they run.
+
+## Choose a local processor
+
+Local processors run on your device. Mankai starts with **4× Real-ESRGAN Upscaling** disabled and **Downsample Images** enabled.
+
+| Processor                    | Use it to                                                                                                                         | Settings                                                                                                                                                       |
+| ---------------------------- | --------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **4× Real-ESRGAN Upscaling** | Enlarge low-resolution pages with the realesr-animevideov3 model. Images already large enough for the display are left unchanged. | **Upscaling Sensitivity** controls how many images qualify for upscaling. Higher sensitivity includes larger images and uses more processing power and memory. |
+| **Downsample Images**        | Reduce image resolution to lower memory usage. Turning it off preserves full resolution at the cost of higher memory usage.       | **Memory Savings** offers **Low**, **Balanced**, and **High**. Higher savings use lower-resolution images.                                                     |
+| **Monochrome Tone**          | Give pages a custom color tone while preserving linework and contrast.                                                            | Choose **Tone Color** and adjust **Tone Strength**.                                                                                                            |
+
+1. Open **Settings → Image Processing** and tap **+**.
+2. Under **Local**, tap the processor you want to add. The new processor is enabled automatically.
+3. Tap its row to open **Configuration** and adjust the available settings. Changes are saved automatically.
+4. Use the switch beside a processor to enable or disable it without removing its settings.
+
+Start with **Balanced** for **Upscaling Sensitivity** and **Memory Savings**. When using upscaling, keep **Downsample Images** enabled after it to keep the final image size and memory usage reasonable.
+
+<DeviceScreenshots
+  id="image-processing"
+  title="Manage image processors"
+  phone="Image Processing with upscaling disabled and downsampling enabled on iPhone."
+  tablet="Image Processing with upscaling disabled and downsampling enabled on iPad."
+  lang="en"
+/>
+
+## Change the processing order
+
+Enabled processors run from top to bottom. Each processor receives the image produced by the previous one, so changing the order can change the result.
+
+1. Tap **Edit** in **Image Processing**.
+2. Drag the reorder handles to arrange the processors.
+3. Tap **Done** when you finish.
+
+For upscaling followed by memory savings, place **4× Real-ESRGAN Upscaling** above **Downsample Images**. Add **Monochrome Tone** after them if you want to adjust the final page color.
+
+## Add a remote image processor
+
+A remote processor sends reader images to a server and uses the returned images in the reader. You need a compatible Mankai image processing service and a server URL reachable from your iPhone or iPad.
+
+1. Open **Settings → Image Processing** and tap **+**.
+2. Under **Remote**, choose **Remote Image Processor**.
+3. Enter the service's base URL in **Server URL**, then tap **Add**. Mankai reads the server's name and configuration fields.
+4. Tap the new processor's row and adjust its **Configuration**. If the server requires authentication, enter the supplied **Username** and **Password**.
+5. Check that its switch is enabled and place it in the processing order you want.
+
+Enter the base URL, such as `https://images.example.com/mankai`, rather than the `/process` endpoint. A server on your home network must be reachable from the device while you read. Only local processors can run without a connection to a processing server.
+
+Remote processors receive the image at their position in the processing order. For example, placing one after **Monochrome Tone** sends the toned image to the server. Available settings and effects depend on the service.
+
+If you are building a compatible server, see the [Image processor API](/api/image-processors/).
+
+## Reset or remove a processor
+
+Tap a processor's row, tap **Reset Configuration**, then tap **Reset** to restore its default settings. For an authenticated remote processor, this also clears its username and password.
+
+To remove a processor, swipe its row and confirm **Remove**, or use **Remove** in its configuration screen. To pause an effect while keeping its configuration, turn off its switch instead.
+
+## If processing is slow or has no effect
+
+- Check that the processor is enabled and review its position in the list.
+- Upscaling skips images that are already large enough for the display. Try a lower-resolution page before increasing **Upscaling Sensitivity**.
+- If upscaling is slow, lower **Upscaling Sensitivity** or disable the processor. Keep **Downsample Images** enabled to reduce memory usage.
+- For a remote processor, check the base URL, server availability, connection, and any required credentials.
+
+Upscaling and remote processing can show the original page while processing finishes. If processing fails, Mankai keeps the original image available for reading.
+
+For page layout and navigation, see [Reading and reader settings](/guides/reading/).

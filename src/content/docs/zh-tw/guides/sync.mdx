@@ -7,7 +7,7 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 
 同步是可選功能，會傳輸受支援的收藏和閱讀進度。書籍檔案、已下載的章節和內容源設定需要在每台裝置上分別準備。
 
-你需要相容的 HTTP 同步服務，或已經設定好的 Supabase 專案。請使用服務管理員提供的連線資訊和帳戶。
+你需要相容的 HTTP 同步服務，或已經設定好的 Supabase 專案。請使用對應服務的連線資訊。
 
 ## 選擇同步服務
 
@@ -17,16 +17,25 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 
 ### HTTP
 
-1. 選擇 **HTTP**，輸入同步服務的伺服器網址。
+使用 HTTP 同步之前，請先透過以下任一儲存庫架設相容的伺服器：
+
+- [Mankai Sync](https://github.com/mankai-app/sync)：專用同步伺服器，提供用於管理使用者的管理頁面。
+- [Mankai Server](https://github.com/mankai-app/server)：漫畫書庫伺服器，同時支援收藏和閱讀進度同步。
+
+按照所選儲存庫的設定說明完成部署。請使用伺服器的 API 網址（這兩個伺服器均以 `/api` 結尾）和該伺服器上的帳戶憑證。如果使用既有服務，請向管理員索取這些資訊。
+
+1. 選擇 **HTTP**，在**伺服器網址**中輸入同步服務的 API 網址。
 2. 點一下**儲存設定**。
 3. 在**憑證**中輸入使用者名稱和密碼。
 4. 點一下**登入**。
 
 ### Supabase
 
-1. 選擇 **Supabase**，輸入管理員提供的專案網址和金鑰。
+使用 Supabase 同步之前，請先建立 Supabase 專案，並按照 [Mankai Supabase 儲存庫](https://github.com/mankai-app/supabase)中的設定說明套用資料庫遷移、部署 Edge Functions，以及設定 OAuth 登入提供者。如果使用既有且設定完成的專案，請向管理員索取專案網址和金鑰。
+
+1. 選擇 **Supabase**，輸入已設定專案的網址和金鑰。
 2. 點一下**儲存設定**。
-3. 選擇該服務設定的登入提供者，再點一下**登入**。
+3. 選擇該專案設定的登入提供者，再點一下**登入**。
 4. 完成登入流程並返回 Mankai。
 
 <DeviceScreenshots

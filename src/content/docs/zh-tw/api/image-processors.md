@@ -5,6 +5,8 @@ description: 遠端圖片處理器的中繼資料、設定、圖片處理與可�
 
 本規範定義 Mankai 遠端圖片處理器使用的 HTTP API。使用者在**設定 → 圖片處理**中新增伺服器基礎網址。Mankai 讀取處理器中繼資料、顯示伺服器定義的設定欄位，並在處理器啟用時將閱讀器中的每張圖片發送到伺服器。
 
+應用程式中的設定和使用方法請參閱[圖片處理](/zh-tw/guides/image-processing/)。
+
 <span id="endpoints"></span>
 
 ## 端點

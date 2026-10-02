@@ -7,7 +7,7 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 
 Sync is optional and transfers supported bookmarks and reading progress. Add book files, download chapters, and configure sources on each device separately.
 
-You need a compatible HTTP sync service or a configured Supabase project. Use the connection details and account supplied by your service administrator.
+You need a compatible HTTP sync service or a configured Supabase project. Use the connection details for your service.
 
 ## Choose a sync service
 
@@ -17,16 +17,25 @@ You need a compatible HTTP sync service or a configured Supabase project. Use th
 
 ### HTTP
 
-1. Select **HTTP** and enter your service's server URL.
+Before using HTTP sync, set up a compatible server using either of these repositories:
+
+- [Mankai Sync](https://github.com/mankai-app/sync): A dedicated sync server with an admin page for managing users.
+- [Mankai Server](https://github.com/mankai-app/server): A manga library server that also supports bookmarks and reading progress sync.
+
+Follow the setup instructions in your chosen repository. Use the server's API URL (ending in `/api` for these servers) and the credentials for an account on that server. If you use an existing service, ask its administrator for these details.
+
+1. Select **HTTP** and enter your service's API URL in **Server URL**.
 2. Tap **Save Configuration**.
 3. Enter your username and password under **Credentials**.
 4. Tap **Log In**.
 
 ### Supabase
 
-1. Select **Supabase** and enter the project URL and key supplied by your administrator.
+Before using Supabase sync, create a Supabase project and follow the setup instructions in the [Mankai Supabase repository](https://github.com/mankai-app/supabase) to apply the database migrations, deploy the Edge Functions, and configure an OAuth sign-in provider. If you use an existing configured project, ask its administrator for the project URL and key.
+
+1. Select **Supabase** and enter your configured project's URL and key.
 2. Tap **Save Configuration**.
-3. Choose the sign-in provider configured for that service and tap **Log In**.
+3. Choose the sign-in provider configured for that project and tap **Log In**.
 4. Complete the sign-in flow and return to Mankai.
 
 <DeviceScreenshots

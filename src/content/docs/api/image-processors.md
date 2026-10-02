@@ -7,6 +7,8 @@ sidebar:
 
 This specification defines the HTTP API used by Mankai remote image processors. A user adds the server's base URL in **Settings → Image Processing**. Mankai reads the processor metadata, shows the server-defined configuration fields, and sends each reader image to the server when the processor is enabled.
 
+For setup and everyday use in the app, see [Image processing](/guides/image-processing/).
+
 ## Endpoints
 
 | Method | Path            | Authentication | Purpose                                     |

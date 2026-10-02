@@ -48,6 +48,7 @@ export default defineConfig({
             { slug: 'guides/sources' },
             { slug: 'guides/library' },
             { slug: 'guides/reading' },
+            { slug: 'guides/image-processing' },
             { slug: 'guides/sync' },
             { slug: 'guides/troubleshooting' },
           ],

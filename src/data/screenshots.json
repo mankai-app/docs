@@ -362,5 +362,31 @@
         "height": 1640
       }
     }
+  },
+  "image-processing": {
+    "phone": {
+      "light": {
+        "src": "/screenshots/en/guides/image-processing-phone-light.webp",
+        "width": 1206,
+        "height": 2622
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/image-processing-phone-dark.webp",
+        "width": 1206,
+        "height": 2622
+      }
+    },
+    "tablet": {
+      "light": {
+        "src": "/screenshots/en/guides/image-processing-tablet-light.webp",
+        "width": 2360,
+        "height": 1640
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/image-processing-tablet-dark.webp",
+        "width": 2360,
+        "height": 1640
+      }
+    }
   }
 }
