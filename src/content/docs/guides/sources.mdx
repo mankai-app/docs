@@ -1,0 +1,119 @@
+---
+title: Add books and sources
+description: Choose file-based sources for local and network book files or recommended stream-based plugins for external libraries.
+---
+
+import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
+
+Mankai supports two main source types:
+
+| Source type                    | How it works                                                      | Where to use it                                          |
+| ------------------------------ | ----------------------------------------------------------------- | -------------------------------------------------------- |
+| **Stream-based (recommended)** | A required content plugin connects Mankai to an external library. | Add it in **Settings → Plugins**, then open **Library**. |
+| **File-based**                 | Open supported book files on a local filesystem or network share. | Open **Browse** to connect a folder or import files.     |
+
+## Stream-based sources (recommended)
+
+A stream-based source **requires a content plugin**. This is the recommended approach when a compatible plugin is available: you can browse, search, and read directly from an external library, and automatically check saved titles for new chapters when the plugin supports updates. Available features depend on the plugin and library. See [Collections and downloads](/guides/library/) for saving titles and reading offline.
+
+### Add a content plugin
+
+1. Open **Settings → Plugins** and tap the **+** button.
+2. Choose the plugin type your provider specifies.
+3. For **JavaScript**, enter the supplied URL. If you were given a JSON definition, enable **Use JSON** and paste it there.
+4. For **HTTP**, enter the supplied plugin URL. For **File System**, select the plugin folder supplied by your provider and choose whether to allow editing.
+5. Tap **Add**. Return to **Library** to explore the lists and search features the plugin supports.
+
+A File System plugin expects a structured Mankai library. For an ordinary folder of book files, use **Browse → Add Folder**. Available search, update, chapter, and download actions depend on the plugin and library.
+
+<DeviceScreenshots
+  id="sources-add-plugin"
+  title="Add a content plugin"
+  phone="Add Plugin with HTTP selected and a plugin URL on iPhone."
+  tablet="Add Plugin with HTTP selected and a plugin URL on iPad."
+  lang="en"
+/>
+
+## File-based sources
+
+File-based sources let you read book files you manage yourself, including CBZ, CBR, EPUB, and PDF. Connect a local filesystem folder or a network share through SMB, SFTP, NFS, or WebDAV. Ordinary file-based sources do not require a content plugin. Open them from **Browse**.
+
+### Import a book file
+
+1. Open **Browse** and tap the **Imports** button, shown as an arrow entering a tray.
+2. Tap **Select Files** and choose a book in Files. Supported book formats include CBZ, CBR, EPUB, and PDF.
+3. Under **Import To**, choose **Local Directory** for a copy stored inside Mankai. Other destinations appear when you have added a source that supports imports.
+4. Tap **Import**. Mankai opens the destination's imports folder when the import succeeds.
+
+<DeviceScreenshots
+  id="sources-import-file"
+  scene="quick-start-import"
+  title="Import a book"
+  phone="Imports with a selected CBZ file and Local Directory destination on iPhone."
+  tablet="Imports with a selected CBZ file and Local Directory destination on iPad."
+  lang="en"
+/>
+
+<DeviceScreenshots
+  id="sources-imported-book"
+  scene="quick-start-imported-book"
+  title="Your imported book"
+  phone="The imports folder with the newly imported CBZ book on iPhone."
+  tablet="The imports folder with the newly imported CBZ book on iPad."
+  lang="en"
+/>
+
+### Connect a local folder
+
+1. Open **Browse → Add Folder**.
+2. Set **Folder Type** to **File System**. Add a display name if you want one.
+3. Tap **Select Folder** and choose the folder in the system picker.
+4. Tap **Add**, then open the new folder in **Browse**.
+5. Open a subfolder or tap a supported book to see its details.
+
+Connecting a folder lets Mankai browse that location. Use **Imports** to copy selected files into Mankai or another source that supports imports.
+
+<DeviceScreenshots
+  id="sources-local-folder"
+  title="Connect a folder"
+  phone="Add Folder with File System and a selected folder on iPhone."
+  tablet="Add Folder with File System and a selected folder on iPad."
+  lang="en"
+/>
+
+### Connect a network share
+
+1. Open **Browse → Add Folder** and choose the appropriate **Folder Type**.
+2. Enter the connection details supplied by your server administrator.
+3. Follow the steps for your source type below.
+
+| Source     | Details to enter                                   | Finish                                                                |
+| ---------- | -------------------------------------------------- | --------------------------------------------------------------------- |
+| **SMB**    | Host, port, and any required username and password | Tap **Select Share**, choose a share if prompted, then tap **Add**    |
+| **SFTP**   | Host, port, username, and password                 | Tap **Add**                                                           |
+| **NFS**    | Host                                               | Tap **Select Export**, choose an export if prompted, then tap **Add** |
+| **WebDAV** | Server URL and any required username and password  | Tap **Add**                                                           |
+
+If SMB finds only one share or NFS finds only one export, Mankai adds it automatically. Open the new source from **Browse**. Keep the network source reachable while browsing and reading its books.
+
+<DeviceScreenshots
+  id="sources-network"
+  title="Add a network source"
+  phone="Add Folder configured for a WebDAV source on iPhone."
+  tablet="Add Folder configured for a WebDAV source on iPad."
+  lang="en"
+/>
+
+## Connect an OPDS catalog
+
+OPDS catalogs are available from **Browse**. Mankai can open supported book files or stream pages when the catalog supports page streaming.
+
+1. Open **Browse → Add Folder** and set **Folder Type** to **OPDS**.
+2. Enter the catalog URL and any required username and password.
+3. Tap **Add**, then open the catalog from **Browse**.
+
+## Manage a connection
+
+Swipe a folder in **Browse** to edit or remove its connection, or manage it in **Settings → Folders**. Manage installed content plugins in **Settings → Plugins**.
+
+To sync bookmarks and reading progress between devices, see [Sync across devices](/guides/sync/). For connection problems, see [Troubleshooting](/guides/troubleshooting/).

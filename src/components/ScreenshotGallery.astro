@@ -1,0 +1,156 @@
+---
+import screenshotImages from '@/data/screenshots.json'
+
+interface Props {
+  scene: keyof typeof screenshotImages
+  title: string
+}
+
+const { scene, title } = Astro.props
+const images = screenshotImages[scene]
+const devices = [
+  { key: 'phone', name: 'iPhone' },
+  { key: 'tablet', name: 'iPad' },
+] as const
+const appearances = [
+  { key: 'light', name: 'Light' },
+  { key: 'dark', name: 'Dark' },
+] as const
+const variants = devices.flatMap((device) =>
+  appearances.flatMap((appearance) => {
+    const asset = images[device.key]?.[appearance.key]
+    return asset ? [{ device: device.name, appearance, asset }] : []
+  }),
+)
+---
+
+<section
+  class="screenshot-gallery"
+  aria-label={title}
+  data-gallery-scene={scene}
+>
+  <div class="gallery-grid">
+    {variants.map(({ device, appearance, asset }) => (
+      <figure
+        class="gallery-shot"
+        data-gallery-device={device}
+        data-gallery-theme={appearance.key}
+      >
+        <figcaption>
+          <strong>{device}</strong>
+          <span class="appearance-label" data-appearance={appearance.key}>
+            {appearance.name}
+          </span>
+        </figcaption>
+        <a
+          class="gallery-image-link"
+          href={asset.src}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`View ${title} — ${device}, ${appearance.name.toLowerCase()} theme`}
+        >
+          <img
+            src={asset.src}
+            alt={`${title} on ${device} in the ${appearance.name.toLowerCase()} theme.`}
+            width={asset.width}
+            height={asset.height}
+            loading="lazy"
+            decoding="async"
+          />
+        </a>
+      </figure>
+    ))}
+  </div>
+</section>
+
+<style>
+  .screenshot-gallery {
+    container-type: inline-size;
+  }
+  .screenshot-gallery :where(figure, a, span, img, div) {
+    margin: 0;
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1rem;
+  }
+  .gallery-shot {
+    min-width: 0;
+    padding: 0.85rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.85rem;
+    background: var(--sl-color-bg);
+  }
+  figcaption {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.3rem 0.5rem;
+    margin: 0 0 0.85rem;
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+  figcaption strong {
+    color: var(--sl-color-white);
+    font-weight: 600;
+  }
+  .appearance-label {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--sl-color-gray-2);
+    font-size: 0.75rem;
+  }
+  .appearance-label::before {
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border: 1px solid var(--sl-color-gray-4);
+    border-radius: 50%;
+    background: #fff;
+  }
+  .appearance-label[data-appearance='dark']::before {
+    background: #171717;
+  }
+  .gallery-image-link {
+    display: block;
+    height: 18rem;
+    border-radius: 0.5rem;
+  }
+  .gallery-image-link img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  .gallery-image-link:hover {
+    background: color-mix(in srgb, var(--sl-color-gray-6) 40%, transparent);
+  }
+  .screenshot-gallery a:focus-visible {
+    outline: 2px solid var(--sl-color-text-accent);
+    outline-offset: 4px;
+  }
+  @container (max-width: 48rem) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @container (max-width: 30rem) {
+    .gallery-grid {
+      gap: 0.75rem;
+    }
+    .gallery-shot {
+      padding: 0.625rem;
+    }
+    .gallery-image-link {
+      height: 16rem;
+    }
+  }
+  @container (max-width: 20rem) {
+    .gallery-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>

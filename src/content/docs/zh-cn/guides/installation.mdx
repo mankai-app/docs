@@ -1,0 +1,32 @@
+---
+title: 安装
+description: 了解 App Store、侧载和从源码构建三种安装方式的费用与可用状态。
+prev: false
+---
+
+选择在 iPhone 或 iPad 上安装 Mankai 的方式。
+
+| 方式       | 费用 | 可用状态 |
+| ---------- | ---- | -------- |
+| App Store  | 付费 | 即将推出 |
+| 侧载       | 免费 | 即将推出 |
+| 从源码构建 | 免费 | 现已可用 |
+
+## App Store
+
+**付费 · 即将推出。** Mankai 将作为付费应用在 App Store 上架。
+
+## 侧载
+
+**免费 · 即将推出。** 未来将提供用于侧载的 IPA 文件，目前尚未开放下载。现在可以按照下方步骤从源码构建。
+
+## 从源码构建
+
+**免费。** 在 Mac 上使用 Xcode 自行构建 Mankai。
+
+1. 克隆 [Mankai 仓库](https://github.com/mankai-app/mankai)或下载源码。
+2. 在 Xcode 中打开 `mankai.xcodeproj`，等待 Swift 软件包依赖解析完成。
+3. 在 **Signing & Capabilities** 中，为应用和缩略图扩展目标选择自己的开发团队。如有需要，为各目标设置唯一的 Bundle ID。
+4. 选择 **mankai** Scheme 和已连接的 iPhone 或 iPad，然后选择 **Run** 来构建并安装应用。
+
+安装完成后，按照[快速入门](/zh-cn/guides/quick-start/)导入第一本书。

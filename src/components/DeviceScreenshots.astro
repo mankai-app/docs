@@ -1,0 +1,338 @@
+---
+import screenshotImages from '@/data/screenshots.json'
+
+interface Props {
+  id: string
+  scene?: keyof typeof screenshotImages
+  title: string
+  phone: string
+  tablet: string
+  lang?: 'en' | 'ja' | 'zh-cn' | 'zh-tw'
+}
+
+const { id, scene = id, title, phone, tablet, lang = 'en' } = Astro.props
+const images = screenshotImages[scene as keyof typeof screenshotImages]
+const labels = {
+  en: { device: 'Screenshot device', fullSize: 'Open full-size screenshot' },
+  ja: {
+    device: 'スクリーンショットのデバイス',
+    fullSize: '原寸のスクリーンショットを開く',
+  },
+  'zh-cn': { device: '截图设备', fullSize: '打开原尺寸截图' },
+  'zh-tw': { device: '螢幕截圖裝置', fullSize: '開啟原尺寸截圖' },
+}[lang]
+const devices = [
+  { name: 'iPhone', kind: 'phone', caption: phone, images: images?.phone },
+  { name: 'iPad', kind: 'tablet', caption: tablet, images: images?.tablet },
+].filter((device) => device.images?.light || device.images?.dark)
+const appearances = ['light', 'dark'] as const
+---
+
+{devices.length > 0 && (
+  <section class="screenshots" aria-labelledby={`${id}-title`}>
+    <div class="screenshot-header">
+      <p class="scene-title" id={`${id}-title`}>
+        {title}
+      </p>
+      {devices.length > 1 && (
+        <fieldset class="device-selector">
+          <legend class="visually-hidden">
+            {labels.device} — {title}
+          </legend>
+          <div class="segments">
+            {devices.map((device, index) => (
+              <label class="device-label">
+                <input
+                  class="device-choice visually-hidden"
+                  type="radio"
+                  name={`${id}-device`}
+                  value={device.kind}
+                  checked={index === 0}
+                  aria-controls={`${id}-${device.kind}-panel`}
+                />
+                <span class="device-option">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    aria-hidden="true"
+                  >
+                    <rect
+                      x={device.kind === 'phone' ? 6 : 3}
+                      y={device.kind === 'phone' ? 2 : 4}
+                      width={device.kind === 'phone' ? 12 : 18}
+                      height={device.kind === 'phone' ? 20 : 16}
+                      rx="2.5"
+                    />
+                    <path
+                      d={device.kind === 'phone' ? 'M10 18h4' : 'M6 10v4'}
+                      stroke-linecap="round"
+                    />
+                  </svg>
+                  {device.name}
+                </span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+      )}
+    </div>
+    <div>
+      {devices.map((device) => (
+        <figure
+          class="device-panel"
+          id={`${id}-${device.kind}-panel`}
+          data-device={device.kind}
+          data-screenshot={`${scene}-${device.kind}`}
+        >
+          <div class="device-stage">
+            {appearances.map((appearance) => {
+              const asset =
+                device.images?.[appearance] ??
+                device.images?.light ??
+                device.images?.dark
+              return (
+                asset && (
+                  <a
+                    class:list={['screenshot-link', `screenshot-${appearance}`]}
+                    style={`--screenshot-ratio: ${asset.width} / ${asset.height}`}
+                    href={asset.src}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${labels.fullSize} — ${title}, ${device.name}`}
+                    aria-describedby={`${id}-${device.kind}-caption`}
+                  >
+                    <img
+                      class:list={['device', device.kind]}
+                      src={asset.src}
+                      alt={device.caption}
+                      width={asset.width}
+                      height={asset.height}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <span class="expand-icon" aria-hidden="true">
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.6"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M14 4h6v6M20 4l-7 7M10 20H4v-6M4 20l7-7" />
+                      </svg>
+                    </span>
+                  </a>
+                )
+              )
+            })}
+          </div>
+          <figcaption id={`${id}-${device.kind}-caption`}>
+            {device.caption}
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  .screenshots {
+    container-type: inline-size;
+    margin-block: 2rem;
+    overflow: hidden;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 1rem;
+    background: var(--sl-color-bg);
+  }
+  .screenshots
+    :where(p, figure, fieldset, legend, label, span, svg, img, a, div) {
+    margin: 0;
+  }
+  .screenshot-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem 1rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--sl-color-gray-5);
+  }
+  .scene-title {
+    min-width: 0;
+    color: var(--sl-color-white);
+    font-size: 0.925rem;
+    font-weight: 600;
+    line-height: 1.5;
+    text-wrap: balance;
+  }
+  .device-selector {
+    flex-shrink: 0;
+    min-width: 0;
+    max-width: 100%;
+    padding: 0;
+    border: 0;
+  }
+  .segments {
+    display: flex;
+    gap: 0.2rem;
+    padding: 0.2rem;
+    border-radius: 0.6rem;
+    background: var(--sl-color-gray-6);
+    box-shadow: inset 0 0 0 1px var(--sl-color-gray-5);
+  }
+  .device-label {
+    position: relative;
+    cursor: pointer;
+  }
+  .device-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    min-height: 1.875rem;
+    padding: 0.25rem 1rem;
+    border-radius: 0.4rem;
+    color: var(--sl-color-gray-2);
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.25;
+    transition:
+      color 160ms ease,
+      background 160ms ease,
+      box-shadow 160ms ease;
+  }
+  .device-option svg {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+  }
+  .device-label:hover .device-option {
+    color: var(--sl-color-white);
+    background: color-mix(in srgb, var(--sl-color-bg) 55%, transparent);
+  }
+  .device-choice:checked + .device-option {
+    color: var(--sl-color-text-accent);
+    background: var(--sl-color-bg);
+    box-shadow:
+      0 1px 4px rgb(0 0 0 / 8%),
+      0 0 0 1px var(--sl-color-gray-5);
+  }
+  .device-choice:focus-visible + .device-option {
+    outline: 2px solid var(--sl-color-text-accent);
+    outline-offset: 3px;
+  }
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+  .screenshots:has(.device-choice) .device-panel {
+    display: none;
+  }
+  .screenshots:has(.device-choice[value='phone']:checked)
+    .device-panel[data-device='phone'],
+  .screenshots:has(.device-choice[value='tablet']:checked)
+    .device-panel[data-device='tablet'] {
+    display: block;
+  }
+  .device-stage {
+    --preview-image-height: 28rem;
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr);
+    place-items: center;
+    height: 32rem;
+    padding: 1.5rem;
+    background:
+      radial-gradient(
+        ellipse at 50% 0%,
+        color-mix(in srgb, var(--sl-color-accent-low) 65%, transparent),
+        transparent 75%
+      ),
+      color-mix(in srgb, var(--sl-color-gray-6) 55%, var(--sl-color-bg));
+  }
+  .screenshot-link {
+    min-width: 0;
+    width: calc(var(--preview-image-height) * var(--screenshot-ratio));
+    aspect-ratio: var(--screenshot-ratio);
+    max-width: 100%;
+    border-radius: 0.85rem;
+    text-decoration: none;
+  }
+  .screenshot-link:focus-visible {
+    outline: 2px solid var(--sl-color-text-accent);
+    outline-offset: 6px;
+  }
+  .device {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 0.85rem;
+  }
+  .device.tablet {
+    border-radius: 0.5rem;
+  }
+  .expand-icon {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 0.6rem;
+    color: var(--sl-color-gray-2);
+    background: var(--sl-color-bg);
+    transition:
+      color 160ms ease,
+      border-color 160ms ease;
+  }
+  .expand-icon svg {
+    width: 1rem;
+    height: 1rem;
+  }
+  .screenshot-link:is(:hover, :focus-visible) .expand-icon {
+    color: var(--sl-color-text-accent);
+    border-color: var(--sl-color-text-accent);
+  }
+  figcaption {
+    margin: 0;
+    padding: 1rem 1.25rem;
+    border-top: 1px solid var(--sl-color-gray-5);
+    color: var(--sl-color-gray-2);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+  @container (max-width: 30rem) {
+    .screenshot-header {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1rem;
+    }
+    .device-stage {
+      --preview-image-height: 26rem;
+      height: 30rem;
+      padding: 1.25rem;
+    }
+    figcaption {
+      padding: 0.9rem 1rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .device-option,
+    .expand-icon {
+      transition: none;
+    }
+  }
+</style>

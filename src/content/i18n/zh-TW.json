@@ -1,0 +1,14 @@
+{
+  "search.label": "搜尋文件",
+  "heading.anchorLabel": "章節「{{title}}」",
+  "pagefind.clear_search": "清除",
+  "pagefind.load_more": "載入更多結果",
+  "pagefind.search_label": "搜尋本站",
+  "pagefind.filters_label": "篩選",
+  "pagefind.zero_results": "找不到「[SEARCH_TERM]」的結果",
+  "pagefind.many_results": "找到 [COUNT] 筆「[SEARCH_TERM]」的結果",
+  "pagefind.one_result": "找到 [COUNT] 筆「[SEARCH_TERM]」的結果",
+  "pagefind.alt_search": "找不到「[SEARCH_TERM]」的結果，改為顯示「[DIFFERENT_TERM]」的結果",
+  "pagefind.search_suggestion": "找不到「[SEARCH_TERM]」的結果，請嘗試以下搜尋詞",
+  "pagefind.searching": "正在搜尋「[SEARCH_TERM]」…"
+}

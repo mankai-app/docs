@@ -1,0 +1,5 @@
+# Generated files and dependencies
+.astro/
+dist/
+node_modules/
+yarn.lock

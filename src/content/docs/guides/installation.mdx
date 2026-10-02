@@ -1,0 +1,32 @@
+---
+title: Installation
+description: Choose the paid App Store release, free sideloading, or a free build from source.
+prev: false
+---
+
+Choose how to install Mankai on your iPhone or iPad.
+
+| Method            | Cost | Availability  |
+| ----------------- | ---- | ------------- |
+| App Store         | Paid | Coming soon   |
+| Sideload          | Free | Coming soon   |
+| Build from source | Free | Available now |
+
+## App Store
+
+**Paid · Coming soon.** Mankai will be available on the App Store.
+
+## Sideload
+
+**Free · Coming soon.** An IPA file will be available for sideloading. For now, build from source using the steps below.
+
+## Build from source
+
+**Free.** Build Mankai yourself using Xcode on a Mac.
+
+1. Clone the [Mankai repository](https://github.com/mankai-app/mankai) or download its source code.
+2. Open `mankai.xcodeproj` in Xcode and let it resolve the Swift package dependencies.
+3. In **Signing & Capabilities**, select your development team for the app and thumbnail extension targets. Use unique bundle identifiers for your own build if needed.
+4. Select the **mankai** scheme and your connected iPhone or iPad, then choose **Run** to build and install the app.
+
+Once Mankai is installed, continue with [Quick start](/guides/quick-start/) to import your first book.

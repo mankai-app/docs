@@ -1,0 +1,111 @@
+/* SakuraColor from the app, with readable shades for both color schemes. */
+:root,
+::backdrop {
+  --mankai-sakura: #ff8e8c;
+  --mankai-sakura: color(display-p3 1 0.558 0.549);
+  --sl-color-accent-low: #392121;
+  --sl-color-accent: var(--mankai-sakura);
+  --sl-color-accent-high: #ffb4b0;
+}
+:root[data-theme='light'],
+[data-theme='light'] ::backdrop {
+  --sl-color-accent-low: #fff0ef;
+  --sl-color-accent: #b74650;
+  --sl-color-accent-high: #922f3a;
+}
+.sl-link-button.primary {
+  background-color: var(--sl-color-accent-low);
+  border-color: var(--mankai-sakura);
+  color: var(--sl-color-accent-high);
+}
+.sl-link-button.primary:is(:hover, :focus-visible) {
+  background-color: color-mix(
+    in srgb,
+    var(--sl-color-accent-low),
+    var(--mankai-sakura) 15%
+  );
+  border-color: var(--sl-color-accent-high);
+  color: var(--sl-color-accent-high);
+}
+/* Keep the language picker available on splash pages without a mobile sidebar. */
+@media (max-width: 49.999rem) {
+  :root:not([data-has-sidebar]) .header {
+    gap: 0.5rem;
+  }
+  :root:not([data-has-sidebar]) .header .title-wrapper {
+    flex-shrink: 0;
+  }
+  :root:not([data-has-sidebar]) .header .right-group {
+    display: flex;
+  }
+  :root:not([data-has-sidebar]) .header .right-group .social-icons {
+    display: none;
+  }
+  :root:not([data-has-sidebar]) starlight-rapide-theme-select button {
+    margin-inline: 0;
+    padding-inline: 0.5rem;
+  }
+  .hero > .hero-html {
+    width: min(100%, 20rem);
+  }
+}
+.screenshot-light {
+  display: block;
+}
+.screenshot-dark {
+  display: none;
+}
+:root[data-theme='dark'] .screenshot-light {
+  display: none;
+}
+:root[data-theme='dark'] .screenshot-dark {
+  display: block;
+}
+.hero-screenshots {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 6 / 5;
+}
+.hero-device {
+  position: absolute;
+  filter: drop-shadow(0 0.6rem 0.8rem rgb(0 0 0 / 15%));
+}
+.hero-screen {
+  position: absolute;
+  overflow: hidden;
+}
+.hero-screen img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.hero-device .device-frame {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.hero-ipad {
+  top: 5%;
+  left: 0;
+  width: 88%;
+  aspect-ratio: 2640 / 1920;
+}
+.hero-iphone {
+  right: 0;
+  bottom: 0;
+  width: 36%;
+  aspect-ratio: 1419 / 2796;
+}
+/* Screen insets match the transparent openings in the supplied frames. */
+.hero-ipad .hero-screen {
+  inset: 7.34375% 5.30303% 7.239583% 5.30303%;
+}
+.hero-iphone .hero-screen {
+  inset: 4.291845% 8.45666%;
+}
+/* Size language names by their rendered text, including Japanese and Chinese. */
+header.header starlight-lang-select select {
+  width: auto;
+}

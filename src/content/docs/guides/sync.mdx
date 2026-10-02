@@ -1,0 +1,68 @@
+---
+title: Sync across devices
+description: Configure HTTP or Supabase sync to share supported bookmarks and reading progress across devices.
+---
+
+import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
+
+Sync is optional and transfers supported bookmarks and reading progress. Add book files, download chapters, and configure sources on each device separately.
+
+You need a compatible HTTP sync service or a configured Supabase project. Use the connection details and account supplied by your service administrator.
+
+## Choose a sync service
+
+1. Open **Settings → Sync**.
+2. Choose a **Sync Engine**. Leave it at **None** if you do not need sync.
+3. Complete the appropriate setup below.
+
+### HTTP
+
+1. Select **HTTP** and enter your service's server URL.
+2. Tap **Save Configuration**.
+3. Enter your username and password under **Credentials**.
+4. Tap **Log In**.
+
+### Supabase
+
+1. Select **Supabase** and enter the project URL and key supplied by your administrator.
+2. Tap **Save Configuration**.
+3. Choose the sign-in provider configured for that service and tap **Log In**.
+4. Complete the sign-in flow and return to Mankai.
+
+<DeviceScreenshots
+  id="sync-configuration"
+  title="Configure your sync service"
+  phone="Sync engine menu and HTTP configuration on iPhone."
+  tablet="Sync engine menu and HTTP configuration on iPad."
+  lang="en"
+/>
+
+### iCloud (coming soon)
+
+iCloud sync is not available yet. Use HTTP or Supabase to sync across devices.
+
+## Sync both devices
+
+1. Once the status is **Active**, tap **Sync Now**.
+2. Check that the last sync time updates successfully.
+3. Configure the same service and account on your other device.
+4. Add the same book sources there, then tap **Sync Now** on that device too.
+5. Open a supported book and tap **Continue** to pick up where you left off.
+
+<DeviceScreenshots
+  id="sync-status"
+  title="Check sync status"
+  phone="Active sync status, the last sync time, and Sync Now on iPhone."
+  tablet="Active sync status, the last sync time, and Sync Now on iPad."
+  lang="en"
+/>
+
+## Keep source identities consistent
+
+Folder sources use a `.mankai` file to identify the same source across devices. If Mankai cannot write that file, the source uses a local identity and its bookmarks and reading progress do not sync. OPDS uses the catalog's ID and falls back to a local identity if the catalog has none. The built-in **Local Directory** keeps its bookmarks and reading progress on that device.
+
+Matching folder names alone do not make two sources the same. Their source IDs must also match. A synced bookmark also needs its source to be available on the other device before you can open the book.
+
+## When progress does not appear
+
+Confirm that both devices use the same account, can open the same source, and show a successful sync. Check whether the source uses a local identity. Read [Troubleshooting](/guides/troubleshooting/) before resetting your connection settings.

@@ -1,0 +1,89 @@
+---
+title: Mankai 使用指南
+description: 添加书籍、调整阅读方式，用 Mankai 随时打开自己的收藏。
+template: splash
+hero:
+  title: 用 Mankai，按自己的方式阅读。
+  tagline: 喜欢的书、常用的内容源、自己的阅读节奏。从 iPhone 和 iPad 开始，找到适合你的阅读方式。
+  image:
+    html: |
+      <div class="hero-screenshots" role="img" aria-label="iPhone 和 iPad 上的 Mankai 首页">
+        <div class="hero-device hero-ipad" aria-hidden="true">
+          <div class="hero-screen">
+            <img class="screenshot-light" src="/screenshots/en/guides/library-collections-tablet-light.webp" alt="" width="2360" height="1640" decoding="async" />
+            <img class="screenshot-dark" src="/screenshots/en/guides/library-collections-tablet-dark.webp" alt="" width="2360" height="1640" decoding="async" />
+          </div>
+          <img class="device-frame" src="/screenshots/frames/ipad.webp" alt="" width="2640" height="1920" decoding="async" />
+        </div>
+        <div class="hero-device hero-iphone" aria-hidden="true">
+          <div class="hero-screen">
+            <img class="screenshot-light" src="/screenshots/en/guides/library-collections-phone-light.webp" alt="" width="1206" height="2622" decoding="async" />
+            <img class="screenshot-dark" src="/screenshots/en/guides/library-collections-phone-dark.webp" alt="" width="1206" height="2622" decoding="async" />
+          </div>
+          <img class="device-frame" src="/screenshots/frames/iphone.webp" alt="" width="1419" height="2796" decoding="async" />
+        </div>
+      </div>
+  actions:
+    - text: 快速入门
+      link: /zh-cn/guides/quick-start/
+      icon: rocket
+    - text: API
+      link: /zh-cn/api/overview/
+      icon: right-arrow
+      variant: minimal
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components'
+import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
+
+## 预览 Mankai
+
+在 iPhone 上连续滚动，在 iPad 上享受双页阅读。选择设备，预览对应的阅读布局。
+
+查看[所有截图](/screenshots/)，比较 iPhone 和 iPad 在浅色、深色主题下的界面。
+
+<DeviceScreenshots
+  id="app-preview-reading"
+  scene="reading-controls"
+  title="在 iPhone 和 iPad 上阅读"
+  phone="iPhone 连续阅读画面、章节控制和阅读进度。"
+  tablet="iPad 双页分页阅读画面、章节控制和阅读进度。"
+  lang="zh-cn"
+/>
+
+## 功能
+
+把自己的书放在一起，自由选择阅读方式。
+
+<CardGrid>
+  <LinkCard
+    title="本地书籍与文件夹"
+    description="阅读 CBZ、CBR、EPUB 和 PDF 文件，从本地文件系统或 SMB、SFTP、NFS、WebDAV 网络存储浏览书籍。"
+    href="/zh-cn/guides/sources/"
+  />
+  <LinkCard
+    title="多种内容来源"
+    description="推荐使用流式内容插件，浏览、搜索和阅读外部书库，并在支持时自动检查更新。也可浏览网络共享与 OPDS 目录。"
+    href="/zh-cn/guides/sources/"
+  />
+  <LinkCard
+    title="灵活的阅读布局"
+    description="选择分页或连续滚动，调整阅读方向，并切换单页或双页显示。"
+    href="/zh-cn/guides/reading/"
+  />
+  <LinkCard
+    title="离线阅读"
+    description="从支持下载的内容源保存章节，没有网络也能继续阅读。"
+    href="/zh-cn/guides/library/"
+  />
+  <LinkCard
+    title="收藏与历史记录"
+    description="把喜欢的书留在首页，轻松找回最近阅读的位置。"
+    href="/zh-cn/guides/library/"
+  />
+  <LinkCard
+    title="可选的设备同步"
+    description="让受支持的收藏和阅读进度在自己的不同设备间保持一致。"
+    href="/zh-cn/guides/sync/"
+  />
+</CardGrid>
