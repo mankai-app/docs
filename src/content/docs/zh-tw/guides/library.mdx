@@ -1,6 +1,6 @@
 ---
 title: 收藏與下載
-description: 在首頁保留喜愛的作品、尋找閱讀歷史，並下載章節以便離線閱讀。
+description: 在首頁保留喜愛的作品、尋找閱讀歷史、下載章節以便離線閱讀，並將章節匯出為 MMA 檔案。
 ---
 
 import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
@@ -60,6 +60,27 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
   title="已下載的書籍"
   phone="iPhone 下載面板中已完成下載的書籍和已下載章節數。"
   tablet="iPad 下載面板中已完成下載的書籍和已下載章節數。"
+  lang="zh-tw"
+/>
+
+## 匯出已下載的章節
+
+你可以將選取的章節匯出為 **MMA（Mankai Manga Archive）**。一個 `.mma` 檔案包含選取的章節組、頁面圖片、書籍中繼資料和封面。有關封存檔的詳細說明，請參閱 [MMA 格式](/zh-tw/api/mma-format/)。
+
+1. 下載要匯出的章節，並等待下載完成。
+2. 打開書籍詳細資訊，在工具列或 **•••** 選單中選擇**匯出**。匯出按鈕的圖示是帶向上箭頭的方框。
+3. 將**匯出格式**設為 **MMA**。
+4. 展開章節組，選取需要的章節。點一下章節組旁的圓形選取按鈕，可一次選取該組中所有已下載的章節。
+5. 點一下**匯出**，等待顯示**匯出完成**。
+6. 點一下**分享**，然後選擇**儲存到「檔案」**或其他目的地。關閉匯出面板前，請先儲存或分享封存檔。
+
+匯出清單只顯示完整下載的章節。如果找不到某個章節，請先完成其下載。你也可以在**首頁**的下載面板中長按書籍，然後選擇**匯出**。
+
+<DeviceScreenshots
+  id="library-export-chapters"
+  title="選擇要匯出的章節"
+  phone="iPhone 匯出面板，匯出格式設為 MMA，並已選取一個完整下載的章節。"
+  tablet="iPad 匯出面板，匯出格式設為 MMA，並已選取一個完整下載的章節。"
   lang="zh-tw"
 />
 

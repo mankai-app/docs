@@ -1,6 +1,6 @@
 ---
 title: Collections and downloads
-description: Keep favorites on Home, find your reading history, and download chapters for offline reading.
+description: Keep favorites on Home, find your reading history, download chapters for offline reading, and export them as MMA files.
 ---
 
 import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
@@ -60,6 +60,27 @@ Only the chapters you have downloaded are available offline. Bookmarking a title
   title="Downloaded books"
   phone="Downloads with a completed book and one downloaded chapter on iPhone."
   tablet="Downloads with a completed book and one downloaded chapter on iPad."
+  lang="en"
+/>
+
+## Export downloaded chapters
+
+Export selected chapters as **MMA (Mankai Manga Archive)**. A single `.mma` file includes the selected chapter groups, page images, book metadata, and cover. For archive details, see [MMA format](/api/mma-format/).
+
+1. Download the chapters you want to export and wait for the downloads to finish.
+2. Open the book's details and choose **Export** from the toolbar or the **•••** menu. The export button is a square with an upward arrow.
+3. Keep **Export Format** set to **MMA**.
+4. Expand a chapter group and select the chapters you want. Tap the circle beside a group to select all of its downloaded chapters.
+5. Tap **Export** and wait for **Export Complete**.
+6. Tap **Share**, then choose **Save to Files** or another destination. Save or share the archive before closing the export panel.
+
+Only fully downloaded chapters appear in the export list. If a chapter is missing, finish its download before exporting. You can also touch and hold a book in the downloads panel on **Home** and choose **Export**.
+
+<DeviceScreenshots
+  id="library-export-chapters"
+  title="Select chapters to export"
+  phone="Export panel with MMA selected as the export format and one downloaded chapter selected on iPhone."
+  tablet="Export panel with MMA selected as the export format and one downloaded chapter selected on iPad."
   lang="en"
 />
 

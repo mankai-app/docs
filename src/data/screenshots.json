@@ -285,6 +285,32 @@
       }
     }
   },
+  "library-export-chapters": {
+    "phone": {
+      "light": {
+        "src": "/screenshots/en/guides/library-export-chapters-phone-light.webp",
+        "width": 1206,
+        "height": 2622
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/library-export-chapters-phone-dark.webp",
+        "width": 1206,
+        "height": 2622
+      }
+    },
+    "tablet": {
+      "light": {
+        "src": "/screenshots/en/guides/library-export-chapters-tablet-light.webp",
+        "width": 2360,
+        "height": 1640
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/library-export-chapters-tablet-dark.webp",
+        "width": 2360,
+        "height": 1640
+      }
+    }
+  },
   "reading-chapters": {
     "phone": {
       "light": {
