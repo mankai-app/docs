@@ -43,9 +43,18 @@ Follow the setup instructions in your chosen repository. Use the server's API UR
 
 ### Supabase
 
-Before using Supabase sync, create a Supabase project and follow the setup instructions in the [Mankai Supabase repository](https://github.com/mankai-app/supabase) to apply the database migrations, deploy the Edge Functions, and configure an OAuth sign-in provider. If you use an existing configured project, ask its administrator for the project URL and key.
+You can use Mankai's Supabase project with these connection details:
 
-1. Select **Supabase** and enter your configured project's URL and key.
+- **Project URL:** [https://wblemlisleehqgikztlm.supabase.co](https://wblemlisleehqgikztlm.supabase.co)
+- **Publishable key:** `sb_publishable_-Cw5SX-GcpvRd17ikISEMw_Zb4Y5UW1`
+
+:::caution[Free tier availability]
+Mankai's Supabase project runs on the free tier. It may not work and may be paused at any time.
+:::
+
+To use your own Supabase project, follow the setup instructions in the [Mankai Supabase repository](https://github.com/mankai-app/supabase) to apply the database migrations and configure an OAuth sign-in provider. If you use another existing configured project, ask its administrator for the project URL and publishable key.
+
+1. Select **Supabase** and enter the project URL and publishable key.
 2. Tap **Save Configuration**.
 3. Choose the sign-in provider configured for that project and tap **Log In**.
 4. Complete the sign-in flow and return to Mankai.
