@@ -414,5 +414,31 @@
         "height": 1640
       }
     }
+  },
+  "sync-plugin": {
+    "phone": {
+      "light": {
+        "src": "/screenshots/en/guides/sync-plugin-phone-light.webp",
+        "width": 1206,
+        "height": 2622
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/sync-plugin-phone-dark.webp",
+        "width": 1206,
+        "height": 2622
+      }
+    },
+    "tablet": {
+      "light": {
+        "src": "/screenshots/en/guides/sync-plugin-tablet-light.webp",
+        "width": 2360,
+        "height": 1640
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/sync-plugin-tablet-dark.webp",
+        "width": 2360,
+        "height": 1640
+      }
+    }
   }
 }
