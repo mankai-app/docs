@@ -3,6 +3,8 @@ import { defineConfig } from 'astro/config'
 import starlight from '@astrojs/starlight'
 import starlightThemeRapide from 'starlight-theme-rapide'
 
+const site = process.env.SITE_URL || 'https://mankai.app'
+
 /**
  * @param {string} ja
  * @param {string} cn
@@ -11,7 +13,7 @@ import starlightThemeRapide from 'starlight-theme-rapide'
 const translations = (ja, cn, tw) => ({ ja, 'zh-CN': cn, 'zh-TW': tw })
 
 export default defineConfig({
-  site: process.env.SITE_URL || undefined,
+  site,
   integrations: [
     starlight({
       title: 'Mankai',
@@ -23,6 +25,31 @@ export default defineConfig({
         replacesTitle: false,
       },
       favicon: '/favicon.png',
+      head: [
+        {
+          tag: 'meta',
+          attrs: {
+            property: 'og:image',
+            content: new URL('/icon.png', site).href,
+          },
+        },
+        {
+          tag: 'meta',
+          attrs: { property: 'og:image:type', content: 'image/png' },
+        },
+        {
+          tag: 'meta',
+          attrs: { property: 'og:image:width', content: '512' },
+        },
+        {
+          tag: 'meta',
+          attrs: { property: 'og:image:height', content: '512' },
+        },
+        {
+          tag: 'meta',
+          attrs: { property: 'og:image:alt', content: 'Mankai app icon' },
+        },
+      ],
       plugins: [starlightThemeRapide()],
       locales: {
         root: { label: 'English', lang: 'en' },
