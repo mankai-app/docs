@@ -1,11 +1,11 @@
 ---
 title: Sync across devices
-description: Configure HTTP or Supabase sync to share supported plugins, folder connections, bookmarks, and reading progress across devices.
+description: Configure HTTP or Supabase sync to share supported plugins, share connections, bookmarks, and reading progress across devices.
 ---
 
 import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 
-Sync is optional and shares supported plugins and their settings, folder connections, bookmarks, and reading progress across devices. Book files and downloaded chapters still need to be available on each device.
+Sync is optional and shares supported plugins and their settings, share connections, bookmarks, and reading progress across devices. Book files and downloaded chapters still need to be available on each device.
 
 You need a compatible HTTP sync service or a configured Supabase project. Use the connection details for your service.
 
@@ -61,12 +61,12 @@ To use your own Supabase project, follow the setup instructions in the [Mankai S
 
 ## Check what each source can sync
 
-Open **Settings → Plugins** and select a plugin, or **Settings → Folders** and select a folder. The **Sync** section shows separate statuses for the source's settings and its manga records:
+Open **Settings → Plugins** and select a plugin, or **Settings → Shares** and select a share. The **Sync** section shows separate statuses for the source's settings and its manga records:
 
 | Status                         | When Enabled                                                                       |
 | ------------------------------ | ---------------------------------------------------------------------------------- |
 | **Sync plugin across devices** | Installs the plugin and syncs its settings on your other devices.                  |
-| **Sync folder across devices** | Syncs the folder's connection settings to your other devices.                      |
+| **Sync share across devices**  | Syncs the share's connection settings to your other devices.                       |
 | **Sync manga across devices**  | Syncs library entries (bookmarks) and reading progress for manga from that source. |
 
 These are automatic capability indicators. If a status is **Disabled**, the explanation below it tells you why that part cannot sync.
@@ -84,7 +84,7 @@ These are automatic capability indicators. If a status is **Disabled**, the expl
 1. Once the status is **Active**, tap **Sync Now**.
 2. Check that the last sync time updates successfully.
 3. Configure the same service and account on your other device, then tap **Sync Now** there too.
-4. Check **Settings → Plugins** and **Settings → Folders** for the supported plugins and folder connections restored by sync.
+4. Check **Settings → Plugins** and **Settings → Shares** for the supported plugins and share connections restored by sync.
 5. Add any File System sources or plugins without a usable download URL manually, and confirm that the other device can open the same books.
 6. Open a supported book and tap **Continue** to pick up where you left off.
 
@@ -98,9 +98,9 @@ These are automatic capability indicators. If a status is **Disabled**, the expl
 
 ## Keep source identities consistent
 
-Folder sources use a `.mankai` file to identify the same source across devices. If Mankai cannot write that file, the source uses a local identity and its bookmarks and reading progress do not sync. OPDS uses the catalog's ID and falls back to a local identity if the catalog has none. The built-in **Local Directory** keeps its bookmarks and reading progress on that device.
+Shares use a `.mankai` file to identify the same source across devices. If Mankai cannot write that file, the source uses a local identity and its bookmarks and reading progress do not sync. OPDS uses the catalog's ID and falls back to a local identity if the catalog has none. The built-in **Local Directory** keeps its bookmarks and reading progress on that device.
 
-Matching folder names alone do not make two sources the same. Their source IDs must also match. A folder can sync its connection settings even when a local identity prevents its manga records from syncing. A synced bookmark also needs its source and book to be available on the other device before you can open it.
+Matching share names alone do not make two sources the same. Their source IDs must also match. A folder can sync its connection settings even when a local identity prevents its manga records from syncing. A synced bookmark also needs its source and book to be available on the other device before you can open it.
 
 ## When a source or reading progress does not appear
 

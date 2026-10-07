@@ -129,27 +129,27 @@
       }
     }
   },
-  "sources-local-folder": {
+  "sources-add-files": {
     "phone": {
       "light": {
-        "src": "/screenshots/en/guides/sources-local-folder-phone-light.webp",
+        "src": "/screenshots/en/guides/sources-add-files-phone-light.webp",
         "width": 1206,
         "height": 2622
       },
       "dark": {
-        "src": "/screenshots/en/guides/sources-local-folder-phone-dark.webp",
+        "src": "/screenshots/en/guides/sources-add-files-phone-dark.webp",
         "width": 1206,
         "height": 2622
       }
     },
     "tablet": {
       "light": {
-        "src": "/screenshots/en/guides/sources-local-folder-tablet-light.webp",
+        "src": "/screenshots/en/guides/sources-add-files-tablet-light.webp",
         "width": 2360,
         "height": 1640
       },
       "dark": {
-        "src": "/screenshots/en/guides/sources-local-folder-tablet-dark.webp",
+        "src": "/screenshots/en/guides/sources-add-files-tablet-dark.webp",
         "width": 2360,
         "height": 1640
       }
@@ -176,6 +176,32 @@
       },
       "dark": {
         "src": "/screenshots/en/guides/sources-network-tablet-dark.webp",
+        "width": 2360,
+        "height": 1640
+      }
+    }
+  },
+  "sources-plugin-types": {
+    "phone": {
+      "light": {
+        "src": "/screenshots/en/guides/sources-plugin-types-phone-light.webp",
+        "width": 1206,
+        "height": 2622
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/sources-plugin-types-phone-dark.webp",
+        "width": 1206,
+        "height": 2622
+      }
+    },
+    "tablet": {
+      "light": {
+        "src": "/screenshots/en/guides/sources-plugin-types-tablet-light.webp",
+        "width": 2360,
+        "height": 1640
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/sources-plugin-types-tablet-dark.webp",
         "width": 2360,
         "height": 1640
       }
