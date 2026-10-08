@@ -1,42 +1,42 @@
 ---
 title: 跨设备同步
-description: 配置 HTTP 或 Supabase 同步，在设备间共享受支持的来源、共享连接、收藏和阅读进度。
+description: 配置自定义服务器或 Supabase 同步，在设备间共享受支持的来源、共享连接、收藏和阅读进度。
 ---
 
 import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 
 同步是可选功能，可在设备间共享受支持的来源及其设置、共享连接、收藏和阅读进度。书籍文件和已下载的章节仍需在每台设备上分别准备。
 
-你需要兼容的 HTTP 同步服务，或已经配置好的 Supabase 项目。请使用对应服务的连接信息。
+你需要兼容的自定义服务器，或已经配置好的 Supabase 项目。请使用对应服务的连接信息。
 
 ## 选择同步服务
 
 1. 打开**设置 → 同步**。
-2. 选择**同步引擎**。如果不需要同步，请保留为**无**。
+2. 在**同步引擎**中选择**自定义服务器**或 **Supabase**。如果不需要同步，请保留为**无**。
 3. 按照下方对应的步骤完成设置。
 
 <DeviceScreenshots
   id="sync-configuration"
-  title="配置同步服务"
-  phone="iPhone 同步引擎菜单和 HTTP 配置。"
-  tablet="iPad 同步引擎菜单和 HTTP 配置。"
+  title="选择同步引擎"
+  phone="iPhone 同步引擎菜单，显示 None、Custom Server 和 Supabase。"
+  tablet="iPad 同步引擎菜单，显示 None、Custom Server 和 Supabase。"
   lang="zh-cn"
 />
 
 ### iCloud（即将推出）
 
-iCloud 同步即将推出，目前尚不可用。现在请使用 HTTP 或 Supabase 在设备间同步。
+iCloud 同步即将推出，目前尚不可用。现在请使用自定义服务器或 Supabase 在设备间同步。
 
-### HTTP
+### 自定义服务器
 
-使用 HTTP 同步之前，请先通过以下任一仓库搭建兼容的服务器：
+使用自定义服务器同步之前，请先通过以下任一仓库搭建兼容的服务器：
 
-- [Mankai Sync](https://github.com/mankai-app/sync)：专用同步服务器，提供用于管理用户的管理页面。
+- [Mankai Sync](https://github.com/mankai-app/sync)：专用同步服务器，在 `config.json` 中配置用户账户。
 - [Mankai Server](https://github.com/mankai-app/server)：漫画书库服务器，同时支持收藏和阅读进度同步。
 
-按照所选仓库的设置说明完成部署。请使用服务器的 API 网址（这两个服务器均以 `/api` 结尾）和该服务器上的账户凭据。如果使用已有服务，请向管理员索取这些信息。
+按照所选仓库的设置说明完成部署。Mankai Sync 使用服务器的根网址，例如 `http://<host>:3000`；Mankai Server 使用 API 网址，例如 `http://<host>:3000/api`。请准备该服务器上账户的用户名和密码。如果使用已有服务，请向管理员索取这些信息。
 
-1. 选择 **HTTP**，在**服务器 URL**中输入同步服务的 API 网址。
+1. 选择**自定义服务器**，在**服务器 URL**中输入对应的网址。
 2. 轻点**保存配置**。
 3. 在**凭据**中输入用户名和密码。
 4. 轻点**登录**。
