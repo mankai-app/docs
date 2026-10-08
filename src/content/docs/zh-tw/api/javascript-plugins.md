@@ -67,7 +67,7 @@ interface JsPluginManifest {
 | `id`              | `string`                 | 穩定且全域唯一的外掛模組識別碼，也用於劃分永久儲存的範圍。                        |
 | `name`            | `string`                 | 顯示名稱，省略時使用 ID。                                                         |
 | `version`         | `string`                 | 在應用程式中顯示並用於檢查更新的外掛模組版本。                                    |
-| `description`     | `string`                 | 在外掛模組設定中顯示的簡短描述。                                                  |
+| `description`     | `string`                 | 在來源設定中顯示的簡短描述。                                                      |
 | `authors`         | `string[]`               | 外掛模組作者，預設值為 `[]`。                                                     |
 | `repository`      | `string`                 | 原始碼或專案的網址。                                                              |
 | `updatesUrl`      | `string`                 | 用於檢查更新的清單網址。                                                          |
@@ -466,7 +466,7 @@ interface Config {
 
 `color` 設定使用 sRGB 十六進位字串。預設情況下，顏色選擇器不支援透明度，並儲存大寫的 `#RRGGBB` 值，例如 `"#F2E4C9"`。將 `supportsOpacity` 設為 `true` 可啟用不透明度控制並儲存 `#RRGGBBAA` 值。輸入時可以省略開頭的 `#`。
 
-`options` 用於 `select` 設定。`min`、`max` 和 `step` 指定 `slider` 設定的範圍和步長。應用程式使用 `defaultValue` 初始化每個設定項目，持久儲存使用者在外掛模組設定中的修改，並透過 `getConfigs()` 提供目前值。
+`options` 用於 `select` 設定。`min`、`max` 和 `step` 指定 `slider` 設定的範圍和步長。應用程式使用 `defaultValue` 初始化每個設定項目，持久儲存使用者在來源設定中的修改，並透過 `getConfigs()` 提供目前值。
 
 範例：
 

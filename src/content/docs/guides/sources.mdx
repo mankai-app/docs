@@ -1,6 +1,6 @@
 ---
 title: Add books and sources
-description: Choose file-based sources for local and network book files or recommended stream-based plugins for external libraries.
+description: Choose file-based sources for local and network book files or recommended stream-based sources for external libraries.
 ---
 
 import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
@@ -9,42 +9,43 @@ Mankai supports two main source types:
 
 | Source type                    | How it works                                                                    | Where to use it                                          |
 | ------------------------------ | ------------------------------------------------------------------------------- | -------------------------------------------------------- |
-| **Stream-based (recommended)** | A required content plugin connects Mankai to an external library.               | Add it in **Settings → Plugins**, then open **Library**. |
+| **Stream-based (recommended)** | A source connects Mankai to an external library.                                | Add it in **Settings → Sources**, then open **Library**. |
 | **File-based**                 | Open supported book files from local folders, network shares, or OPDS catalogs. | Open **Files** to connect a share or import files.       |
 
 ## Stream-based sources (recommended)
 
-A stream-based source **requires a content plugin**. This is the recommended approach when a compatible plugin is available: you can browse, search, and read directly from an external library, and automatically check saved titles for new chapters when the plugin supports updates. Available features depend on the plugin and library. See [Collections and downloads](/guides/library/) for saving titles and reading offline.
+A stream-based source connects Mankai to an external library. This is the recommended approach when a compatible source is available: you can browse, search, and read directly from the library, and automatically check saved titles for new chapters when the source supports updates. Available features depend on the source and library. See [Collections and downloads](/guides/library/) for saving titles and reading offline.
 
-### Add a content plugin
+### Add a source
 
-1. Open **Settings → Plugins** and tap the **+** button.
-2. In **Add Plugin**, choose the type your provider specifies: **File System** under **Local**, or **JavaScript** or **HTTP** under **Remote**. This opens a separate configuration screen.
+1. Open **Settings → Sources** and tap the **+** button.
+2. In **Add Source**, choose the type your provider specifies: **File System** under **Local Sources**, **JavaScript** or **Mankai Compatible** under **Remote Sources**, or **Komga Server** under **Integrations**. This opens a separate configuration screen.
 3. For **JavaScript**, enter the supplied URL. If you were given a JSON definition, enable **Use JSON** and paste it there.
-4. For **HTTP**, enter the supplied plugin URL. For **File System**, tap **Select Folder**, choose the plugin folder supplied by your provider, and set **Read-Only** if you want to prevent editing.
-5. Tap **Add**. Return to **Library** to explore the lists and search features the plugin supports.
+4. For **Mankai Compatible**, enter the supplied server API URL and any required username and password. For **Komga Server**, enter your server URL and use an API key or your Komga username and password.
+5. For **File System**, tap **Select Folder**, choose the structured library folder supplied by your provider, and set **Read-Only** if you want to prevent editing.
+6. Tap **Add**. Return to **Library** to explore the lists and search features the source supports.
 
-A File System plugin expects a structured Mankai library. For an ordinary folder of book files, use **Files → Add Files**. Available search, update, chapter, and download actions depend on the plugin and library.
+A File System source expects a structured Mankai library. For an ordinary folder of book files, use **Files → Add Files**. Available search, update, chapter, and download actions depend on the source and library.
 
 <DeviceScreenshots
-  id="sources-plugin-types"
-  title="Choose a plugin type"
-  phone="Add Plugin with File System under Local and JavaScript and HTTP under Remote on iPhone."
-  tablet="Add Plugin with File System under Local and JavaScript and HTTP under Remote on iPad."
+  id="sources-types"
+  title="Choose a source type"
+  phone="Add Source with File System, JavaScript, Mankai Compatible, and Komga Server on iPhone."
+  tablet="Add Source with File System, JavaScript, Mankai Compatible, and Komga Server on iPad."
   lang="en"
 />
 
 <DeviceScreenshots
-  id="sources-add-plugin"
-  title="Configure an HTTP plugin"
-  phone="HTTP plugin settings with a plugin URL on iPhone."
-  tablet="HTTP plugin settings with a plugin URL on iPad."
+  id="sources-add-source"
+  title="Configure a Mankai Compatible source"
+  phone="Mankai Compatible server settings with an API URL and credentials fields on iPhone."
+  tablet="Mankai Compatible server settings with an API URL and credentials fields on iPad."
   lang="en"
 />
 
 ## File-based sources
 
-File-based sources let you read book files you manage yourself, including CBZ, CBR, EPUB, PDF, and MMA. Connect a local filesystem folder or a network share through SMB, SFTP, NFS, or WebDAV. You can also connect an OPDS catalog to open supported book files or stream pages when available. MMA files are not supported through OPDS. Ordinary file-based sources do not require a content plugin. Open them from **Files**.
+File-based sources let you read book files you manage yourself, including CBZ, CBR, EPUB, PDF, and MMA. Connect a local filesystem folder or a network share through SMB, SFTP, NFS, or WebDAV. You can also connect an OPDS catalog to open supported book files or stream pages when available. MMA files are not supported through OPDS. Open these sources from **Files**.
 
 <DeviceScreenshots
   id="sources-add-files"
@@ -124,6 +125,6 @@ OPDS catalogs are available from **Files**. Mankai can open supported book files
 
 ## Manage a connection
 
-Swipe a share in **Files** to edit or remove its connection, or manage it in **Settings → Shares**. Manage installed content plugins in **Settings → Plugins**.
+Swipe a share in **Files** to edit or remove its connection, or manage it in **Settings → Shares**. Manage installed sources in **Settings → Sources**.
 
-To sync supported plugins, share connections, bookmarks, and reading progress between devices, see [Sync across devices](/guides/sync/). For connection problems, see [Troubleshooting](/guides/troubleshooting/).
+To sync supported sources, share connections, bookmarks, and reading progress between devices, see [Sync across devices](/guides/sync/). For connection problems, see [Troubleshooting](/guides/troubleshooting/).

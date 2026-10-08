@@ -1,11 +1,11 @@
 ---
 title: Sync across devices
-description: Configure HTTP or Supabase sync to share supported plugins, share connections, bookmarks, and reading progress across devices.
+description: Configure HTTP or Supabase sync to share supported sources, share connections, bookmarks, and reading progress across devices.
 ---
 
 import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 
-Sync is optional and shares supported plugins and their settings, share connections, bookmarks, and reading progress across devices. Book files and downloaded chapters still need to be available on each device.
+Sync is optional and shares supported sources and their settings, share connections, bookmarks, and reading progress across devices. Book files and downloaded chapters still need to be available on each device.
 
 You need a compatible HTTP sync service or a configured Supabase project. Use the connection details for your service.
 
@@ -61,21 +61,21 @@ To use your own Supabase project, follow the setup instructions in the [Mankai S
 
 ## Check what each source can sync
 
-Open **Settings → Plugins** and select a plugin, or **Settings → Shares** and select a share. The **Sync** section shows separate statuses for the source's settings and its manga records:
+Open **Settings → Sources** and select a source, or **Settings → Shares** and select a share. The **Sync** section shows separate statuses for the source's settings and its manga records:
 
 | Status                         | When Enabled                                                                       |
 | ------------------------------ | ---------------------------------------------------------------------------------- |
-| **Sync plugin across devices** | Installs the plugin and syncs its settings on your other devices.                  |
+| **Sync source across devices** | Installs the source and syncs its settings on your other devices.                  |
 | **Sync share across devices**  | Syncs the share's connection settings to your other devices.                       |
 | **Sync manga across devices**  | Syncs library entries (bookmarks) and reading progress for manga from that source. |
 
 These are automatic capability indicators. If a status is **Disabled**, the explanation below it tells you why that part cannot sync.
 
 <DeviceScreenshots
-  id="sync-plugin"
-  title="Check plugin sync support"
-  phone="Plugin settings and manga sync both shown as Enabled for Mankai Server on iPhone."
-  tablet="Plugin settings and manga sync both shown as Enabled for Mankai Server on iPad."
+  id="sync-source"
+  title="Check source sync support"
+  phone="Source settings and manga sync both shown as Enabled for Mankai Server on iPhone."
+  tablet="Source settings and manga sync both shown as Enabled for Mankai Server on iPad."
   lang="en"
 />
 
@@ -84,8 +84,8 @@ These are automatic capability indicators. If a status is **Disabled**, the expl
 1. Once the status is **Active**, tap **Sync Now**.
 2. Check that the last sync time updates successfully.
 3. Configure the same service and account on your other device, then tap **Sync Now** there too.
-4. Check **Settings → Plugins** and **Settings → Shares** for the supported plugins and share connections restored by sync.
-5. Add any File System sources or plugins without a usable download URL manually, and confirm that the other device can open the same books.
+4. Check **Settings → Sources** and **Settings → Shares** for the supported sources and share connections restored by sync.
+5. Add any File System sources or sources without a usable download URL manually, and confirm that the other device can open the same books.
 6. Open a supported book and tap **Continue** to pick up where you left off.
 
 <DeviceScreenshots
@@ -104,4 +104,4 @@ Matching share names alone do not make two sources the same. Their source IDs mu
 
 ## When a source or reading progress does not appear
 
-Confirm that both devices use the same account and show a successful sync. Check the source's **Sync** section for both settings sync and manga sync support. Add File System sources and plugins without a usable download URL manually, and make sure the source is reachable on the other device. If only bookmarks or progress are missing, check whether the source uses a local identity. Read [Troubleshooting](/guides/troubleshooting/) before resetting your connection settings.
+Confirm that both devices use the same account and show a successful sync. Check the source's **Sync** section for both settings sync and manga sync support. Add File System sources and sources without a usable download URL manually, and make sure the source is reachable on the other device. If only bookmarks or progress are missing, check whether the source uses a local identity. Read [Troubleshooting](/guides/troubleshooting/) before resetting your connection settings.

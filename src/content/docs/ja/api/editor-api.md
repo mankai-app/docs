@@ -7,7 +7,7 @@ sidebar:
 
 この仕様は、[Mankai](https://github.com/mankai-app/mankai) のアプリ内エディターに対応するため、サーバーに実装する必要があるエンドポイントを説明します。
 
-> 先に [HTTP プラグイン API](/ja/api/http-api/)を確認してください。ここで参照する共通の型（`Manga`、`Chapter`、`Status`、`Genre` など）は、その仕様で定義されています。
+> 先に [Mankai 互換 API](/ja/api/http-api/)を確認してください。ここで参照する共通の型（`Manga`、`Chapter`、`Status`、`Genre` など）は、その仕様で定義されています。
 
 ## 漫画の管理
 

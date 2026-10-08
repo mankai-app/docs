@@ -7,7 +7,7 @@ sidebar:
 
 Implement these endpoints to support the in-app editor in [Mankai](https://github.com/mankai-app/mankai).
 
-This API extends the [HTTP plugin API](/api/http-api/), which defines shared types such as `Manga`, `Chapter`, `Status`, and `Genre`.
+This API extends the [Mankai Compatible API](/api/http-api/), which defines shared types such as `Manga`, `Chapter`, `Status`, and `Genre`.
 
 ## Manga management
 

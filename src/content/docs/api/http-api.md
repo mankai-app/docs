@@ -1,11 +1,13 @@
 ---
-title: HTTP plugin API
-description: The complete server API for authentication, manga, chapter images, library updates, search, and suggestions.
+title: Mankai Compatible API
+description: Implement the compatible server API used by Mankai's HTTP plugin for authentication, manga, chapter images, library updates, search, and suggestions.
 sidebar:
   order: 3
 ---
 
-Implement these endpoints to connect your server to [Mankai](https://github.com/mankai-app/mankai) as an HTTP plugin.
+To let [Mankai](https://github.com/mankai-app/mankai)'s HTTP plugin interact with your server, implement the compatible API described below. Match the endpoint paths, request bodies, and response formats for the operations your server supports.
+
+Users connect to your server by adding a **Mankai Compatible** source in **Settings → Sources**. See [source setup](/guides/sources/#add-a-source) for the app configuration steps.
 
 To support the in-app editor, also implement the [Editor API](/api/editor-api/).
 

@@ -1,11 +1,13 @@
 ---
-title: HTTP プラグイン API
-description: 認証、漫画、チャプター画像、ライブラリ更新、検索、検索候補に対応するサーバー API の完全な仕様です。
+title: Mankai 互換 API
+description: Mankai の HTTP プラグインが認証、漫画、チャプター画像、ライブラリ更新、検索、検索候補に使用する互換サーバー API の仕様です。
 sidebar:
   order: 3
 ---
 
-サーバーを [Mankai](https://github.com/mankai-app/mankai) と連携させるには、この API 仕様に従って実装してください。
+[Mankai](https://github.com/mankai-app/mankai) の HTTP プラグインがサーバーと通信できるようにするには、以下の互換 API を実装してください。サーバーが対応する操作について、エンドポイントのパス、リクエストボディ、レスポンス形式をこの仕様に合わせます。
+
+ユーザーは**設定 → ソース**から **Mankai 互換**ソースを追加してサーバーに接続します。アプリ側の設定手順は、[ソースの追加](/ja/guides/sources/#ソースを追加する)を参照してください。
 
 > アプリ内エディターにも対応させる場合は、[エディター API](/ja/api/editor-api/)にも従う必要があります。
 

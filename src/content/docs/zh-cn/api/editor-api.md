@@ -5,7 +5,7 @@ description: 支持 Mankai 应用内编辑器的漫画、章节组、章节和�
 
 本规范说明服务器为支持 [Mankai](https://github.com/mankai-app/mankai) 应用内编辑器而必须实现的端点。
 
-阅读前请先熟悉 [HTTP API 规范](/zh-cn/api/http-api/)。本文引用的所有共享类型，如 `Manga`、`Chapter`、`Status` 和 `Genre`，都在该规范中定义。
+阅读前请先熟悉 [Mankai 兼容 API 规范](/zh-cn/api/http-api/)。本文引用的所有共享类型，如 `Manga`、`Chapter`、`Status` 和 `Genre`，都在该规范中定义。
 
 <span id="manga-management"></span>
 

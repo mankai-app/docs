@@ -65,7 +65,7 @@ interface JsPluginManifest {
 | `id`              | `string`                 | Stable, globally unique plugin identifier. It is also used to scope persistent storage.                                 |
 | `name`            | `string`                 | Display name. Defaults to the ID when omitted.                                                                          |
 | `version`         | `string`                 | Plugin version shown in the app and compared for updates.                                                               |
-| `description`     | `string`                 | Short description displayed in plugin settings.                                                                         |
+| `description`     | `string`                 | Short description displayed in source settings.                                                                         |
 | `authors`         | `string[]`               | Plugin authors. Defaults to `[]`.                                                                                       |
 | `repository`      | `string`                 | Source-code or project URL.                                                                                             |
 | `updatesUrl`      | `string`                 | URL of a manifest to check for updates.                                                                                 |
@@ -444,7 +444,7 @@ interface Config {
 
 `color` configuration fields use sRGB hex strings. By default, the picker is opaque and saves uppercase `#RRGGBB` values such as `"#F2E4C9"`. Set `supportsOpacity` to `true` to enable the opacity control and save `#RRGGBBAA` values. The leading `#` is optional on input.
 
-`options` is used for `select` fields. `min`, `max`, and `step` configure the range and increment for `slider` fields. The app initializes each configuration field with `defaultValue`, persists changes made in plugin settings, and exposes the current values through `getConfigs()`.
+`options` is used for `select` fields. `min`, `max`, and `step` configure the range and increment for `slider` fields. The app initializes each configuration field with `defaultValue`, persists changes made in source settings, and exposes the current values through `getConfigs()`.
 
 Example:
 

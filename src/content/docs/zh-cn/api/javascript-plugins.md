@@ -67,7 +67,7 @@ interface JsPluginManifest {
 | `id`              | `string`                 | 稳定且全局唯一的插件标识符，也用于划分持久存储的作用域。                          |
 | `name`            | `string`                 | 显示名称，省略时使用 ID。                                                         |
 | `version`         | `string`                 | 在应用中显示并用于检查更新的插件版本。                                            |
-| `description`     | `string`                 | 在插件设置中显示的简短描述。                                                      |
+| `description`     | `string`                 | 在来源设置中显示的简短描述。                                                      |
 | `authors`         | `string[]`               | 插件作者，默认值为 `[]`。                                                         |
 | `repository`      | `string`                 | 源代码或项目的网址。                                                              |
 | `updatesUrl`      | `string`                 | 用于检查更新的清单网址。                                                          |
@@ -466,7 +466,7 @@ interface Config {
 
 `color` 配置使用 sRGB 十六进制字符串。默认情况下，颜色选择器不支持透明度，并保存大写的 `#RRGGBB` 值，例如 `"#F2E4C9"`。将 `supportsOpacity` 设为 `true` 可启用不透明度控制并保存 `#RRGGBBAA` 值。输入时可以省略开头的 `#`。
 
-`options` 用于 `select` 配置。`min`、`max` 和 `step` 指定 `slider` 配置的范围和步长。应用使用 `defaultValue` 初始化每个配置项，持久保存用户在插件设置中的修改，并通过 `getConfigs()` 提供当前值。
+`options` 用于 `select` 配置。`min`、`max` 和 `step` 指定 `slider` 配置的范围和步长。应用使用 `defaultValue` 初始化每个配置项，持久保存用户在来源设置中的修改，并通过 `getConfigs()` 提供当前值。
 
 示例：
 

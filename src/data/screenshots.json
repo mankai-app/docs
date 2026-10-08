@@ -181,53 +181,53 @@
       }
     }
   },
-  "sources-plugin-types": {
+  "sources-types": {
     "phone": {
       "light": {
-        "src": "/screenshots/en/guides/sources-plugin-types-phone-light.webp",
+        "src": "/screenshots/en/guides/sources-types-phone-light.webp",
         "width": 1206,
         "height": 2622
       },
       "dark": {
-        "src": "/screenshots/en/guides/sources-plugin-types-phone-dark.webp",
+        "src": "/screenshots/en/guides/sources-types-phone-dark.webp",
         "width": 1206,
         "height": 2622
       }
     },
     "tablet": {
       "light": {
-        "src": "/screenshots/en/guides/sources-plugin-types-tablet-light.webp",
+        "src": "/screenshots/en/guides/sources-types-tablet-light.webp",
         "width": 2360,
         "height": 1640
       },
       "dark": {
-        "src": "/screenshots/en/guides/sources-plugin-types-tablet-dark.webp",
+        "src": "/screenshots/en/guides/sources-types-tablet-dark.webp",
         "width": 2360,
         "height": 1640
       }
     }
   },
-  "sources-add-plugin": {
+  "sources-add-source": {
     "phone": {
       "light": {
-        "src": "/screenshots/en/guides/sources-add-plugin-phone-light.webp",
+        "src": "/screenshots/en/guides/sources-add-source-phone-light.webp",
         "width": 1206,
         "height": 2622
       },
       "dark": {
-        "src": "/screenshots/en/guides/sources-add-plugin-phone-dark.webp",
+        "src": "/screenshots/en/guides/sources-add-source-phone-dark.webp",
         "width": 1206,
         "height": 2622
       }
     },
     "tablet": {
       "light": {
-        "src": "/screenshots/en/guides/sources-add-plugin-tablet-light.webp",
+        "src": "/screenshots/en/guides/sources-add-source-tablet-light.webp",
         "width": 2360,
         "height": 1640
       },
       "dark": {
-        "src": "/screenshots/en/guides/sources-add-plugin-tablet-dark.webp",
+        "src": "/screenshots/en/guides/sources-add-source-tablet-dark.webp",
         "width": 2360,
         "height": 1640
       }
@@ -441,27 +441,27 @@
       }
     }
   },
-  "sync-plugin": {
+  "sync-source": {
     "phone": {
       "light": {
-        "src": "/screenshots/en/guides/sync-plugin-phone-light.webp",
+        "src": "/screenshots/en/guides/sync-source-phone-light.webp",
         "width": 1206,
         "height": 2622
       },
       "dark": {
-        "src": "/screenshots/en/guides/sync-plugin-phone-dark.webp",
+        "src": "/screenshots/en/guides/sync-source-phone-dark.webp",
         "width": 1206,
         "height": 2622
       }
     },
     "tablet": {
       "light": {
-        "src": "/screenshots/en/guides/sync-plugin-tablet-light.webp",
+        "src": "/screenshots/en/guides/sync-source-tablet-light.webp",
         "width": 2360,
         "height": 1640
       },
       "dark": {
-        "src": "/screenshots/en/guides/sync-plugin-tablet-dark.webp",
+        "src": "/screenshots/en/guides/sync-source-tablet-dark.webp",
         "width": 2360,
         "height": 1640
       }

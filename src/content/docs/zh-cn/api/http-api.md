@@ -1,9 +1,11 @@
 ---
-title: HTTP API
-description: HTTP 内容源的服务器信息、认证、漫画、更新检查与搜索 API 完整规范。
+title: Mankai 兼容 API
+description: 实现 Mankai HTTP 插件调用的兼容服务器 API，提供认证、漫画、章节图片、书库更新检查、搜索与搜索建议。
 ---
 
-要将服务器与 [Mankai](https://github.com/mankai-app/mankai) 集成，服务器必须遵循本 API 规范。
+要让 [Mankai](https://github.com/mankai-app/mankai) 的 HTTP 插件与你的服务器交互，服务器必须实现下方定义的兼容 API。服务器支持的操作应使用本规范规定的端点路径、请求体和响应格式。
+
+用户在**设置 → 来源**中添加 **Mankai 兼容**来源来连接服务器。应用配置步骤请参阅[添加来源](/zh-cn/guides/sources/#添加来源)。
 
 如果还需要支持应用内编辑器，请同时遵循[编辑器 API 规范](/zh-cn/api/editor-api/)。
 

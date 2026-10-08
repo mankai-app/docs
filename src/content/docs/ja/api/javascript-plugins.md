@@ -65,7 +65,7 @@ interface JsPluginManifest {
 | `id`              | `string`                 | 変更されない、全体で一意なプラグイン識別子です。永続ストレージの保存範囲の識別にも使います。                                    |
 | `name`            | `string`                 | 表示名です。省略すると ID を使います。                                                                                          |
 | `version`         | `string`                 | アプリに表示され、更新の比較に使われるプラグインのバージョンです。                                                              |
-| `description`     | `string`                 | プラグイン設定に表示する短い説明です。                                                                                          |
+| `description`     | `string`                 | ソース設定に表示する短い説明です。                                                                                              |
 | `authors`         | `string[]`               | プラグインの作者です。既定値は `[]` です。                                                                                      |
 | `repository`      | `string`                 | ソースコードまたはプロジェクトの URL です。                                                                                     |
 | `updatesUrl`      | `string`                 | 更新確認に使うマニフェストの URL です。                                                                                         |
@@ -444,7 +444,7 @@ interface Config {
 
 `color` 型の設定には、sRGB の 16 進数文字列を使用します。既定では不透明な色を選択し、`"#F2E4C9"` のような大文字の `#RRGGBB` 形式で保存します。`supportsOpacity` を `true` にすると不透明度を調整できるようになり、`#RRGGBBAA` 形式で保存します。入力時の先頭の `#` は省略できます。
 
-`options` は `select` の設定で使います。`min`、`max`、`step` は `slider` の範囲と刻み幅を設定します。アプリは各設定を `defaultValue` で初期化し、プラグイン設定で行った変更を保存して、現在値を `getConfigs()` から公開します。
+`options` は `select` の設定で使います。`min`、`max`、`step` は `slider` の範囲と刻み幅を設定します。アプリは各設定を `defaultValue` で初期化し、ソース設定で行った変更を保存して、現在値を `getConfigs()` から公開します。
 
 例を示します。
 

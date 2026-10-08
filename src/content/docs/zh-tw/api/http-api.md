@@ -1,9 +1,11 @@
 ---
-title: HTTP API
-description: HTTP 內容源的伺服器資訊、認證、漫畫、更新檢查與搜尋 API 完整規範。
+title: Mankai 相容 API
+description: 實作 Mankai HTTP 外掛模組呼叫的相容伺服器 API，提供認證、漫畫、章節圖片、書庫更新檢查、搜尋與搜尋建議。
 ---
 
-要將伺服器與 [Mankai](https://github.com/mankai-app/mankai) 整合，伺服器必須遵循本 API 規範。
+要讓 [Mankai](https://github.com/mankai-app/mankai) 的 HTTP 外掛模組與你的伺服器互動，伺服器必須實作下方定義的相容 API。伺服器支援的操作應使用本規範規定的端點路徑、請求內文和回應格式。
+
+使用者在**設定 → 來源**中新增 **Mankai 相容**來源來連接伺服器。應用程式設定步驟請參閱[新增來源](/zh-tw/guides/sources/#新增來源)。
 
 如果還需要支援應用程式內編輯器，請同時遵循[編輯器 API 規範](/zh-tw/api/editor-api/)。
 
