@@ -9,7 +9,11 @@ sidebar:
 
 有关从本地文件夹或网络共享导入、打开归档的方法，请参阅[添加书籍与内容源](/zh-cn/guides/sources/)。
 
+:::note[来源支持]
+
 本地文件夹以及 SMB、SFTP、NFS 和 WebDAV 内容源均支持 MMA。OPDS 目录目前不支持 MMA 文件。
+
+:::
 
 <span id="file-identification"></span>
 
@@ -40,7 +44,11 @@ example.mma
         └── 001.jpg
 ```
 
+:::caution[归档结构]
+
 不要在 ZIP 内为这些文件再套一层父文件夹。仅将 CBZ 或其他书籍重命名为 `.mma` 并不足够，归档还必须包含所需的元数据及其引用的图片。
+
+:::
 
 <span id="metadata"></span>
 
@@ -99,7 +107,11 @@ example.mma
 | `chapters`         | `object[]` | 是   | 按顺序排列的章节组，所有组中合计至少包含一个章节。                                                                                |
 | `remarks`          | `string`   | 否   | 附加备注。                                                                                                                        |
 
+:::note[由 Mankai 管理的字段]
+
 请省略 `meta`：Mankai 会用自身的章节与图片映射替换它。共用的漫画模型也接受 `editable`，但 MMA 归档不提供编辑器 API 功能。
+
+:::
 
 <span id="chapter-groups"></span>
 
@@ -126,9 +138,17 @@ example.mma
 | `locked` | `boolean`  | 否   | 章节是否在应用中锁定。可阅读的章节应省略此字段或设为 `false`。     |
 | `images` | `string[]` | 是   | 按阅读顺序排列的图片路径列表，路径相对于归档根目录，列表不能为空。 |
 
+:::note[页面顺序]
+
 Mankai 保留章节组和章节数组的顺序。页面严格按照各章节 `images` 数组中的顺序显示，不会按文件名排序，也不会自动加入未列出的图片。
 
+:::
+
+:::note[默认最新章节]
+
 省略 `latestChapter` 时，Mankai 会按提供的顺序依次展开章节组，使用其中的最后一个章节。如果提供此字段，其 ID 必须指向归档中已有的章节，无论该章节属于哪个组。
+
+:::
 
 <span id="image-paths-and-covers"></span>
 
@@ -143,8 +163,16 @@ Mankai 保留章节组和章节数组的顺序。页面严格按照各章节 `im
 - 不能包含反斜杠或空字符。
 - 第一段路径不能包含 `:`，因此绝对网址和带盘符前缀的路径均无效。
 
+:::note[归档条目路径]
+
 例如，`/cover.jpg`、`../cover.jpg`、`./cover.jpg`、`pages//001.jpg` 和 `https://example.com/cover.jpg` 都是无效路径。这里的路径是归档内的条目名称，并非网址。请直接使用空格等文件名字符，不要进行 URL 编码。
+
+:::
+
+:::note[封面与图片查找]
 
 封面为可选项。省略时，Mankai 不会自动使用第一页作为 MMA 封面。系统缩略图处理器同样使用 `metadata.json` 中的 `cover` 路径。
 
 Mankai 在解析元数据时检查路径格式，加载封面或页面时才查找对应的文件条目。因此，即使元数据最初成功加载，缺失的图片仍可能在之后加载时出错。
+
+:::

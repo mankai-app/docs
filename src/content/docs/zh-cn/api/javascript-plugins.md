@@ -5,7 +5,13 @@ description: Mankai JavaScript 插件的清单、回调、数据类型与运行�
 
 本规范说明为 [Mankai](https://github.com/mankai-app/mankai) 提供在线漫画内容的插件所使用的 JSON 格式和 JavaScript API。
 
-JavaScript 插件是只读内容源。应用从网址或粘贴的 JSON 加载清单，然后在隐藏的 WebKit 网页视图中执行回调脚本。请仅安装可信的插件，因为插件可以在应用的插件运行环境中发起网络请求并执行任意 JavaScript 代码。
+JavaScript 插件是只读内容源。应用从网址或粘贴的 JSON 加载清单，然后在隐藏的 WebKit 网页视图中执行回调脚本。
+
+:::caution[可信插件]
+
+请仅安装可信的插件，因为插件可以在应用的插件运行环境中发起网络请求并执行任意 JavaScript 代码。
+
+:::
 
 <span id="manifest"></span>
 
@@ -96,19 +102,33 @@ export{isOnline as default};
 
 标记必须使用 `export{functionName as default};` 的形式。Mankai 在执行前移除该标记并调用指定函数。函数可以是同步或异步函数，Mankai 会等待返回结果。除了导出的函数，脚本还可以包含辅助函数。
 
+:::caution[缺失的回调]
+
 清单解析器不会拒绝缺少脚本的清单，但调用缺失的回调会在运行时失败。插件应提供所声明能力对应的回调，也可以使用 `getImageHeaders` 替代 `getImage`。
+
+:::
 
 <span id="callback-scripts"></span>
 
 ## 回调脚本
 
-可选字段 `capabilities` 接受下列值。省略时，除 `mangaUpdates` 以外的所有能力都会启用。插件可以使用此字段声明自己实现的操作，让应用避免调用不支持的回调。
+可选字段 `capabilities` 接受下列值。
+
+:::note[默认能力]
+
+省略时，除 `mangaUpdates` 以外的所有能力都会启用。插件可以使用此字段声明自己实现的操作，让应用避免调用不支持的回调。
+
+:::
 
 ```text
 onlineCheck, suggestions, list, listByGenre, listByStatus, search, searchByGenre, searchByStatus, searchByAuthor, mangaDetails, batchMangas, mangaUpdates, chapter, image
 ```
 
+:::note[更新检查]
+
 支持 `batchMangas` 或 `mangaUpdates` 的插件可以参与书库更新检查。如果需要插件通过专用的 `getMangaUpdates` 回调决定哪些漫画应标记为有更新，请包含 `mangaUpdates`。省略 `mangaUpdates` 时，Mankai 使用默认行为，调用 `getMangas`、刷新返回的元数据并比较返回的最新章节。默认行为要求支持 `batchMangas`。
+
+:::
 
 键与函数签名如下。
 
@@ -172,7 +192,11 @@ interface MangaUpdateRequest {
 
 返回 `MangaUpdate[]`。每个结果必须包含 `id` 和 `updates`。Mankai 仅根据 `updates` 的值决定是否将已保存的漫画标记为有更新。Mankai 会根据所有返回结果刷新元数据，包括 `updates` 为 `false` 的结果。
 
+:::note[局部更新]
+
 其余属性用于局部更新。Mankai 只将非 `null` 属性应用到现有的本地漫画快照。省略或设为 `null` 的属性会保留现有值。只有 `updates` 为 `true` 时，Mankai 才会将 `latestChapter` 保存为下次检查更新的比较基准。响应中未包含的漫画保持不变。
+
+:::
 
 ```ts
 interface MangaUpdate extends Manga {
@@ -260,7 +284,11 @@ export{getImage as default};
 }
 ```
 
+:::note[图片请求优先级]
+
 此模式优先于 `getImage` 脚本，请求标头同时适用于封面和章节页面。
+
+:::
 
 <span id="data-types"></span>
 
@@ -308,7 +336,11 @@ interface DetailedManga {
 }
 ```
 
+:::note[省略的字段]
+
 漫画详情中省略的 `authors`、`genres` 和 `chapters` 默认为空数组。
+
+:::
 
 <span id="genres"></span>
 
@@ -376,7 +408,11 @@ interface FetchResponse {
 }
 ```
 
+:::note[fetch 错误处理]
+
 非 2xx 响应会正常完成，此时 `ok === false`，请使用 `ok` 或 `status` 处理。网络错误和无效网址会使 Promise 进入拒绝状态。请求体与响应体通过原生桥接传输，因此当响应是二进制内容时请使用 `arrayBuffer()`。
+
+:::
 
 ### `console.log(...values)`
 
@@ -464,7 +500,11 @@ interface Config {
 }
 ```
 
+:::note[颜色不透明度]
+
 `color` 配置使用 sRGB 十六进制字符串。默认情况下，颜色选择器不支持透明度，并保存大写的 `#RRGGBB` 值，例如 `"#F2E4C9"`。将 `supportsOpacity` 设为 `true` 可启用不透明度控制并保存 `#RRGGBBAA` 值。输入时可以省略开头的 `#`。
+
+:::
 
 `options` 用于 `select` 配置。`min`、`max` 和 `step` 指定 `slider` 配置的范围和步长。应用使用 `defaultValue` 初始化每个配置项，持久保存用户在来源设置中的修改，并通过 `getConfigs()` 提供当前值。
 
@@ -500,7 +540,11 @@ interface Config {
 }
 ```
 
+:::note[网址配置覆盖]
+
 从网址导入插件时，匹配的查询参数会覆盖声明的默认值。值按照 `type` 解析。布尔值识别 `true` 和 `1`，数字和滑块值解析为整数或小数，文本、密码、选择和颜色值在去除两端空白后保留为字符串。
+
+:::
 
 <span id="cooldowns"></span>
 

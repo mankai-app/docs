@@ -26,7 +26,11 @@ description: 远程图片处理器的元数据、配置、图片处理与可选 
 
 ### `GET /`
 
+:::note[无需认证的元数据端点]
+
 元数据端点必须在无需认证的情况下可用。
+
+:::
 
 **响应 — `200 OK`**
 
@@ -59,7 +63,11 @@ interface Config {
 }
 ```
 
+:::note[颜色不透明度]
+
 `color` 配置使用 sRGB 十六进制字符串。默认情况下，颜色选择器不支持透明度，并保存大写的 `#RRGGBB` 值，例如 `"#F2E4C9"`。将 `supportsOpacity` 设为 `true` 可启用不透明度控制并保存 `#RRGGBBAA` 值。输入时可以省略开头的 `#`。
+
+:::
 
 示例：
 
@@ -140,7 +148,11 @@ interface ProcessContext {
 
 服务器必须直接返回处理后的图片，并使用 `2xx` 状态码和 `image/*` 类型的 `Content-Type`。允许 PNG、JPEG、WebP、HEIF 以及客户端平台支持的其他图片格式。响应会传递给下一个已配置的图片处理器，因此服务器应保留足够的分辨率和画质。
 
+:::note[处理失败]
+
 非 `2xx` 响应可以返回简短的纯文本或 JSON 错误体。Mankai 会将本次处理视为失败，并继续使用未经此次处理的阅读器图片。
+
+:::
 
 <span id="authentication-optional"></span>
 
@@ -186,6 +198,10 @@ interface ProcessContext {
 }
 ```
 
+:::note[认证行为]
+
 对于启用认证的处理器，Mankai 在 `POST /process` 中发送 `Authorization: Bearer <accessToken>`。`401` 或 `403` 响应会触发一次令牌刷新，并将原始多部分请求重试一次。元数据端点和 `/auth/*` 端点始终无需 Bearer 令牌。
 
 省略 `authenticationEnabled` 或将其设为 `false` 时，无需实现认证端点，Mankai 发送 `POST /process` 时也不会附带 `Authorization` 标头。
+
+:::

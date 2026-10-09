@@ -9,7 +9,11 @@ sidebar:
 
 如需匯入封存檔，或從本機資料夾或網路共用開啟，請參閱[新增書籍與內容源](/zh-tw/guides/sources/)。
 
+:::note[來源支援]
+
 MMA 支援本機資料夾，以及 SMB、SFTP、NFS 和 WebDAV 內容源。目前 OPDS 目錄不支援 MMA 檔案。
+
+:::
 
 <span id="file-identification"></span>
 
@@ -40,7 +44,11 @@ example.mma
         └── 001.jpg
 ```
 
+:::caution[封存檔結構]
+
 請勿在 ZIP 內以額外的上層資料夾包住這些項目。僅將 CBZ 或其他書籍檔案重新命名為 `.mma` 並不足夠，檔案必須包含必要的中繼資料及其參照的圖片。
+
+:::
 
 <span id="metadata"></span>
 
@@ -99,7 +107,11 @@ example.mma
 | `chapters`         | `object[]` | 是   | 依序排列的章節群組，整體必須包含至少一個章節。                                                                                       |
 | `remarks`          | `string`   | 否   | 額外備註。                                                                                                                           |
 
+:::note[由 Mankai 管理的欄位]
+
 請省略 `meta`：Mankai 會以自己的章節與圖片對應資料取代。共用漫畫模型也接受 `editable`，但 MMA 封存檔不提供編輯器 API 功能。
+
+:::
 
 <span id="chapter-groups"></span>
 
@@ -126,9 +138,17 @@ example.mma
 | `locked` | `boolean`  | 否   | 章節在應用程式中是否已鎖定。可閱讀的章節請省略此欄位，或設為 `false`。   |
 | `images` | `string[]` | 是   | 按閱讀順序排列、相對於封存檔根目錄的圖片路徑清單，至少必須包含一個路徑。 |
 
+:::note[頁面順序]
+
 Mankai 會保留群組和章節陣列的順序。頁面完全依照各章節 `images` 陣列的順序顯示。不會按檔案名稱排序，也不會自動加入未列出的圖片。
 
+:::
+
+:::note[預設最新章節]
+
 省略 `latestChapter` 時，Mankai 會按照提供的群組順序將章節展平，並使用最後一個章節。若有提供，其 ID 必須參照封存檔中某個已存在的章節。
+
+:::
 
 <span id="image-paths-and-covers"></span>
 
@@ -143,8 +163,16 @@ Mankai 會保留群組和章節陣列的順序。頁面完全依照各章節 `im
 - 禁止使用反斜線和空字元。
 - 第一個組成部分不能包含 `:`。絕對 URL 和含磁碟機前綴的路徑均無效。
 
+:::note[封存檔項目路徑]
+
 例如，`/cover.jpg`、`../cover.jpg`、`./cover.jpg`、`pages//001.jpg` 和 `https://example.com/cover.jpg` 都是無效路徑。路徑是封存檔項目名稱，而非 URL。空格和其他檔案名稱字元請直接使用，無需 URL 編碼。
+
+:::
+
+:::note[封面與圖片查找]
 
 封面為可選。省略時，Mankai 不會自動將第一頁設為 MMA 封面。系統縮圖處理常式也會使用 `metadata.json` 中的 `cover` 路徑。
 
 Mankai 會在解析中繼資料時檢查路徑語法，並在載入封面或頁面時尋找所參照的項目。因此，即使中繼資料一開始能夠載入，缺少圖片仍可能導致後續載入失敗。
+
+:::

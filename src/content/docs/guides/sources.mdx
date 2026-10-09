@@ -19,19 +19,34 @@ A stream-based source connects Mankai to an external library. This is the recomm
 ### Add a source
 
 1. Open **Settings → Sources** and tap the **+** button.
-2. In **Add Source**, choose the type your provider specifies: **File System** under **Local Sources**, **JavaScript** or **Mankai Compatible** under **Remote Sources**, or **Komga Server** under **Integrations**. This opens a separate configuration screen.
-3. For **JavaScript**, enter the supplied URL. If you were given a JSON definition, enable **Use JSON** and paste it there.
-4. For **Mankai Compatible**, enter the supplied server API URL and any required username and password. For **Komga Server**, enter your server URL and use an API key or your Komga username and password.
-5. For **File System**, tap **Select Folder**, choose the structured library folder supplied by your provider, and set **Read-Only** if you want to prevent editing.
-6. Tap **Add**. Return to **Library** to explore the lists and search features the source supports.
+2. In **Add Source**, choose the type your provider specifies to open its configuration screen.
+3. Enter the details for your source type using the table below.
+4. Tap **Add**. Return to **Library** to explore the lists and search features the source supports.
 
-A File System source expects a structured Mankai library. For an ordinary folder of book files, use **Files → Add Files**. Available search, update, chapter, and download actions depend on the source and library.
+| Source                | Configuration                                                                                                                                                                                     |
+| --------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **File System**       | Tap **Select Folder** and choose the structured library folder supplied by your provider. Enable **Read-Only** to prevent editing.                                                                |
+| **JavaScript**        | Enter the supplied URL, or enable **Use JSON** and paste the supplied JSON definition.                                                                                                            |
+| **Mankai Compatible** | Enter the server API URL and any required username and password.                                                                                                                                  |
+| **Komga Server**      | Enter your server URL and use an API key or your Komga username and password.                                                                                                                     |
+| **Kavita Server**     | Enter your server URL and use your Kavita username and password, or enter a Kavita Auth Key from **User Settings → 3rd Party Clients** in **API Key**.                                            |
+| **Suwayomi Server**   | Enter your server URL. Set **Authentication Mode** to match the server: **None**, **Basic Auth**, **Simple Login**, or **UI Login**. Enter your username and password unless you select **None**. |
+
+Available search, update, chapter, and download actions depend on the source and library.
+
+:::note[Source notes]
+
+- **File System:** Requires a structured Mankai library. For an ordinary folder of book files, use **Files → Add Files**.
+- **Kavita:** Shows image, archive, and PDF series. EPUB series are not shown.
+- **Suwayomi:** Shows titles already added to your Suwayomi server's library.
+
+:::
 
 <DeviceScreenshots
   id="sources-types"
   title="Choose a source type"
-  phone="Add Source with File System, JavaScript, Mankai Compatible, and Komga Server on iPhone."
-  tablet="Add Source with File System, JavaScript, Mankai Compatible, and Komga Server on iPad."
+  phone="Add Source with File System, JavaScript, Mankai Compatible, Komga Server, Kavita Server, and Suwayomi Server on iPhone."
+  tablet="Add Source with File System, JavaScript, Mankai Compatible, Komga Server, Kavita Server, and Suwayomi Server on iPad."
   lang="en"
 />
 
@@ -45,7 +60,13 @@ A File System source expects a structured Mankai library. For an ordinary folder
 
 ## File-based sources
 
-File-based sources let you read book files you manage yourself, including CBZ, CBR, EPUB, PDF, and MMA. Connect a local filesystem folder or a network share through SMB, SFTP, NFS, or WebDAV. You can also connect an OPDS catalog to open supported book files or stream pages when available. MMA files are not supported through OPDS. Open these sources from **Files**.
+File-based sources let you read book files you manage yourself, including CBZ, CBR, EPUB, PDF, and MMA. Connect a local filesystem folder or a network share through SMB, SFTP, NFS, or WebDAV. You can also connect an OPDS catalog to open supported book files or stream pages when available. Open these sources from **Files**.
+
+:::note[OPDS format support]
+
+MMA files are not supported through OPDS.
+
+:::
 
 <DeviceScreenshots
   id="sources-add-files"
@@ -105,7 +126,13 @@ Connecting a folder lets Mankai browse that location. Use **Imports** to copy se
 | **NFS**    | Host                                               | Tap **Select Export**, choose an export if prompted, then tap **Add** |
 | **WebDAV** | Server URL and any required username and password  | Tap **Add**                                                           |
 
-If SMB finds only one share or NFS finds only one export, Mankai adds it automatically. Open the new source from **Files**. Keep the network source reachable while browsing and reading its books.
+:::note[Automatic share selection]
+
+If SMB finds only one share or NFS finds only one export, Mankai adds it automatically.
+
+:::
+
+Open the new source from **Files**. Keep the network source reachable while browsing and reading its books.
 
 <DeviceScreenshots
   id="sources-network"

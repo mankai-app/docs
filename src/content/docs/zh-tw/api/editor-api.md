@@ -67,7 +67,11 @@ interface MangaResponse {
 
 章節組是帶名稱的相關章節集合，例如「第一季」或由同一漢化組提供的章節。
 
+:::note[可編輯章節群組的 ID]
+
 對於可編輯漫畫，`GET /manga/:id` 回傳的每個章節組都必須包含 `id`。應用程式使用此 ID 執行更新和刪除操作。唯讀實作可以省略章節組 ID。
+
+:::
 
 ### `POST /edit/chapter-group`
 

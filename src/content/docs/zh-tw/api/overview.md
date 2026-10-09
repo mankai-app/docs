@@ -8,7 +8,7 @@ prev: false
 
 使用這些 API 和格式規範將你的內容或服務接入 Mankai，或建立 MMA 書籍封存檔。根據想要建置的內容，選擇適合的參考文件。
 
-Mankai 在內部使用外掛模組與來源互動。HTTP 來源需要實作可供 Mankai HTTP 外掛模組呼叫的相容伺服器 API；JavaScript 來源需要提供 JSON 清單和回呼腳本。
+Mankai 在內部使用外掛模組與來源互動。HTTP 來源需要實作可供 Mankai HTTP 外掛模組呼叫的相容伺服器 API。JavaScript 來源需要提供 JSON 清單和回呼腳本。
 
 如需瞭解應用程式的設定和使用方法，請閱讀[快速入門](/zh-tw/guides/quick-start/)。
 

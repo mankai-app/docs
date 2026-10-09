@@ -9,7 +9,11 @@ sidebar:
 
 For importing or opening an archive from a local folder or network share, see [Add books and sources](/guides/sources/).
 
+:::note[Source support]
+
 MMA is supported by local folders and SMB, SFTP, NFS, and WebDAV sources. OPDS catalogs do not currently support MMA files.
+
+:::
 
 ## File identification
 
@@ -36,7 +40,11 @@ example.mma
         └── 001.jpg
 ```
 
+:::caution[Archive structure]
+
 Do not wrap these entries in an extra parent folder inside the ZIP. Renaming a CBZ or another book to `.mma` is insufficient unless it contains the required metadata and referenced images.
+
+:::
 
 ## Metadata
 
@@ -91,7 +99,11 @@ The root of `metadata.json` is a manga object. It uses Mankai's detailed manga f
 | `chapters`         | `object[]` | Yes      | Ordered chapter groups, containing at least one chapter overall.                                                                                                |
 | `remarks`          | `string`   | No       | Additional remarks.                                                                                                                                             |
 
+:::note[Fields managed by Mankai]
+
 Omit `meta`: Mankai replaces it with its own chapter-to-image mapping. The shared manga model also accepts `editable`, but an MMA archive does not provide editor API capabilities.
+
+:::
 
 ### Chapter groups
 
@@ -114,9 +126,17 @@ Each chapter in a group has these fields:
 | `locked` | `boolean`  | No       | Whether the chapter is locked in the app. Omit it or use `false` for readable chapters. |
 | `images` | `string[]` | Yes      | Nonempty list of archive-relative image paths in reading order.                         |
 
+:::note[Page order]
+
 Mankai preserves group and chapter array order. Pages follow the exact order of each chapter's `images` array. Filenames are not sorted and unlisted images are not added automatically.
 
+:::
+
+:::note[Default latest chapter]
+
 When `latestChapter` is omitted, Mankai uses the last chapter after flattening the groups in their supplied order. If you include it, its ID must refer to an existing chapter anywhere in the archive.
+
+:::
 
 ## Image paths and covers
 
@@ -129,8 +149,16 @@ Both `cover` and every `images` entry must satisfy these rules:
 - Backslashes and null characters are forbidden.
 - The first component cannot contain `:`. Absolute URLs and drive-prefixed paths are invalid.
 
+:::note[Archive entry paths]
+
 For example, `/cover.jpg`, `../cover.jpg`, `./cover.jpg`, `pages//001.jpg`, and `https://example.com/cover.jpg` are invalid. Paths are archive entry names, not URLs. Use spaces and other filename characters directly rather than URL-encoding them.
+
+:::
+
+:::note[Cover and image lookup]
 
 The cover is optional. If you omit it, Mankai does not automatically choose the first page as the MMA cover. The system thumbnail handler also uses the `cover` path from `metadata.json`.
 
 Mankai checks path syntax while parsing metadata. It looks up the referenced entry when loading a cover or page, so a missing image can fail later even if the metadata initially loads.
+
+:::

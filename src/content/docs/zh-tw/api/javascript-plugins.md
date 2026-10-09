@@ -5,7 +5,13 @@ description: Mankai JavaScript 外掛模組的清單、回呼、資料類型與�
 
 本規範說明為 [Mankai](https://github.com/mankai-app/mankai) 提供線上漫畫內容的外掛模組所使用的 JSON 格式和 JavaScript API。
 
-JavaScript 外掛模組是唯讀內容源。應用程式從網址或貼上的 JSON 載入清單，然後在隱藏的 WebKit 網頁視圖中執行回呼腳本。請僅安裝可信的外掛模組，因為外掛模組可以在應用程式的外掛模組執行環境中發起網路請求並執行任意 JavaScript 程式碼。
+JavaScript 外掛模組是唯讀內容源。應用程式從網址或貼上的 JSON 載入清單，然後在隱藏的 WebKit 網頁視圖中執行回呼腳本。
+
+:::caution[可信外掛模組]
+
+請僅安裝可信的外掛模組，因為外掛模組可以在應用程式的外掛模組執行環境中發起網路請求並執行任意 JavaScript 程式碼。
+
+:::
 
 <span id="manifest"></span>
 
@@ -96,19 +102,33 @@ export{isOnline as default};
 
 標記必須使用 `export{functionName as default};` 的形式。Mankai 在執行前移除該標記並呼叫指定函式。函式可以是同步或非同步函式，Mankai 會等待回傳結果。除了匯出的函式，腳本還可以包含輔助函式。
 
+:::caution[缺失的回呼]
+
 清單剖析器不會拒絕缺少腳本的清單，但呼叫缺失的回呼會在執行階段失敗。外掛模組應提供所宣告能力對應的回呼，也可以使用 `getImageHeaders` 替代 `getImage`。
+
+:::
 
 <span id="callback-scripts"></span>
 
 ## 回呼腳本
 
-可選欄位 `capabilities` 接受下列值。省略時，除 `mangaUpdates` 以外的所有能力都會啟用。外掛模組可以使用此欄位宣告自己實作的操作，讓應用程式避免呼叫不支援的回呼。
+可選欄位 `capabilities` 接受下列值。
+
+:::note[預設能力]
+
+省略時，除 `mangaUpdates` 以外的所有能力都會啟用。外掛模組可以使用此欄位宣告自己實作的操作，讓應用程式避免呼叫不支援的回呼。
+
+:::
 
 ```text
 onlineCheck, suggestions, list, listByGenre, listByStatus, search, searchByGenre, searchByStatus, searchByAuthor, mangaDetails, batchMangas, mangaUpdates, chapter, image
 ```
 
+:::note[更新檢查]
+
 支援 `batchMangas` 或 `mangaUpdates` 的外掛模組可以參與書庫更新檢查。如果需要外掛模組透過專用的 `getMangaUpdates` 回呼決定哪些漫畫應標記為有更新，請包含 `mangaUpdates`。省略 `mangaUpdates` 時，Mankai 使用預設行為，呼叫 `getMangas`、更新回傳的中繼資料並比較回傳的最新章節。預設行為要求支援 `batchMangas`。
+
+:::
 
 鍵與函式簽名如下。
 
@@ -172,7 +192,11 @@ interface MangaUpdateRequest {
 
 回傳 `MangaUpdate[]`。每個結果必須包含 `id` 和 `updates`。Mankai 僅根據 `updates` 的值決定是否將已儲存的漫畫標記為有更新。Mankai 會根據所有回傳結果更新中繼資料，包括 `updates` 為 `false` 的結果。
 
+:::note[局部更新]
+
 其餘屬性用於局部更新。Mankai 只將非 `null` 屬性套用到現有的本機漫畫快照。省略或設為 `null` 的屬性會保留現有值。只有 `updates` 為 `true` 時，Mankai 才會將 `latestChapter` 儲存為下次檢查更新的比較基準。回應中未包含的漫畫保持不變。
+
+:::
 
 ```ts
 interface MangaUpdate extends Manga {
@@ -260,7 +284,11 @@ export{getImage as default};
 }
 ```
 
+:::note[圖片請求優先順序]
+
 此模式優先於 `getImage` 腳本，請求標頭同時適用於封面和章節頁面。
+
+:::
 
 <span id="data-types"></span>
 
@@ -308,7 +336,11 @@ interface DetailedManga {
 }
 ```
 
+:::note[省略的欄位]
+
 漫畫詳細資訊中省略的 `authors`、`genres` 和 `chapters` 預設為空陣列。
+
+:::
 
 <span id="genres"></span>
 
@@ -376,7 +408,11 @@ interface FetchResponse {
 }
 ```
 
+:::note[fetch 錯誤處理]
+
 非 2xx 回應會正常完成，此時 `ok === false`，請使用 `ok` 或 `status` 處理。網路錯誤和無效網址會使 Promise 進入拒絕狀態。請求內文與回應內文透過原生橋接傳輸，因此當回應是二進位內容時請使用 `arrayBuffer()`。
+
+:::
 
 ### `console.log(...values)`
 
@@ -464,7 +500,11 @@ interface Config {
 }
 ```
 
+:::note[色彩不透明度]
+
 `color` 設定使用 sRGB 十六進位字串。預設情況下，顏色選擇器不支援透明度，並儲存大寫的 `#RRGGBB` 值，例如 `"#F2E4C9"`。將 `supportsOpacity` 設為 `true` 可啟用不透明度控制並儲存 `#RRGGBBAA` 值。輸入時可以省略開頭的 `#`。
+
+:::
 
 `options` 用於 `select` 設定。`min`、`max` 和 `step` 指定 `slider` 設定的範圍和步長。應用程式使用 `defaultValue` 初始化每個設定項目，持久儲存使用者在來源設定中的修改，並透過 `getConfigs()` 提供目前值。
 
@@ -500,7 +540,11 @@ interface Config {
 }
 ```
 
+:::note[網址設定覆寫]
+
 從網址匯入外掛模組時，相符的查詢參數會覆蓋宣告的預設值。值按照 `type` 解析。布林值識別 `true` 和 `1`，數字和滑桿值解析為整數或小數，文字、密碼、選擇和顏色值在去除兩端空白後保留為字串。
+
+:::
 
 <span id="cooldowns"></span>
 

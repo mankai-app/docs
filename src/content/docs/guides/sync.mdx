@@ -5,7 +5,13 @@ description: Configure Custom Server or Supabase sync to share supported sources
 
 import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 
-Sync is optional and shares supported sources and their settings, share connections, bookmarks, and reading progress across devices. Book files and downloaded chapters still need to be available on each device.
+Sync is optional and shares supported sources and their settings, share connections, bookmarks, and reading progress across devices.
+
+:::note[Book files and downloads]
+
+Book files and downloaded chapters still need to be available on each device.
+
+:::
 
 You need a compatible custom server or a configured Supabase project. Use the connection details for your service.
 
@@ -25,7 +31,11 @@ You need a compatible custom server or a configured Supabase project. Use the co
 
 ### iCloud (coming soon)
 
+:::note[iCloud availability]
+
 iCloud sync is not available yet. Use Custom Server or Supabase to sync across devices.
+
+:::
 
 ### Custom Server
 
@@ -34,7 +44,15 @@ Before using Custom Server sync, set up a compatible server using either of thes
 - [Mankai Sync](https://github.com/mankai-app/sync): A dedicated sync server with user accounts defined in `config.json`.
 - [Mankai Server](https://github.com/mankai-app/server): A manga library server that also supports bookmarks and reading progress sync.
 
-Follow the setup instructions in your chosen repository. For Mankai Sync, use the server's root URL, such as `http://<host>:3000`. For Mankai Server, use its API URL, such as `http://<host>:3000/api`. Use the username and password for an account on that server. If you use an existing service, ask its administrator for these details.
+Follow the setup instructions in your chosen repository.
+
+:::note[Server URL]
+
+For Mankai Sync, use the server's root URL, such as `http://<host>:3000`. For Mankai Server, use its API URL, such as `http://<host>:3000/api`.
+
+:::
+
+Use the username and password for an account on that server. If you use an existing service, ask its administrator for these details.
 
 1. Select **Custom Server** and enter the appropriate URL in **Server URL**.
 2. Tap **Save Configuration**.
@@ -52,7 +70,11 @@ You can use Mankai's Supabase project with these connection details:
 Mankai's Supabase project runs on the free tier. It may not work and may be paused at any time.
 :::
 
+:::tip[Using your own Supabase project]
+
 To use your own Supabase project, follow the setup instructions in the [Mankai Supabase repository](https://github.com/mankai-app/supabase) to apply the database migrations and configure an OAuth sign-in provider. If you use another existing configured project, ask its administrator for the project URL and publishable key.
+
+:::
 
 1. Select **Supabase** and enter the project URL and publishable key.
 2. Tap **Save Configuration**.
@@ -69,7 +91,11 @@ Open **Settings → Sources** and select a source, or **Settings → Shares** an
 | **Sync share across devices**  | Syncs the share's connection settings to your other devices.                       |
 | **Sync manga across devices**  | Syncs library entries (bookmarks) and reading progress for manga from that source. |
 
+:::note[Automatic sync statuses]
+
 These are automatic capability indicators. If a status is **Disabled**, the explanation below it tells you why that part cannot sync.
+
+:::
 
 <DeviceScreenshots
   id="sync-source"
@@ -98,9 +124,15 @@ These are automatic capability indicators. If a status is **Disabled**, the expl
 
 ## Keep source identities consistent
 
-Shares use a `.mankai` file to identify the same source across devices. If Mankai cannot write that file, the source uses a local identity and its bookmarks and reading progress do not sync. OPDS uses the catalog's ID and falls back to a local identity if the catalog has none. The built-in **Local Directory** keeps its bookmarks and reading progress on that device.
+Shares use a `.mankai` file to identify the same source across devices.
+
+:::note[Source identity limits]
+
+If Mankai cannot write that file, the source uses a local identity and its bookmarks and reading progress do not sync. OPDS uses the catalog's ID and falls back to a local identity if the catalog has none. The built-in **Local Directory** keeps its bookmarks and reading progress on that device.
 
 Matching share names alone do not make two sources the same. Their source IDs must also match. A folder can sync its connection settings even when a local identity prevents its manga records from syncing. A synced bookmark also needs its source and book to be available on the other device before you can open it.
+
+:::
 
 ## When a source or reading progress does not appear
 

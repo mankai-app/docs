@@ -7,7 +7,13 @@ sidebar:
 
 This specification describes the JSON format and JavaScript API for plugins that provide manga from an online source to [Mankai](https://github.com/mankai-app/mankai).
 
-JavaScript plugins are read-only sources. The app loads the manifest from a URL or from pasted JSON, then executes the callback scripts in a hidden WebKit web view. Install only plugins you trust: a plugin can make network requests and execute arbitrary JavaScript in the app's plugin runtime.
+JavaScript plugins are read-only sources. The app loads the manifest from a URL or from pasted JSON, then executes the callback scripts in a hidden WebKit web view.
+
+:::caution[Trusted plugins]
+
+Install only plugins you trust: a plugin can make network requests and execute arbitrary JavaScript in the app's plugin runtime.
+
+:::
 
 ## Manifest
 
@@ -92,17 +98,31 @@ export{isOnline as default};
 
 The marker must use the form `export{functionName as default};`. Mankai removes the marker before execution and calls the named function. Functions may be synchronous or asynchronous. Mankai awaits their result. A script can contain helper functions as well as its exported function.
 
+:::caution[Missing callbacks]
+
 The manifest parser does not reject a missing script, but invoking a missing callback fails at runtime. Provide the callbacks for every capability your plugin advertises. You can use `getImageHeaders` instead of `getImage`.
+
+:::
 
 ## Callback scripts
 
-The optional `capabilities` field accepts the values listed below. If it is omitted, every capability except `mangaUpdates` is enabled. A plugin can use the field to advertise only the operations it implements, so the app can avoid invoking unsupported callbacks.
+The optional `capabilities` field accepts the values listed below.
+
+:::note[Default capabilities]
+
+If it is omitted, every capability except `mangaUpdates` is enabled. A plugin can use the field to advertise only the operations it implements, so the app can avoid invoking unsupported callbacks.
+
+:::
 
 ```text
 onlineCheck, suggestions, list, listByGenre, listByStatus, search, searchByGenre, searchByStatus, searchByAuthor, mangaDetails, batchMangas, mangaUpdates, chapter, image
 ```
 
+:::note[Update checks]
+
 Plugins with either `batchMangas` or `mangaUpdates` can participate in library update checks. Include `mangaUpdates` when the plugin should control which manga are marked as updated through the dedicated `getMangaUpdates` callback. Exclude `mangaUpdates` to use Mankai's default behavior, which calls `getMangas`, refreshes the returned metadata, and compares the returned latest chapters. The default behavior requires `batchMangas`.
+
+:::
 
 The keys and function signatures are:
 
@@ -166,7 +186,11 @@ interface MangaUpdateRequest {
 
 Return a `MangaUpdate[]`. Every result must include `id` and `updates`. The `updates` flag alone controls whether Mankai marks the saved manga as updated. Metadata is refreshed for every returned result, including results where `updates` is `false`.
 
+:::note[Partial updates]
+
 All other properties are patches. Mankai applies only non-null properties to its existing local manga snapshot. Omitted and `null` properties leave the existing value unchanged. `latestChapter` advances the saved update-check baseline only when `updates` is `true`. Results omitted from the response are left unchanged.
+
+:::
 
 ```ts
 interface MangaUpdate extends Manga {
@@ -254,7 +278,11 @@ If the manifest contains `getImageHeaders`, the equivalent native request is mad
 }
 ```
 
+:::note[Image request precedence]
+
 This mode takes precedence over the `getImage` script. The headers apply to covers and chapter pages alike.
+
+:::
 
 ## Data types
 
@@ -300,7 +328,11 @@ interface DetailedManga {
 }
 ```
 
+:::note[Omitted fields]
+
 `authors`, `genres`, and `chapters` default to empty arrays when omitted from a detailed manga.
+
+:::
 
 ### Genres
 
@@ -360,7 +392,11 @@ interface FetchResponse {
 }
 ```
 
+:::note[Fetch errors]
+
 Non-2xx responses resolve normally with `ok === false`. Check `ok` or `status` to handle them. Network failures and invalid URLs reject the promise. Request and response bodies are transferred through the native bridge, so use `arrayBuffer()` when the response is binary.
+
+:::
 
 ### `console.log(...values)`
 
@@ -442,7 +478,11 @@ interface Config {
 }
 ```
 
+:::note[Color opacity]
+
 `color` configuration fields use sRGB hex strings. By default, the picker is opaque and saves uppercase `#RRGGBB` values such as `"#F2E4C9"`. Set `supportsOpacity` to `true` to enable the opacity control and save `#RRGGBBAA` values. The leading `#` is optional on input.
+
+:::
 
 `options` is used for `select` fields. `min`, `max`, and `step` configure the range and increment for `slider` fields. The app initializes each configuration field with `defaultValue`, persists changes made in source settings, and exposes the current values through `getConfigs()`.
 
@@ -478,7 +518,11 @@ Example:
 }
 ```
 
+:::note[URL configuration overrides]
+
 When a plugin is imported from a URL, matching query parameters override the declared defaults. Values are parsed according to `type`: booleans recognize `true` and `1`, numbers and sliders parse as integers or decimals, and text/password/select/color values remain strings after surrounding whitespace is trimmed.
+
+:::
 
 ## Cooldowns
 

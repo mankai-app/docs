@@ -59,16 +59,22 @@ type PluginCapability =
 
 `default` is the optional minimum delay between non-image plugin calls, expressed in milliseconds. `getImage` configures a separate minimum delay between image calls. `getImageConcurrency` optionally limits the number of concurrent image requests.
 
+:::note[Capabilities and update checks]
+
 When `capabilities` is omitted, every capability except `mangaUpdates` is enabled. The `mangaUpdates` capability is enabled only when listed explicitly.
 
 Plugins with either `batchMangas` or `mangaUpdates` can participate in library update checks. Include `mangaUpdates` when the server should control which manga are marked as updated through `POST /manga/updates`. Exclude `mangaUpdates` to use Mankai's default behavior, which calls `POST /manga`, refreshes the returned metadata, and compares the returned latest chapters. The default behavior requires `batchMangas`.
+
+:::
 
 ## Authentication (optional)
 
 If you want to enable authentication on your server, you must implement the following two endpoints.
 
-:::note
+:::note[Authorization headers]
+
 When the client calls any endpoint other than `/auth/*` and `/`, it will include the `accessToken` in the `Authorization` header.
+
 :::
 
 ### `POST /auth/login`
@@ -195,7 +201,11 @@ type MangaUpdatesRequest = MangaUpdateRequest[]
 
 Return a `MangaUpdate[]`. Every result must include `id` and `updates`. The `updates` flag alone controls whether Mankai marks the saved manga as updated. Metadata is refreshed for every returned result, including results where `updates` is `false`.
 
+:::note[Partial updates]
+
 All other properties are patches. Mankai applies only non-null properties to its existing local manga snapshot. Omitted and `null` properties leave the existing value unchanged. `latestChapter` advances the saved update-check baseline only when `updates` is `true`. Results omitted from the response are left unchanged.
+
+:::
 
 ```ts
 interface MangaUpdate extends Manga {

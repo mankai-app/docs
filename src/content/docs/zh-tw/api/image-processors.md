@@ -26,7 +26,11 @@ description: 遠端圖片處理器的中繼資料、設定、圖片處理與可�
 
 ### `GET /`
 
+:::note[無需認證的中繼資料端點]
+
 中繼資料端點必須在無需認證的情況下可用。
+
+:::
 
 **回應 — `200 OK`**
 
@@ -59,7 +63,11 @@ interface Config {
 }
 ```
 
+:::note[色彩不透明度]
+
 `color` 設定使用 sRGB 十六進位字串。預設情況下，顏色選擇器不支援透明度，並儲存大寫的 `#RRGGBB` 值，例如 `"#F2E4C9"`。將 `supportsOpacity` 設為 `true` 可啟用不透明度控制並儲存 `#RRGGBBAA` 值。輸入時可以省略開頭的 `#`。
+
+:::
 
 範例：
 
@@ -140,7 +148,11 @@ interface ProcessContext {
 
 伺服器必須直接回傳處理後的圖片，並使用 `2xx` 狀態碼和 `image/*` 類型的 `Content-Type`。允許 PNG、JPEG、WebP、HEIF 以及用戶端平台支援的其他圖片格式。回應會傳遞給下一個已設定的圖片處理器，因此伺服器應保留足夠的解析度和畫質。
 
+:::note[處理失敗]
+
 非 `2xx` 回應可以回傳簡短的純文字或 JSON 錯誤內文。Mankai 會將本次處理視為失敗，並繼續使用未經此次處理的閱讀器圖片。
+
+:::
 
 <span id="authentication-optional"></span>
 
@@ -186,6 +198,10 @@ interface ProcessContext {
 }
 ```
 
+:::note[認證行為]
+
 對於啟用認證的處理器，Mankai 在 `POST /process` 中發送 `Authorization: Bearer <accessToken>`。`401` 或 `403` 回應會觸發一次權杖更新，並將原始多部分請求重試一次。中繼資料端點和 `/auth/*` 端點始終無需 Bearer 權杖。
 
 省略 `authenticationEnabled` 或將其設為 `false` 時，無需實作認證端點，Mankai 發送 `POST /process` 時也不會附帶 `Authorization` 標頭。
+
+:::

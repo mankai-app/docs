@@ -65,7 +65,11 @@ Raw image data, such as PNG or JPEG.
 
 A chapter group is a named container for a set of related chapters (for example, a "Season 1" group, or chapters belonging to the same scanlation team).
 
+:::note[Editable chapter group IDs]
+
 For editable manga, every chapter group returned by `GET /manga/:id` must include its `id`. The app uses this ID for update and delete operations. Read-only implementations may omit chapter group IDs.
+
+:::
 
 ### `POST /edit/chapter-group`
 

@@ -59,9 +59,13 @@ type PluginCapability =
 
 `default` 是外掛模組執行非圖片操作時兩次呼叫之間的最小間隔，以毫秒為單位。`getImage` 單獨設定圖片請求之間的最小間隔。`getImageConcurrency` 可限制並行圖片請求數量。
 
+:::note[能力與更新檢查]
+
 省略 `capabilities` 時，除 `mangaUpdates` 以外的所有能力都會啟用。只有明確列出 `mangaUpdates` 時才會啟用該能力。
 
 支援 `batchMangas` 或 `mangaUpdates` 的外掛模組可以參與書庫更新檢查。如果需要伺服器透過 `POST /manga/updates` 決定哪些漫畫應標記為有更新，請包含 `mangaUpdates`。省略 `mangaUpdates` 時，Mankai 使用預設行為，呼叫 `POST /manga`、更新回傳的中繼資料並比較回傳的最新章節。預設行為要求支援 `batchMangas`。
+
+:::
 
 <span id="authentication-optional"></span>
 
@@ -69,7 +73,11 @@ type PluginCapability =
 
 若要在伺服器上啟用認證，必須實作以下兩個端點。
 
+:::note[認證標頭]
+
 用戶端呼叫 `/auth/*` 和 `/` 以外的端點時，會在 `Authorization` 請求標頭中包含 `accessToken`。
+
+:::
 
 ### `POST /auth/login`
 
@@ -197,7 +205,11 @@ type MangaUpdatesRequest = MangaUpdateRequest[]
 
 回傳 `MangaUpdate[]`。每個結果必須包含 `id` 和 `updates`。Mankai 僅根據 `updates` 的值決定是否將已儲存的漫畫標記為有更新。Mankai 會根據所有回傳結果更新中繼資料，包括 `updates` 為 `false` 的結果。
 
+:::note[局部更新]
+
 其餘屬性用於局部更新。Mankai 只將非 `null` 屬性套用到現有的本機漫畫快照。省略或設為 `null` 的屬性會保留現有值。只有 `updates` 為 `true` 時，Mankai 才會將 `latestChapter` 儲存為下次檢查更新的比較基準。回應中未包含的漫畫保持不變。
+
+:::
 
 ```ts
 interface MangaUpdate extends Manga {

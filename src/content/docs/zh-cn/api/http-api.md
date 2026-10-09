@@ -59,9 +59,13 @@ type PluginCapability =
 
 `default` 是插件执行非图片操作时两次调用之间的最小间隔，以毫秒为单位。`getImage` 单独设置图片请求之间的最小间隔。`getImageConcurrency` 可限制并发图片请求数量。
 
+:::note[能力与更新检查]
+
 省略 `capabilities` 时，除 `mangaUpdates` 以外的所有能力都会启用。只有显式列出 `mangaUpdates` 时才会启用该能力。
 
 支持 `batchMangas` 或 `mangaUpdates` 的插件可以参与书库更新检查。如果需要服务器通过 `POST /manga/updates` 决定哪些漫画应标记为有更新，请包含 `mangaUpdates`。省略 `mangaUpdates` 时，Mankai 使用默认行为，调用 `POST /manga`、刷新返回的元数据并比较返回的最新章节。默认行为要求支持 `batchMangas`。
+
+:::
 
 <span id="authentication-optional"></span>
 
@@ -69,7 +73,11 @@ type PluginCapability =
 
 若要在服务器上启用认证，必须实现以下两个端点。
 
+:::note[认证标头]
+
 客户端调用 `/auth/*` 和 `/` 以外的端点时，会在 `Authorization` 请求标头中包含 `accessToken`。
+
+:::
 
 ### `POST /auth/login`
 
@@ -197,7 +205,11 @@ type MangaUpdatesRequest = MangaUpdateRequest[]
 
 返回 `MangaUpdate[]`。每个结果必须包含 `id` 和 `updates`。Mankai 仅根据 `updates` 的值决定是否将已保存的漫画标记为有更新。Mankai 会根据所有返回结果刷新元数据，包括 `updates` 为 `false` 的结果。
 
+:::note[局部更新]
+
 其余属性用于局部更新。Mankai 只将非 `null` 属性应用到现有的本地漫画快照。省略或设为 `null` 的属性会保留现有值。只有 `updates` 为 `true` 时，Mankai 才会将 `latestChapter` 保存为下次检查更新的比较基准。响应中未包含的漫画保持不变。
+
+:::
 
 ```ts
 interface MangaUpdate extends Manga {

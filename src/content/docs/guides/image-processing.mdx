@@ -52,7 +52,11 @@ A remote processor sends reader images to a server and uses the returned images 
 4. Tap the new processor's row and adjust its **Configuration**. If the server requires authentication, enter the supplied **Username** and **Password**.
 5. Check that its switch is enabled and place it in the processing order you want.
 
+:::note[Remote server connection]
+
 Enter the base URL, such as `https://images.example.com/mankai`, rather than the `/process` endpoint. A server on your home network must be reachable from the device while you read. Only local processors can run without a connection to a processing server.
+
+:::
 
 Remote processors receive the image at their position in the processing order. For example, placing one after **Monochrome Tone** sends the toned image to the server. Available settings and effects depend on the service.
 
@@ -60,7 +64,13 @@ If you are building a compatible server, see the [Image processor API](/api/imag
 
 ## Reset or remove a processor
 
-Tap a processor's row, tap **Reset Configuration**, then tap **Reset** to restore its default settings. For an authenticated remote processor, this also clears its username and password.
+Tap a processor's row, tap **Reset Configuration**, then tap **Reset** to restore its default settings.
+
+:::caution[Resetting remote credentials]
+
+For an authenticated remote processor, this also clears its username and password.
+
+:::
 
 To remove a processor, swipe its row and confirm **Remove**, or use **Remove** in its configuration screen. To pause an effect while keeping its configuration, turn off its switch instead.
 
@@ -71,6 +81,10 @@ To remove a processor, swipe its row and confirm **Remove**, or use **Remove** i
 - If upscaling is slow, lower **Upscaling Sensitivity** or disable the processor. Keep **Downsample Images** enabled to reduce memory usage.
 - For a remote processor, check the base URL, server availability, connection, and any required credentials.
 
+:::note[Original image fallback]
+
 Upscaling and remote processing can show the original page while processing finishes. If processing fails, Mankai keeps the original image available for reading.
+
+:::
 
 For page layout and navigation, see [Reading and reader settings](/guides/reading/).

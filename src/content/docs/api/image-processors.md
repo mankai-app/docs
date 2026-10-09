@@ -24,7 +24,11 @@ The URL entered by the user is the base URL. For example, entering `https://imag
 
 ### `GET /`
 
+:::note[Public metadata endpoint]
+
 The metadata endpoint must be available without authentication.
+
+:::
 
 **Response — `200 OK`**
 
@@ -57,7 +61,11 @@ interface Config {
 }
 ```
 
+:::note[Color opacity]
+
 `color` configuration fields use sRGB hex strings. By default, the picker is opaque and saves uppercase `#RRGGBB` values such as `"#F2E4C9"`. Set `supportsOpacity` to `true` to enable the opacity control and save `#RRGGBBAA` values. The leading `#` is optional on input.
+
+:::
 
 Example:
 
@@ -136,7 +144,11 @@ interface ProcessContext {
 
 The server must return the processed image directly with a `2xx` status and an `image/*` `Content-Type`. PNG, JPEG, WebP, HEIF, and any other image format supported by the client platform are allowed. The response is passed to the next configured image processor, so the server should preserve enough resolution and image quality for subsequent processing and reading.
 
+:::note[Processing failures]
+
 For non-`2xx` responses, a short plain-text or JSON error body may be returned. Mankai treats the processing attempt as failed and keeps the unprocessed reader image available.
+
+:::
 
 ## Authentication (optional)
 
@@ -180,6 +192,10 @@ Set `authenticationEnabled` to `true` to make `POST /process` require JWT bearer
 }
 ```
 
+:::note[Authentication behavior]
+
 For an authenticated processor, Mankai sends `Authorization: Bearer <accessToken>` with `POST /process`. A `401` or `403` response triggers one token refresh and one retry of the original multipart request. The metadata and `/auth/*` endpoints never require a bearer token.
 
 When `authenticationEnabled` is omitted or `false`, the authentication endpoints are not required and Mankai sends `POST /process` without an `Authorization` header.
+
+:::

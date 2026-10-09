@@ -59,16 +59,22 @@ type PluginCapability =
 
 `default` は、画像以外のプラグイン呼び出し間に設ける最小待機時間です。省略可能で、単位はミリ秒です。`getImage` は画像の呼び出しに対して別の最小待機時間を設定します。`getImageConcurrency` を指定すると、画像リクエストの同時実行数を制限できます。
 
+:::note[機能と更新確認]
+
 `capabilities` を省略すると、`mangaUpdates` 以外のすべての機能が有効になります。`mangaUpdates` は明示的に指定した場合のみ有効になります。
 
 `batchMangas` または `mangaUpdates` のいずれかを持つプラグインは、ライブラリの更新確認に対応できます。`POST /manga/updates` を通じて、どの漫画を更新ありとして扱うかサーバー側で制御する場合は、`mangaUpdates` を含めてください。Mankai の標準の動作を使用する場合は、`mangaUpdates` を含めないでください。標準の動作では `POST /manga` を呼び出し、返されたメタデータでローカルの情報を更新し、最新チャプターを保存済みの情報と比較します。この動作には `batchMangas` が必要です。
+
+:::
 
 ## 認証（任意）
 
 サーバーで認証を有効にする場合は、次の 2 つのエンドポイントを実装する必要があります。
 
-:::note
+:::note[認証ヘッダー]
+
 クライアントが `/auth/*` と `/` 以外のエンドポイントを呼び出すときは、`Authorization` ヘッダーに `accessToken` を含めます。
+
 :::
 
 ### `POST /auth/login`
@@ -195,7 +201,11 @@ type MangaUpdatesRequest = MangaUpdateRequest[]
 
 `MangaUpdate[]` を返してください。各結果には必ず `id` と `updates` を含めます。保存済みの漫画を更新ありとするかどうかは、`updates` フラグだけで決まります。`updates` が `false` の結果も含め、返されたすべての結果についてメタデータが更新されます。
 
+:::note[部分的な更新]
+
 それ以外のプロパティは部分的な更新として扱われます。Mankai は既存のローカル漫画データに対し、`null` 以外のプロパティだけを適用します。省略されたプロパティと `null` のプロパティは、既存の値を変更しません。`latestChapter` が次回の更新確認の比較基準として保存されるのは、`updates` が `true` の場合のみです。レスポンスに含まれない漫画のデータは変更されません。
+
+:::
 
 ```ts
 interface MangaUpdate extends Manga {

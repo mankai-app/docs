@@ -13,7 +13,13 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 2. 若要自行选择章节，请展开书籍的某个章节组并轻点章节。
 3. 如果想反转章节顺序，请使用章节列表的排序按钮。
 
-显示的章节组和信息取决于书籍及其来源。已锁定或不可用的章节无法直接在阅读器中打开。
+显示的章节组和信息取决于书籍及其来源。
+
+:::note[不可用的章节]
+
+已锁定或不可用的章节无法直接在阅读器中打开。
+
+:::
 
 <DeviceScreenshots
   id="reading-chapters"
@@ -30,7 +36,13 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 3. 拖动底部的页面滑块，跳转到另一页。
 4. 使用滑块旁的上一章和下一章按钮，在可用章节之间切换。
 
-滑动方向和轻点行为取决于阅读器偏好设置。如果章节加载失败，请检查连接，然后在阅读器中重试。
+滑动方向和轻点行为取决于阅读器偏好设置。
+
+:::tip[重试章节]
+
+如果章节加载失败，请检查连接，然后在阅读器中重试。
+
+:::
 
 <DeviceScreenshots
   id="reading-controls"
@@ -52,7 +64,13 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 | **图片布局**     | 选择**自动**、**每行一页**或**每行两页** |
 | **智能分组**     | 根据页面内容的相似度自动分组             |
 
-分页模式还提供水平或垂直导航，以及页面过渡选项。部分设置仅在适用于所选模式或书籍时显示。如果阅读器遵循书籍指定的阅读方向，方向控制可能会被停用。
+分页模式还提供水平或垂直导航，以及页面过渡选项。
+
+:::note[设置的显示条件]
+
+部分设置仅在适用于所选模式或书籍时显示。如果阅读器遵循书籍指定的阅读方向，方向控制可能会被停用。
+
+:::
 
 <DeviceScreenshots
   id="reading-preferences"

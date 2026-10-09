@@ -8,7 +8,7 @@ prev: false
 
 使用这些 API 和格式规范将你的内容或服务接入 Mankai，或创建 MMA 书籍归档。根据想要构建的内容，选择适合的参考文档。
 
-Mankai 在内部使用插件与来源交互。HTTP 来源需要实现可供 Mankai HTTP 插件调用的兼容服务器 API；JavaScript 来源需要提供 JSON 清单和回调脚本。
+Mankai 在内部使用插件与来源交互。HTTP 来源需要实现可供 Mankai HTTP 插件调用的兼容服务器 API。JavaScript 来源需要提供 JSON 清单和回调脚本。
 
 如需了解应用的设置和使用方法，请阅读[快速入门](/zh-cn/guides/quick-start/)。
 

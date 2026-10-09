@@ -13,7 +13,13 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 2. 若要自行選擇章節，請展開書籍的某個章節組並點一下章節。
 3. 如果想反轉章節順序，請使用章節清單的排序按鈕。
 
-顯示的章節組和資訊取決於書籍及其來源。已鎖定或不可用的章節無法直接在閱讀器中打開。
+顯示的章節組和資訊取決於書籍及其來源。
+
+:::note[無法使用的章節]
+
+已鎖定或不可用的章節無法直接在閱讀器中打開。
+
+:::
 
 <DeviceScreenshots
   id="reading-chapters"
@@ -30,7 +36,13 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 3. 拖曳底部的頁面滑桿，跳轉到另一頁。
 4. 使用滑桿旁的上一章和下一章按鈕，在可用章節之間切換。
 
-滑動方向和點按行為取決於閱讀器偏好設定。如果章節載入失敗，請檢查連線，然後在閱讀器中重試。
+滑動方向和點按行為取決於閱讀器偏好設定。
+
+:::tip[重試章節]
+
+如果章節載入失敗，請檢查連線，然後在閱讀器中重試。
+
+:::
 
 <DeviceScreenshots
   id="reading-controls"
@@ -52,7 +64,13 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 | **圖片排版**     | 選擇**自動**、**每行一頁**或**每行二頁** |
 | **智能分組**     | 根據頁面內容的相似度自動分組             |
 
-分頁模式還提供水平或垂直導航，以及頁面過渡選項。部分設定僅在適用於所選模式或書籍時顯示。如果閱讀器遵循書籍指定的閱讀方向，方向控制可能會被停用。
+分頁模式還提供水平或垂直導航，以及頁面過渡選項。
+
+:::note[設定的顯示條件]
+
+部分設定僅在適用於所選模式或書籍時顯示。如果閱讀器遵循書籍指定的閱讀方向，方向控制可能會被停用。
+
+:::
 
 <DeviceScreenshots
   id="reading-preferences"

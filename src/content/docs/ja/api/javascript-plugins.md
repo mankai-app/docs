@@ -7,7 +7,13 @@ sidebar:
 
 この仕様は、オンラインのソースから [Mankai](https://github.com/mankai-app/mankai) に漫画を提供するプラグインの JSON 形式と JavaScript API を説明します。
 
-JavaScript プラグインは読み取り専用のソースです。アプリは URL または貼り付けられた JSON からマニフェストを読み込み、非表示の WebKit Web ビューでコールバックスクリプトを実行します。プラグインはネットワークリクエストを送信し、アプリのプラグイン実行環境で任意の JavaScript を実行できるため、信頼できるものだけをインストールしてください。
+JavaScript プラグインは読み取り専用のソースです。アプリは URL または貼り付けられた JSON からマニフェストを読み込み、非表示の WebKit Web ビューでコールバックスクリプトを実行します。
+
+:::caution[信頼できるプラグイン]
+
+プラグインはネットワークリクエストを送信し、アプリのプラグイン実行環境で任意の JavaScript を実行できるため、信頼できるものだけをインストールしてください。
+
+:::
 
 ## マニフェスト
 
@@ -92,17 +98,31 @@ export{isOnline as default};
 
 マーカーは `export{functionName as default};` の形式にする必要があります。Mankai は実行前にマーカーを取り除き、指定された名前の関数を呼び出します。関数は同期でも非同期でも構いません。Mankai は結果を待機します。スクリプトには、エクスポートする関数に加えて補助関数を含めることもできます。
 
+:::caution[未実装のコールバック]
+
 マニフェストはスクリプトが不足していても読み込まれますが、存在しないコールバックを呼び出すと実行時に失敗します。プラグインが宣言する各機能に対応するコールバックを用意してください。`getImage` の代わりに `getImageHeaders` を使うこともできます。
+
+:::
 
 ## コールバックスクリプト
 
-任意の `capabilities` フィールドには、以下の値を指定できます。省略すると `mangaUpdates` 以外のすべての機能が有効になります。実装済みの操作だけをこのフィールドに指定すると、アプリが未対応のコールバックを呼び出すことを避けられます。
+任意の `capabilities` フィールドには、以下の値を指定できます。
+
+:::note[既定の機能]
+
+省略すると `mangaUpdates` 以外のすべての機能が有効になります。実装済みの操作だけをこのフィールドに指定すると、アプリが未対応のコールバックを呼び出すことを避けられます。
+
+:::
 
 ```text
 onlineCheck, suggestions, list, listByGenre, listByStatus, search, searchByGenre, searchByStatus, searchByAuthor, mangaDetails, batchMangas, mangaUpdates, chapter, image
 ```
 
+:::note[更新確認]
+
 `batchMangas` または `mangaUpdates` を持つプラグインは、ライブラリの更新確認に対応できます。専用の `getMangaUpdates` コールバックで、どの漫画を更新ありとするかをプラグイン側で制御する場合は、`mangaUpdates` を含めます。Mankai の標準動作を使う場合は、`mangaUpdates` を含めません。標準動作では `getMangas` を呼び出し、返されたメタデータでローカルの情報を更新し、最新チャプターを保存済みの情報と比較します。この動作には `batchMangas` が必要です。
+
+:::
 
 キーと関数シグネチャは次のとおりです。
 
@@ -166,7 +186,11 @@ interface MangaUpdateRequest {
 
 `MangaUpdate[]` を返します。各結果には `id` と `updates` が必要です。保存済みの漫画を更新ありとするかどうかは、`updates` フラグだけで決まります。メタデータは、`updates` が `false` の結果も含め、返されたすべての結果で更新されます。
 
+:::note[部分的な更新]
+
 それ以外のプロパティは部分的な更新として扱われます。Mankai は既存のローカル漫画データに対し、`null` 以外のプロパティだけを適用します。省略されたプロパティと `null` のプロパティは、既存の値を変更しません。`latestChapter` が次回の更新確認の比較基準として保存されるのは、`updates` が `true` の場合のみです。レスポンスに含まれない漫画のデータは変更されません。
+
+:::
 
 ```ts
 interface MangaUpdate extends Manga {
@@ -254,7 +278,11 @@ export{getImage as default};
 }
 ```
 
+:::note[画像リクエストの優先順位]
+
 この方式は `getImage` スクリプトより優先されます。ヘッダーは表紙とチャプターのページの両方に適用されます。
+
+:::
 
 ## データ型
 
@@ -300,7 +328,11 @@ interface DetailedManga {
 }
 ```
 
+:::note[省略されたフィールド]
+
 詳細な漫画情報で `authors`、`genres`、`chapters` を省略すると、空の配列になります。
+
+:::
 
 ### ジャンル
 
@@ -360,7 +392,11 @@ interface FetchResponse {
 }
 ```
 
+:::note[fetch のエラー処理]
+
 `2xx` 以外のレスポンスでも Promise は成功し、`ok` が `false` になります。`ok` または `status` を使って処理してください。ネットワークエラーや無効な URL による失敗では、Promise が拒否されます。リクエストとレスポンスのボディはネイティブブリッジを通して転送されるため、バイナリのレスポンスには `arrayBuffer()` を使ってください。
+
+:::
 
 ### `console.log(...values)`
 
@@ -442,7 +478,11 @@ interface Config {
 }
 ```
 
+:::note[色の不透明度]
+
 `color` 型の設定には、sRGB の 16 進数文字列を使用します。既定では不透明な色を選択し、`"#F2E4C9"` のような大文字の `#RRGGBB` 形式で保存します。`supportsOpacity` を `true` にすると不透明度を調整できるようになり、`#RRGGBBAA` 形式で保存します。入力時の先頭の `#` は省略できます。
+
+:::
 
 `options` は `select` の設定で使います。`min`、`max`、`step` は `slider` の範囲と刻み幅を設定します。アプリは各設定を `defaultValue` で初期化し、ソース設定で行った変更を保存して、現在値を `getConfigs()` から公開します。
 
@@ -478,7 +518,11 @@ interface Config {
 }
 ```
 
+:::note[URL による設定の上書き]
+
 URL からプラグインをインポートする場合、設定のキーと一致するクエリパラメーターが、宣言された既定値を上書きします。値は `type` に応じて解析されます。真偽値は `true` と `1` を認識し、数値とスライダーは整数または小数として解析します。`text`、`password`、`select`、`color` の値は、前後の空白を取り除いた文字列のまま扱います。
+
+:::
 
 ## リクエスト間隔と同時実行数
 
