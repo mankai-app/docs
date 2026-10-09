@@ -18,8 +18,14 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 
 ### ソースを追加する
 
+ソースは手動で設定するほか、提供元のインポートリンクや QR コードから追加できます。
+
+#### 手動で追加する
+
+**ローカルソース**には**ファイルシステム**、**リモートソース**には **JavaScript** と **Mankai 互換**、**連携**には **Komgaサーバー**、**Kavitaサーバー**、**Suwayomiサーバー**が表示されます。
+
 1. **設定 → ソース**を開き、**+** ボタンをタップします。
-2. **ソースを追加**で、提供元が指定した種類を選び、専用の設定画面を開きます。
+2. **ソースを追加**で、該当するセクションから提供元が指定した種類を選び、専用の設定画面を開きます。
 3. 下の表を参考に、ソースの種類に応じた情報を入力します。
 4. **追加**をタップします。**ライブラリ**に戻ると、そのソースが提供する作品一覧や検索を使えます。
 
@@ -45,8 +51,8 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 <DeviceScreenshots
   id="sources-types"
   title="ソースの種類を選ぶ"
-  phone="iPhone のソース追加画面。ファイルシステム、JavaScript、Mankai 互換、Komgaサーバー、Kavitaサーバー、Suwayomiサーバーが表示されています。"
-  tablet="iPad のソース追加画面。ファイルシステム、JavaScript、Mankai 互換、Komgaサーバー、Kavitaサーバー、Suwayomiサーバーが表示されています。"
+  phone="iPhone のソース追加画面。ローカルソース、リモートソース、連携のセクションと QR コードボタンが表示されています。"
+  tablet="iPad のソース追加画面。ローカルソース、リモートソース、連携のセクションと QR コードボタンが表示されています。"
   lang="ja"
 />
 
@@ -57,6 +63,12 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
   tablet="iPad の Mankai 互換サーバー設定画面。API URL と認証情報の入力欄が表示されています。"
   lang="ja"
 />
+
+#### インポートリンクや QR コードを使う
+
+提供元の **Add to Mankai** リンクを開くか、**設定 → ソース → +** の **QR コード**ボタンから、コードの読み取り、QR 画像の選択、リンクの貼り付けを行います。ソースを確認して**追加**をタップします。
+
+提供元向けの作成方法は、[ソース追加リンクのリファレンス](/ja/api/source-links/)を参照してください。
 
 ## ファイル型ソースを追加する
 

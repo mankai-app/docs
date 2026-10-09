@@ -16,6 +16,7 @@ For help setting up and using the app, follow [Quick start](/guides/quick-start/
 
 | Build                                  | Reference                                      | What it provides                                                                                                             |
 | :------------------------------------- | :--------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
+| Source installation links and QR codes | [Add-source links](/api/source-links/)         | A URL format for previewing and adding one or more sources.                                                                  |
 | A JavaScript content source            | [JavaScript plugins](/api/javascript-plugins/) | A JSON manifest and callbacks for browsing, search, manga details, chapters, and images.                                     |
 | A Mankai-compatible manga server       | [Mankai Compatible API](/api/http-api/)        | Compatible HTTP endpoints called by Mankai's HTTP plugin for browsing, authentication, search, and library update checks.    |
 | Editing for a Mankai Compatible source | [Editor API](/api/editor-api/)                 | Optional endpoints that extend the Mankai Compatible API to manage manga, chapter groups, chapters, covers, and page images. |

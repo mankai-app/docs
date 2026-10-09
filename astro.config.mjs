@@ -94,6 +94,7 @@ export default defineConfig({
           collapsed: true,
           items: [
             { slug: 'api/overview' },
+            { slug: 'api/source-links' },
             { slug: 'api/javascript-plugins' },
             { slug: 'api/http-api' },
             { slug: 'api/editor-api' },
