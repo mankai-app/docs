@@ -29,6 +29,8 @@ interface ServerInfoResponse {
   description?: string
   authors?: string[]
   repository?: string
+  icon?: string
+  homePage?: string
   availableGenres?: string[]
   cooldown?: Cooldown
   capabilities?: PluginCapability[]

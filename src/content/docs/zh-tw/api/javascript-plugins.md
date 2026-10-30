@@ -54,6 +54,8 @@ interface JsPluginManifest {
   description?: string
   authors?: string[]
   repository?: string
+  icon?: string
+  homePage?: string
   updatesUrl?: string
   availableGenres?: Genre[]
   scripts?: Record<ScriptName, string>
@@ -76,6 +78,8 @@ interface JsPluginManifest {
 | `description`     | `string`                 | 在來源設定中顯示的簡短描述。                                                      |
 | `authors`         | `string[]`               | 外掛模組作者，預設值為 `[]`。                                                     |
 | `repository`      | `string`                 | 原始碼或專案的網址。                                                              |
+| `icon`            | `string`                 | 自訂來源圖示的 HTTP(S) 圖片網址。                                                 |
+| `homePage`        | `string`                 | 來源網站的 HTTP(S) 網址，網站連結優先使用此值而非 `repository`。                  |
 | `updatesUrl`      | `string`                 | 用於檢查更新的清單網址。                                                          |
 | `availableGenres` | `Genre[]`                | 內容源支援的漫畫類型，預設值為 `[]`。                                             |
 | `scripts`         | `Record<string, string>` | 以以下腳本名稱為鍵的 JavaScript 原始碼，未知的鍵會被忽略。                        |

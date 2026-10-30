@@ -54,6 +54,8 @@ interface JsPluginManifest {
   description?: string
   authors?: string[]
   repository?: string
+  icon?: string
+  homePage?: string
   updatesUrl?: string
   availableGenres?: Genre[]
   scripts?: Record<ScriptName, string>
@@ -74,6 +76,8 @@ interface JsPluginManifest {
 | `description`     | `string`                 | Short description displayed in source settings.                                                                         |
 | `authors`         | `string[]`               | Plugin authors. Defaults to `[]`.                                                                                       |
 | `repository`      | `string`                 | Source-code or project URL.                                                                                             |
+| `icon`            | `string`                 | HTTP(S) URL of a custom source icon.                                                                                    |
+| `homePage`        | `string`                 | HTTP(S) URL of the source website. Preferred over `repository` for the website link.                                    |
 | `updatesUrl`      | `string`                 | URL of a manifest to check for updates.                                                                                 |
 | `availableGenres` | `Genre[]`                | Genres supported by the source. Defaults to `[]`.                                                                       |
 | `scripts`         | `Record<string, string>` | JavaScript source keyed by the script names below. Unknown keys are ignored.                                            |

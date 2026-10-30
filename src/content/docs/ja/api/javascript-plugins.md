@@ -54,6 +54,8 @@ interface JsPluginManifest {
   description?: string
   authors?: string[]
   repository?: string
+  icon?: string
+  homePage?: string
   updatesUrl?: string
   availableGenres?: Genre[]
   scripts?: Record<ScriptName, string>
@@ -74,6 +76,8 @@ interface JsPluginManifest {
 | `description`     | `string`                 | ソース設定に表示する短い説明です。                                                                                              |
 | `authors`         | `string[]`               | プラグインの作者です。既定値は `[]` です。                                                                                      |
 | `repository`      | `string`                 | ソースコードまたはプロジェクトの URL です。                                                                                     |
+| `icon`            | `string`                 | ソースのカスタムアイコンを指定する HTTP(S) URL です。                                                                           |
+| `homePage`        | `string`                 | ソースのウェブサイトの HTTP(S) URL です。ウェブサイトへのリンクには `repository` より優先して使われます。                       |
 | `updatesUrl`      | `string`                 | 更新確認に使うマニフェストの URL です。                                                                                         |
 | `availableGenres` | `Genre[]`                | ソースが対応するジャンルです。既定値は `[]` です。                                                                              |
 | `scripts`         | `Record<string, string>` | 下記のスクリプト名をキーとする JavaScript ソースです。未知のキーは無視されます。                                                |
