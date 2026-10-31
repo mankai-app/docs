@@ -31,7 +31,8 @@ interface ServerInfoResponse {
   repository?: string
   icon?: string
   homePage?: string
-  availableGenres?: string[]
+  availableGenres?: Genre[]
+  availableCustomGenres?: string[] // Read-only sources, default: []
   cooldown?: Cooldown
   capabilities?: PluginCapability[]
 }
@@ -47,9 +48,11 @@ type PluginCapability =
   | 'suggestions'
   | 'list'
   | 'listByGenre'
+  | 'listByCustomGenre'
   | 'listByStatus'
   | 'search'
   | 'searchByGenre'
+  | 'searchByCustomGenre'
   | 'searchByStatus'
   | 'searchByAuthor'
   | 'mangaDetails'
@@ -63,7 +66,7 @@ type PluginCapability =
 
 :::note[Capabilities and update checks]
 
-When `capabilities` is omitted, every capability except `mangaUpdates` is enabled. The `mangaUpdates` capability is enabled only when listed explicitly.
+When `capabilities` is omitted, all listed capabilities except `mangaUpdates`, `listByCustomGenre`, and `searchByCustomGenre` are enabled. These three capabilities must be listed explicitly.
 
 Plugins with either `batchMangas` or `mangaUpdates` can participate in library update checks. Include `mangaUpdates` when the server should control which manga are marked as updated through `POST /manga/updates`. Exclude `mangaUpdates` to use Mankai's default behavior, which calls `POST /manga`, refreshes the returned metadata, and compares the returned latest chapters. The default behavior requires `batchMangas`.
 
@@ -136,11 +139,12 @@ Retrieve a paginated list of manga, optionally filtered by genre, status, or bot
 
 **Query parameters**
 
-| Parameter | Type     | Default   | Required | Description                                                  |
-| :-------- | :------- | :-------- | :------- | :----------------------------------------------------------- |
-| `page`    | `number` | `1`       | No       | The page number to retrieve.                                 |
-| `genre`   | `string` | `"all"`   | No       | Filter results by a single genre.                            |
-| `status`  | `number` | `0` (Any) | No       | Filter by status: `0` = Any, `1` = OnGoing, `2` = Completed. |
+| Parameter     | Type     | Default   | Required | Description                                                  |
+| :------------ | :------- | :-------- | :------- | :----------------------------------------------------------- |
+| `page`        | `number` | `1`       | No       | The page number to retrieve.                                 |
+| `genre`       | `string` | `"all"`   | No       | Filter results by a single genre.                            |
+| `customGenre` | `string` | Omitted   | No       | Exact custom genre name. Requires `listByCustomGenre`.       |
+| `status`      | `number` | `0` (Any) | No       | Filter by status: `0` = Any, `1` = OnGoing, `2` = Completed. |
 
 **Response — `200 OK`**
 
@@ -260,6 +264,7 @@ interface MangaResponse {
   updatedAt?: number // Unix timestamp in milliseconds
   authors: string[]
   genres: Genre[]
+  customGenres?: string[] // Read-only sources, default: []
   chapters: ChapterGroup[] // Ordered from first group to last group
   remarks?: string
   editable?: boolean // Whether this manga can be edited, defaults to true
@@ -339,13 +344,14 @@ Search for manga by title or author.
 
 **Query parameters**
 
-| Parameter  | Type      | Default   | Required | Description                                                  |
-| :--------- | :-------- | :-------- | :------- | :----------------------------------------------------------- |
-| `query`    | `string`  | `null`    | Yes      | The search query string.                                     |
-| `page`     | `number`  | `1`       | No       | The page number to retrieve.                                 |
-| `genre`    | `string`  | `"all"`   | No       | Filter results by a single genre.                            |
-| `status`   | `number`  | `0` (Any) | No       | Filter by status: `0` = Any, `1` = OnGoing, `2` = Completed. |
-| `isAuthor` | `boolean` | `false`   | No       | Search the authors field instead of the title field.         |
+| Parameter     | Type      | Default   | Required | Description                                                  |
+| :------------ | :-------- | :-------- | :------- | :----------------------------------------------------------- |
+| `query`       | `string`  | `null`    | Yes      | The search query string.                                     |
+| `page`        | `number`  | `1`       | No       | The page number to retrieve.                                 |
+| `genre`       | `string`  | `"all"`   | No       | Filter results by a single genre.                            |
+| `customGenre` | `string`  | Omitted   | No       | Exact custom genre name. Requires `searchByCustomGenre`.     |
+| `status`      | `number`  | `0` (Any) | No       | Filter by status: `0` = Any, `1` = OnGoing, `2` = Completed. |
+| `isAuthor`    | `boolean` | `false`   | No       | Search the authors field instead of the title field.         |
 
 **Response — `200 OK`**
 

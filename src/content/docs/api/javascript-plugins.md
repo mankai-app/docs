@@ -36,9 +36,11 @@ type PluginCapability =
   | 'suggestions'
   | 'list'
   | 'listByGenre'
+  | 'listByCustomGenre'
   | 'listByStatus'
   | 'search'
   | 'searchByGenre'
+  | 'searchByCustomGenre'
   | 'searchByStatus'
   | 'searchByAuthor'
   | 'mangaDetails'
@@ -58,6 +60,7 @@ interface JsPluginManifest {
   homePage?: string
   updatesUrl?: string
   availableGenres?: Genre[]
+  availableCustomGenres?: string[]
   scripts?: Record<ScriptName, string>
   configs?: Config[]
   getImageHeaders?: Record<string, string>
@@ -68,23 +71,24 @@ interface JsPluginManifest {
 
 ### Metadata fields
 
-| Field             | Type                     | Description                                                                                                             |
-| :---------------- | :----------------------- | :---------------------------------------------------------------------------------------------------------------------- |
-| `id`              | `string`                 | Stable, globally unique plugin identifier. It is also used to scope persistent storage.                                 |
-| `name`            | `string`                 | Display name. Defaults to the ID when omitted.                                                                          |
-| `version`         | `string`                 | Plugin version shown in the app and compared for updates.                                                               |
-| `description`     | `string`                 | Short description displayed in source settings.                                                                         |
-| `authors`         | `string[]`               | Plugin authors. Defaults to `[]`.                                                                                       |
-| `repository`      | `string`                 | Source-code or project URL.                                                                                             |
-| `icon`            | `string`                 | HTTP(S) URL of a custom source icon.                                                                                    |
-| `homePage`        | `string`                 | HTTP(S) URL of the source website. Preferred over `repository` for the website link.                                    |
-| `updatesUrl`      | `string`                 | URL of a manifest to check for updates.                                                                                 |
-| `availableGenres` | `Genre[]`                | Genres supported by the source. Defaults to `[]`.                                                                       |
-| `scripts`         | `Record<string, string>` | JavaScript source keyed by the script names below. Unknown keys are ignored.                                            |
-| `configs`         | `Config[]`               | User-configurable values exposed to the scripts. Defaults to `[]`.                                                      |
-| `getImageHeaders` | `Record<string, string>` | If present, Mankai downloads every image URL with these native request headers and does not call the `getImage` script. |
-| `cooldown`        | `Cooldown`               | Optional request throttling and image concurrency limits.                                                               |
-| `capabilities`    | `PluginCapability[]`     | Operations supported by the plugin. By default, every capability except `mangaUpdates` is enabled.                      |
+| Field                   | Type                     | Description                                                                                                                                                |
+| :---------------------- | :----------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                    | `string`                 | Stable, globally unique plugin identifier. It is also used to scope persistent storage.                                                                    |
+| `name`                  | `string`                 | Display name. Defaults to the ID when omitted.                                                                                                             |
+| `version`               | `string`                 | Plugin version shown in the app and compared for updates.                                                                                                  |
+| `description`           | `string`                 | Short description displayed in source settings.                                                                                                            |
+| `authors`               | `string[]`               | Plugin authors. Defaults to `[]`.                                                                                                                          |
+| `repository`            | `string`                 | Source-code or project URL.                                                                                                                                |
+| `icon`                  | `string`                 | HTTP(S) URL of a custom source icon.                                                                                                                       |
+| `homePage`              | `string`                 | HTTP(S) URL of the source website. Preferred over `repository` for the website link.                                                                       |
+| `updatesUrl`            | `string`                 | URL of a manifest to check for updates.                                                                                                                    |
+| `availableGenres`       | `Genre[]`                | Genres supported by the source. Defaults to `[]`.                                                                                                          |
+| `availableCustomGenres` | `string[]`               | Custom genres supported by the source. Defaults to `[]`.                                                                                                   |
+| `scripts`               | `Record<string, string>` | JavaScript source keyed by the script names below. Unknown keys are ignored.                                                                               |
+| `configs`               | `Config[]`               | User-configurable values exposed to the scripts. Defaults to `[]`.                                                                                         |
+| `getImageHeaders`       | `Record<string, string>` | If present, Mankai downloads every image URL with these native request headers and does not call the `getImage` script.                                    |
+| `cooldown`              | `Cooldown`               | Optional request throttling and image concurrency limits.                                                                                                  |
+| `capabilities`          | `PluginCapability[]`     | Operations supported by the plugin. By default, all listed capabilities except `mangaUpdates`, `listByCustomGenre`, and `searchByCustomGenre` are enabled. |
 
 ### Script format
 
@@ -114,12 +118,12 @@ The optional `capabilities` field accepts the values listed below.
 
 :::note[Default capabilities]
 
-If it is omitted, every capability except `mangaUpdates` is enabled. A plugin can use the field to advertise only the operations it implements, so the app can avoid invoking unsupported callbacks.
+If it is omitted, all listed capabilities except `mangaUpdates`, `listByCustomGenre`, and `searchByCustomGenre` are enabled. These three capabilities must be listed explicitly. A plugin can use the field to advertise only the operations it implements, so the app can avoid invoking unsupported callbacks.
 
 :::
 
 ```text
-onlineCheck, suggestions, list, listByGenre, listByStatus, search, searchByGenre, searchByStatus, searchByAuthor, mangaDetails, batchMangas, mangaUpdates, chapter, image
+onlineCheck, suggestions, list, listByGenre, listByCustomGenre, listByStatus, search, searchByGenre, searchByCustomGenre, searchByStatus, searchByAuthor, mangaDetails, batchMangas, mangaUpdates, chapter, image
 ```
 
 :::note[Update checks]
@@ -130,17 +134,17 @@ Plugins with either `batchMangas` or `mangaUpdates` can participate in library u
 
 The keys and function signatures are:
 
-| Key                | Function signature                             | Return value                                        |
-| :----------------- | :--------------------------------------------- | :-------------------------------------------------- |
-| `isOnline`         | `isOnline()`                                   | `boolean`                                           |
-| `getSuggestion`    | `getSuggestion(query)`                         | `string[]`                                          |
-| `search`           | `search(query, page, genre, status, isAuthor)` | `Manga[]`                                           |
-| `getList`          | `getList(page, genre, status)`                 | `Manga[]`                                           |
-| `getMangas`        | `getMangas(ids)`                               | `Manga[]`                                           |
-| `getMangaUpdates`  | `getMangaUpdates(mangas)`                      | `MangaUpdate[]` metadata patches and update flags   |
-| `getDetailedManga` | `getDetailedManga(id)`                         | `DetailedManga`                                     |
-| `getChapter`       | `getChapter(manga, chapter)`                   | `string[]` of image URLs                            |
-| `getImage`         | `getImage(url)`                                | Base64 image data, or an image proxy request object |
+| Key                | Function signature                                           | Return value                                        |
+| :----------------- | :----------------------------------------------------------- | :-------------------------------------------------- |
+| `isOnline`         | `isOnline()`                                                 | `boolean`                                           |
+| `getSuggestion`    | `getSuggestion(query)`                                       | `string[]`                                          |
+| `search`           | `search(query, page, genre, status, isAuthor, customGenre?)` | `Manga[]`                                           |
+| `getList`          | `getList(page, genre, status, customGenre?)`                 | `Manga[]`                                           |
+| `getMangas`        | `getMangas(ids)`                                             | `Manga[]`                                           |
+| `getMangaUpdates`  | `getMangaUpdates(mangas)`                                    | `MangaUpdate[]` metadata patches and update flags   |
+| `getDetailedManga` | `getDetailedManga(id)`                                       | `DetailedManga`                                     |
+| `getChapter`       | `getChapter(manga, chapter)`                                 | `string[]` of image URLs                            |
+| `getImage`         | `getImage(url)`                                              | Base64 image data, or an image proxy request object |
 
 Details for each argument and result follow.
 
@@ -165,11 +169,11 @@ async function getSuggestion(query) {
 export{getSuggestion as default};
 ```
 
-### `search(query, page, genre, status, isAuthor)`
+### `search(query, page, genre, status, isAuthor, customGenre?)`
 
 Search for manga by title or author. `page` is a 1-based page number. `genre` is one of the strings in [Genres](#genres), and `status` is one of the numeric values in [Statuses](#statuses). When `isAuthor` is `true`, search the source's author field instead of its title field. Return an array of lightweight `Manga` objects.
 
-### `getList(page, genre, status)`
+### `getList(page, genre, status, customGenre?)`
 
 Return a paginated list from the source, using the same `page`, `genre`, and `status` arguments as `search`.
 
@@ -326,6 +330,7 @@ interface DetailedManga {
   updatedAt?: number // Unix timestamp in milliseconds
   authors?: string[]
   genres?: Genre[]
+  customGenres?: string[]
   chapters?: ChapterGroup[]
   remarks?: string
   meta?: string
@@ -334,19 +339,27 @@ interface DetailedManga {
 
 :::note[Omitted fields]
 
-`authors`, `genres`, and `chapters` default to empty arrays when omitted from a detailed manga.
+`authors`, `genres`, `customGenres`, and `chapters` default to empty arrays when omitted from a detailed manga.
 
 :::
 
 ### Genres
 
-The string values recognized by Mankai are:
+The predefined string values accepted in `availableGenres` and `genres`, and passed as the `genre` argument, are:
 
 ```text
 all, action, romance, yuri, boysLove, otokonoko, schoolLife, adventure,
 harem, speculativeFiction, war, suspense, fanFiction, comedy, magic, horror,
 historical, sports, mature, mecha
 ```
+
+:::note[Custom genres]
+
+Use `availableCustomGenres` for the source's custom filter names and `customGenres` for a manga's custom labels. Both are string arrays and default to `[]`. Mankai displays and passes these names unchanged.
+
+Enable `list` with `listByCustomGenre` or `search` with `searchByCustomGenre` to filter by custom genre. When selected, `genre` is `"all"` and `customGenre` is the selected name. Mankai appends `customGenre` as the fourth `getList` argument or sixth `search` argument only when the corresponding custom genre capability is enabled, passing `null` when none is selected.
+
+:::
 
 ### Statuses
 

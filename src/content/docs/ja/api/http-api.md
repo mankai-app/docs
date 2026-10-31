@@ -31,7 +31,8 @@ interface ServerInfoResponse {
   repository?: string
   icon?: string
   homePage?: string
-  availableGenres?: string[]
+  availableGenres?: Genre[]
+  availableCustomGenres?: string[] // Read-only sources, default: []
   cooldown?: Cooldown
   capabilities?: PluginCapability[]
 }
@@ -47,9 +48,11 @@ type PluginCapability =
   | 'suggestions'
   | 'list'
   | 'listByGenre'
+  | 'listByCustomGenre'
   | 'listByStatus'
   | 'search'
   | 'searchByGenre'
+  | 'searchByCustomGenre'
   | 'searchByStatus'
   | 'searchByAuthor'
   | 'mangaDetails'
@@ -63,7 +66,7 @@ type PluginCapability =
 
 :::note[機能と更新確認]
 
-`capabilities` を省略すると、`mangaUpdates` 以外のすべての機能が有効になります。`mangaUpdates` は明示的に指定した場合のみ有効になります。
+`capabilities` を省略すると、記載された機能のうち `mangaUpdates`、`listByCustomGenre`、`searchByCustomGenre` 以外が有効になります。この 3 つの機能は明示的な指定が必要です。
 
 `batchMangas` または `mangaUpdates` のいずれかを持つプラグインは、ライブラリの更新確認に対応できます。`POST /manga/updates` を通じて、どの漫画を更新ありとして扱うかサーバー側で制御する場合は、`mangaUpdates` を含めてください。Mankai の標準の動作を使用する場合は、`mangaUpdates` を含めないでください。標準の動作では `POST /manga` を呼び出し、返されたメタデータでローカルの情報を更新し、最新チャプターを保存済みの情報と比較します。この動作には `batchMangas` が必要です。
 
@@ -136,11 +139,12 @@ interface RefreshResponse {
 
 **クエリパラメーター**
 
-| パラメーター | 型       | 既定値        | 必須   | 説明                                                                 |
-| :----------- | :------- | :------------ | :----- | :------------------------------------------------------------------- |
-| `page`       | `number` | `1`           | いいえ | 取得するページの番号です。                                           |
-| `genre`      | `string` | `"all"`       | いいえ | 1 つのジャンルで結果を絞り込みます。                                 |
-| `status`     | `number` | `0`（すべて） | いいえ | 連載状況で絞り込みます。`0` はすべて、`1` は連載中、`2` は完結です。 |
+| パラメーター  | 型       | 既定値        | 必須   | 説明                                                                     |
+| :------------ | :------- | :------------ | :----- | :----------------------------------------------------------------------- |
+| `page`        | `number` | `1`           | いいえ | 取得するページの番号です。                                               |
+| `genre`       | `string` | `"all"`       | いいえ | 1 つのジャンルで結果を絞り込みます。                                     |
+| `customGenre` | `string` | 省略          | いいえ | カスタムジャンル名をそのまま指定します。`listByCustomGenre` が必要です。 |
+| `status`      | `number` | `0`（すべて） | いいえ | 連載状況で絞り込みます。`0` はすべて、`1` は連載中、`2` は完結です。     |
 
 **レスポンス — `200 OK`**
 
@@ -260,6 +264,7 @@ interface MangaResponse {
   updatedAt?: number // Unix timestamp in milliseconds
   authors: string[]
   genres: Genre[]
+  customGenres?: string[] // Read-only sources, default: []
   chapters: ChapterGroup[] // Ordered from first group to last group
   remarks?: string
   editable?: boolean // Whether this manga can be edited, defaults to true
@@ -339,13 +344,14 @@ type ChapterResponse = string[]
 
 **クエリパラメーター**
 
-| パラメーター | 型        | 既定値        | 必須   | 説明                                                                 |
-| :----------- | :-------- | :------------ | :----- | :------------------------------------------------------------------- |
-| `query`      | `string`  | `null`        | はい   | 検索する文字列です。                                                 |
-| `page`       | `number`  | `1`           | いいえ | 取得するページの番号です。                                           |
-| `genre`      | `string`  | `"all"`       | いいえ | 1 つのジャンルで結果を絞り込みます。                                 |
-| `status`     | `number`  | `0`（すべて） | いいえ | 連載状況で絞り込みます。`0` はすべて、`1` は連載中、`2` は完結です。 |
-| `isAuthor`   | `boolean` | `false`       | いいえ | タイトルの代わりに作者のフィールドを検索します。                     |
+| パラメーター  | 型        | 既定値        | 必須   | 説明                                                                       |
+| :------------ | :-------- | :------------ | :----- | :------------------------------------------------------------------------- |
+| `query`       | `string`  | `null`        | はい   | 検索する文字列です。                                                       |
+| `page`        | `number`  | `1`           | いいえ | 取得するページの番号です。                                                 |
+| `genre`       | `string`  | `"all"`       | いいえ | 1 つのジャンルで結果を絞り込みます。                                       |
+| `customGenre` | `string`  | 省略          | いいえ | カスタムジャンル名をそのまま指定します。`searchByCustomGenre` が必要です。 |
+| `status`      | `number`  | `0`（すべて） | いいえ | 連載状況で絞り込みます。`0` はすべて、`1` は連載中、`2` は完結です。       |
+| `isAuthor`    | `boolean` | `false`       | いいえ | タイトルの代わりに作者のフィールドを検索します。                           |
 
 **レスポンス — `200 OK`**
 

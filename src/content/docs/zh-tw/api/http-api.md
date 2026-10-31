@@ -31,7 +31,8 @@ interface ServerInfoResponse {
   repository?: string
   icon?: string
   homePage?: string
-  availableGenres?: string[]
+  availableGenres?: Genre[]
+  availableCustomGenres?: string[] // Read-only sources, default: []
   cooldown?: Cooldown
   capabilities?: PluginCapability[]
 }
@@ -47,9 +48,11 @@ type PluginCapability =
   | 'suggestions'
   | 'list'
   | 'listByGenre'
+  | 'listByCustomGenre'
   | 'listByStatus'
   | 'search'
   | 'searchByGenre'
+  | 'searchByCustomGenre'
   | 'searchByStatus'
   | 'searchByAuthor'
   | 'mangaDetails'
@@ -63,7 +66,7 @@ type PluginCapability =
 
 :::note[能力與更新檢查]
 
-省略 `capabilities` 時，除 `mangaUpdates` 以外的所有能力都會啟用。只有明確列出 `mangaUpdates` 時才會啟用該能力。
+省略 `capabilities` 時，所列能力中除 `mangaUpdates`、`listByCustomGenre` 和 `searchByCustomGenre` 以外的所有能力都會啟用。這三項能力必須明確列出才會啟用。
 
 支援 `batchMangas` 或 `mangaUpdates` 的外掛模組可以參與書庫更新檢查。如果需要伺服器透過 `POST /manga/updates` 決定哪些漫畫應標記為有更新，請包含 `mangaUpdates`。省略 `mangaUpdates` 時，Mankai 使用預設行為，呼叫 `POST /manga`、更新回傳的中繼資料並比較回傳的最新章節。預設行為要求支援 `batchMangas`。
 
@@ -140,11 +143,12 @@ interface RefreshResponse {
 
 **查詢參數**
 
-| 參數     | 類型     | 預設值      | 必填 | 說明                                                 |
-| :------- | :------- | :---------- | :--- | :--------------------------------------------------- |
-| `page`   | `number` | `1`         | 否   | 要取得的頁碼。                                       |
-| `genre`  | `string` | `"all"`     | 否   | 依單一漫畫類型篩選結果。                             |
-| `status` | `number` | `0`（全部） | 否   | 按狀態篩選，`0` = 全部，`1` = 連載中，`2` = 已完結。 |
+| 參數          | 類型     | 預設值      | 必填 | 說明                                                 |
+| :------------ | :------- | :---------- | :--- | :--------------------------------------------------- |
+| `page`        | `number` | `1`         | 否   | 要取得的頁碼。                                       |
+| `genre`       | `string` | `"all"`     | 否   | 依單一漫畫類型篩選結果。                             |
+| `customGenre` | `string` | 省略        | 否   | 完整的自訂類型名稱，需要啟用 `listByCustomGenre`。   |
+| `status`      | `number` | `0`（全部） | 否   | 按狀態篩選，`0` = 全部，`1` = 連載中，`2` = 已完結。 |
 
 **回應 — `200 OK`**
 
@@ -264,6 +268,7 @@ interface MangaResponse {
   updatedAt?: number // Unix timestamp in milliseconds
   authors: string[]
   genres: Genre[]
+  customGenres?: string[] // Read-only sources, default: []
   chapters: ChapterGroup[] // Ordered from first group to last group
   remarks?: string
   editable?: boolean // Whether this manga can be edited, defaults to true
@@ -345,13 +350,14 @@ type ChapterResponse = string[]
 
 **查詢參數**
 
-| 參數       | 類型      | 預設值      | 必填 | 說明                                                 |
-| :--------- | :-------- | :---------- | :--- | :--------------------------------------------------- |
-| `query`    | `string`  | `null`      | 是   | 搜尋查詢字串。                                       |
-| `page`     | `number`  | `1`         | 否   | 要取得的頁碼。                                       |
-| `genre`    | `string`  | `"all"`     | 否   | 依單一漫畫類型篩選結果。                             |
-| `status`   | `number`  | `0`（全部） | 否   | 按狀態篩選，`0` = 全部，`1` = 連載中，`2` = 已完結。 |
-| `isAuthor` | `boolean` | `false`     | 否   | 搜尋作者欄位而不是標題欄位。                         |
+| 參數          | 類型      | 預設值      | 必填 | 說明                                                 |
+| :------------ | :-------- | :---------- | :--- | :--------------------------------------------------- |
+| `query`       | `string`  | `null`      | 是   | 搜尋查詢字串。                                       |
+| `page`        | `number`  | `1`         | 否   | 要取得的頁碼。                                       |
+| `genre`       | `string`  | `"all"`     | 否   | 依單一漫畫類型篩選結果。                             |
+| `customGenre` | `string`  | 省略        | 否   | 完整的自訂類型名稱，需要啟用 `searchByCustomGenre`。 |
+| `status`      | `number`  | `0`（全部） | 否   | 按狀態篩選，`0` = 全部，`1` = 連載中，`2` = 已完結。 |
+| `isAuthor`    | `boolean` | `false`     | 否   | 搜尋作者欄位而不是標題欄位。                         |
 
 **回應 — `200 OK`**
 

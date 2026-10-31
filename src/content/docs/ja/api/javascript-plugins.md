@@ -36,9 +36,11 @@ type PluginCapability =
   | 'suggestions'
   | 'list'
   | 'listByGenre'
+  | 'listByCustomGenre'
   | 'listByStatus'
   | 'search'
   | 'searchByGenre'
+  | 'searchByCustomGenre'
   | 'searchByStatus'
   | 'searchByAuthor'
   | 'mangaDetails'
@@ -58,6 +60,7 @@ interface JsPluginManifest {
   homePage?: string
   updatesUrl?: string
   availableGenres?: Genre[]
+  availableCustomGenres?: string[]
   scripts?: Record<ScriptName, string>
   configs?: Config[]
   getImageHeaders?: Record<string, string>
@@ -68,23 +71,24 @@ interface JsPluginManifest {
 
 ### メタデータのフィールド
 
-| フィールド        | 型                       | 説明                                                                                                                            |
-| :---------------- | :----------------------- | :------------------------------------------------------------------------------------------------------------------------------ |
-| `id`              | `string`                 | 変更されない、全体で一意なプラグイン識別子です。永続ストレージの保存範囲の識別にも使います。                                    |
-| `name`            | `string`                 | 表示名です。省略すると ID を使います。                                                                                          |
-| `version`         | `string`                 | アプリに表示され、更新の比較に使われるプラグインのバージョンです。                                                              |
-| `description`     | `string`                 | ソース設定に表示する短い説明です。                                                                                              |
-| `authors`         | `string[]`               | プラグインの作者です。既定値は `[]` です。                                                                                      |
-| `repository`      | `string`                 | ソースコードまたはプロジェクトの URL です。                                                                                     |
-| `icon`            | `string`                 | ソースのカスタムアイコンを指定する HTTP(S) URL です。                                                                           |
-| `homePage`        | `string`                 | ソースのウェブサイトの HTTP(S) URL です。ウェブサイトへのリンクには `repository` より優先して使われます。                       |
-| `updatesUrl`      | `string`                 | 更新確認に使うマニフェストの URL です。                                                                                         |
-| `availableGenres` | `Genre[]`                | ソースが対応するジャンルです。既定値は `[]` です。                                                                              |
-| `scripts`         | `Record<string, string>` | 下記のスクリプト名をキーとする JavaScript ソースです。未知のキーは無視されます。                                                |
-| `configs`         | `Config[]`               | ユーザーが変更でき、スクリプトから参照できる設定です。既定値は `[]` です。                                                      |
-| `getImageHeaders` | `Record<string, string>` | 指定すると、Mankai はすべての画像 URL をこのヘッダー付きのネイティブリクエストで取得し、`getImage` スクリプトを呼び出しません。 |
-| `cooldown`        | `Cooldown`               | 任意のリクエスト間隔と画像の同時取得数の制限です。                                                                              |
-| `capabilities`    | `PluginCapability[]`     | プラグインが対応する操作です。既定では `mangaUpdates` 以外のすべての機能が有効です。                                            |
+| フィールド              | 型                       | 説明                                                                                                                                     |
+| :---------------------- | :----------------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                    | `string`                 | 変更されない、全体で一意なプラグイン識別子です。永続ストレージの保存範囲の識別にも使います。                                             |
+| `name`                  | `string`                 | 表示名です。省略すると ID を使います。                                                                                                   |
+| `version`               | `string`                 | アプリに表示され、更新の比較に使われるプラグインのバージョンです。                                                                       |
+| `description`           | `string`                 | ソース設定に表示する短い説明です。                                                                                                       |
+| `authors`               | `string[]`               | プラグインの作者です。既定値は `[]` です。                                                                                               |
+| `repository`            | `string`                 | ソースコードまたはプロジェクトの URL です。                                                                                              |
+| `icon`                  | `string`                 | ソースのカスタムアイコンを指定する HTTP(S) URL です。                                                                                    |
+| `homePage`              | `string`                 | ソースのウェブサイトの HTTP(S) URL です。ウェブサイトへのリンクには `repository` より優先して使われます。                                |
+| `updatesUrl`            | `string`                 | 更新確認に使うマニフェストの URL です。                                                                                                  |
+| `availableGenres`       | `Genre[]`                | ソースが対応するジャンルです。既定値は `[]` です。                                                                                       |
+| `availableCustomGenres` | `string[]`               | ソースが対応するカスタムジャンルです。既定値は `[]` です。                                                                               |
+| `scripts`               | `Record<string, string>` | 下記のスクリプト名をキーとする JavaScript ソースです。未知のキーは無視されます。                                                         |
+| `configs`               | `Config[]`               | ユーザーが変更でき、スクリプトから参照できる設定です。既定値は `[]` です。                                                               |
+| `getImageHeaders`       | `Record<string, string>` | 指定すると、Mankai はすべての画像 URL をこのヘッダー付きのネイティブリクエストで取得し、`getImage` スクリプトを呼び出しません。          |
+| `cooldown`              | `Cooldown`               | 任意のリクエスト間隔と画像の同時取得数の制限です。                                                                                       |
+| `capabilities`          | `PluginCapability[]`     | プラグインが対応する操作です。既定では、記載された機能のうち `mangaUpdates`、`listByCustomGenre`、`searchByCustomGenre` 以外が有効です。 |
 
 ### スクリプトの形式
 
@@ -114,12 +118,12 @@ export{isOnline as default};
 
 :::note[既定の機能]
 
-省略すると `mangaUpdates` 以外のすべての機能が有効になります。実装済みの操作だけをこのフィールドに指定すると、アプリが未対応のコールバックを呼び出すことを避けられます。
+省略すると、記載された機能のうち `mangaUpdates`、`listByCustomGenre`、`searchByCustomGenre` 以外が有効になります。この 3 つの機能は明示的な指定が必要です。実装済みの操作だけをこのフィールドに指定すると、アプリが未対応のコールバックを呼び出すことを避けられます。
 
 :::
 
 ```text
-onlineCheck, suggestions, list, listByGenre, listByStatus, search, searchByGenre, searchByStatus, searchByAuthor, mangaDetails, batchMangas, mangaUpdates, chapter, image
+onlineCheck, suggestions, list, listByGenre, listByCustomGenre, listByStatus, search, searchByGenre, searchByCustomGenre, searchByStatus, searchByAuthor, mangaDetails, batchMangas, mangaUpdates, chapter, image
 ```
 
 :::note[更新確認]
@@ -130,17 +134,17 @@ onlineCheck, suggestions, list, listByGenre, listByStatus, search, searchByGenre
 
 キーと関数シグネチャは次のとおりです。
 
-| キー               | 関数シグネチャ                                 | 戻り値                                                        |
-| :----------------- | :--------------------------------------------- | :------------------------------------------------------------ |
-| `isOnline`         | `isOnline()`                                   | `boolean`                                                     |
-| `getSuggestion`    | `getSuggestion(query)`                         | `string[]`                                                    |
-| `search`           | `search(query, page, genre, status, isAuthor)` | `Manga[]`                                                     |
-| `getList`          | `getList(page, genre, status)`                 | `Manga[]`                                                     |
-| `getMangas`        | `getMangas(ids)`                               | `Manga[]`                                                     |
-| `getMangaUpdates`  | `getMangaUpdates(mangas)`                      | メタデータの差分と更新フラグを持つ `MangaUpdate[]`            |
-| `getDetailedManga` | `getDetailedManga(id)`                         | `DetailedManga`                                               |
-| `getChapter`       | `getChapter(manga, chapter)`                   | 画像 URL の `string[]`                                        |
-| `getImage`         | `getImage(url)`                                | Base64 画像データ、または画像プロキシリクエストのオブジェクト |
+| キー               | 関数シグネチャ                                               | 戻り値                                                        |
+| :----------------- | :----------------------------------------------------------- | :------------------------------------------------------------ |
+| `isOnline`         | `isOnline()`                                                 | `boolean`                                                     |
+| `getSuggestion`    | `getSuggestion(query)`                                       | `string[]`                                                    |
+| `search`           | `search(query, page, genre, status, isAuthor, customGenre?)` | `Manga[]`                                                     |
+| `getList`          | `getList(page, genre, status, customGenre?)`                 | `Manga[]`                                                     |
+| `getMangas`        | `getMangas(ids)`                                             | `Manga[]`                                                     |
+| `getMangaUpdates`  | `getMangaUpdates(mangas)`                                    | メタデータの差分と更新フラグを持つ `MangaUpdate[]`            |
+| `getDetailedManga` | `getDetailedManga(id)`                                       | `DetailedManga`                                               |
+| `getChapter`       | `getChapter(manga, chapter)`                                 | 画像 URL の `string[]`                                        |
+| `getImage`         | `getImage(url)`                                              | Base64 画像データ、または画像プロキシリクエストのオブジェクト |
 
 各引数と戻り値の詳細を以下に説明します。
 
@@ -165,11 +169,11 @@ async function getSuggestion(query) {
 export{getSuggestion as default};
 ```
 
-### `search(query, page, genre, status, isAuthor)`
+### `search(query, page, genre, status, isAuthor, customGenre?)`
 
 タイトルまたは作者で漫画を検索します。`page` は 1 から始まるページ番号です。`genre` は[ジャンル](#ジャンル)にある文字列のいずれかで、`status` は[状態](#状態)にある数値のいずれかです。`isAuthor` が `true` の場合は、タイトル欄ではなく作者欄を検索します。簡易情報を持つ `Manga` オブジェクトの配列を返します。
 
-### `getList(page, genre, status)`
+### `getList(page, genre, status, customGenre?)`
 
 ソースからページ単位の一覧を返します。`page`、`genre`、`status` の引数は `search` と同じです。
 
@@ -326,6 +330,7 @@ interface DetailedManga {
   updatedAt?: number // Unix timestamp in milliseconds
   authors?: string[]
   genres?: Genre[]
+  customGenres?: string[]
   chapters?: ChapterGroup[]
   remarks?: string
   meta?: string
@@ -334,19 +339,27 @@ interface DetailedManga {
 
 :::note[省略されたフィールド]
 
-詳細な漫画情報で `authors`、`genres`、`chapters` を省略すると、空の配列になります。
+詳細な漫画情報で `authors`、`genres`、`customGenres`、`chapters` を省略すると、空の配列になります。
 
 :::
 
 ### ジャンル
 
-Mankai が認識する文字列は次のとおりです。
+`availableGenres` と `genres` で使える定義済みの文字列は次のとおりです。`genre` 引数にもこれらの値が渡されます。
 
 ```text
 all, action, romance, yuri, boysLove, otokonoko, schoolLife, adventure,
 harem, speculativeFiction, war, suspense, fanFiction, comedy, magic, horror,
 historical, sports, mature, mecha
 ```
+
+:::note[カスタムジャンル]
+
+`availableCustomGenres` にはソース独自のジャンルの絞り込み候補を、`customGenres` には各漫画のカスタムラベルを入れます。どちらも文字列の配列で、既定値は `[]` です。Mankai はこれらの名前を変更せずに表示し、そのまま渡します。
+
+カスタムジャンルで絞り込むには、`list` と `listByCustomGenre`、または `search` と `searchByCustomGenre` を有効にします。選択時は `genre` が `"all"`、`customGenre` が選択された名前になります。Mankai は対応するカスタムジャンル機能が有効な場合にのみ、`getList` の第 4 引数または `search` の第 6 引数として `customGenre` を追加します。未選択時は `null` を渡します。
+
+:::
 
 ### 状態
 
