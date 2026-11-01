@@ -23,7 +23,7 @@ Mankai 在内部使用插件与来源交互。HTTP 来源需要实现可供 Mank
 | 远程图片处理服务          | [图片处理器 API](/zh-cn/api/image-processors/)    | 通过可配置的 HTTP 服务处理阅读器图片，并可选择启用 JWT 认证。                 |
 | 可移植的书籍归档          | [MMA 格式](/zh-cn/api/mma-format/)                | 以 ZIP 归档保存书籍元数据、章节组和页面图片。                                 |
 
-## 实现示例
+## 模板与实现示例
 
-- [plugin](https://github.com/mankai-app/plugin) 提供 JavaScript 来源插件示例。
-- [server](https://github.com/mankai-app/server) 实现了用于漫画管理和同步的兼容 HTTP API。
+- [plugin](https://github.com/mankai-app/plugin) 是用于创建 JavaScript 来源插件的模板。
+- [server](https://github.com/mankai-app/server) 是用于漫画管理和同步的兼容 HTTP API 实现示例。

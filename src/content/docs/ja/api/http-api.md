@@ -7,6 +7,8 @@ sidebar:
 
 [Mankai](https://github.com/mankai-app/mankai) の HTTP プラグインがサーバーと通信できるようにするには、以下の互換 API を実装してください。サーバーが対応する操作について、エンドポイントのパス、リクエストボディ、レスポンス形式をこの仕様に合わせます。
 
+実装例は [mankai-app/server](https://github.com/mankai-app/server) を参照してください。
+
 ユーザーは**設定 → ソース**から **Mankai 互換**ソースを追加してサーバーに接続します。アプリ側の設定手順は、[ソースの追加](/ja/guides/sources/#ソースを追加する)を参照してください。
 
 > アプリ内エディターにも対応させる場合は、[エディター API](/ja/api/editor-api/)にも従う必要があります。
@@ -35,6 +37,16 @@ interface ServerInfoResponse {
   availableCustomGenres?: string[] // Read-only sources, default: []
   cooldown?: Cooldown
   capabilities?: PluginCapability[]
+  localizations?: Record<string, PluginLocalization>
+}
+
+interface PluginLocalization {
+  name?: string
+  description?: string
+  authors?: string[]
+  repository?: string
+  icon?: string
+  homePage?: string
 }
 
 interface Cooldown {
@@ -63,6 +75,8 @@ type PluginCapability =
 ```
 
 `default` は、画像以外のプラグイン呼び出し間に設ける最小待機時間です。省略可能で、単位はミリ秒です。`getImage` は画像の呼び出しに対して別の最小待機時間を設定します。`getImageConcurrency` を指定すると、画像リクエストの同時実行数を制限できます。
+
+任意の `localizations` マップで、アプリの言語に応じたソースメタデータを上書きできます。`zh-Hant-TW` → `zh-Hant` → `zh` のように、完全一致からサブタグを順に除いて探します。選択されたエントリーにないフィールドは基本の値を使います。照合規則は、[ソースメタデータのローカライズ](/ja/api/javascript-plugins/#source-localizations)を参照してください。
 
 :::note[機能と更新確認]
 
@@ -133,6 +147,8 @@ interface RefreshResponse {
 
 これらのエンドポイントは、漫画とチャプターのデータを返します。一覧、検索、一括取得で使用する漫画の簡易データには、共通の `Manga` 型を使用します。詳細取得のエンドポイントは、より多くの情報を含む `MangaResponse` 型を返します。
 
+漫画、詳細な漫画情報、チャプター、チャプターグループには `localizations` を返せます。グループにはコンテンツの `language` も指定できます。型とクライアント側の選択規則は、[漫画とチャプターのローカライズ](/ja/api/javascript-plugins/#manga-localizations)と共通です。すべての言語のグループを最上位の `chapters` 配列に入れ、漫画のローカライズには `chapters` を含めません。漫画の ID は言語によって変えず、内容の異なるチャプターには別の ID を使います。これらのエンドポイントに言語クエリパラメーターは追加されません。
+
 ### `GET /manga`
 
 ページ分割された漫画の一覧を取得します。必要に応じて、ジャンルや連載状況で絞り込めます。
@@ -155,6 +171,7 @@ interface Chapter {
   id: string
   title?: string
   locked?: boolean
+  localizations?: Record<string, ChapterLocalization>
 }
 
 interface Manga {
@@ -163,6 +180,20 @@ interface Manga {
   cover?: string // URL — absolute, or relative to the server's base URL
   status?: Status
   latestChapter?: Chapter
+  meta?: string
+  localizations?: Record<string, MangaLocalization>
+}
+
+interface ChapterLocalization {
+  title?: string
+}
+
+interface MangaLocalization {
+  title?: string
+  cover?: string
+  status?: Status
+  latestChapter?: Chapter
+  meta?: string
 }
 
 enum Status {
@@ -268,6 +299,8 @@ interface MangaResponse {
   chapters: ChapterGroup[] // Ordered from first group to last group
   remarks?: string
   editable?: boolean // Whether this manga can be edited, defaults to true
+  meta?: string
+  localizations?: Record<string, DetailedMangaLocalization>
 }
 
 enum Genre {
@@ -309,12 +342,27 @@ interface Chapter {
   id: string
   title?: string
   locked?: boolean
+  localizations?: Record<string, ChapterLocalization>
 }
 
 interface ChapterGroup {
   id?: string // Required for editable manga, Read-only plugins may omit it
   title: string // Unique within this manga
   chapters: Chapter[] // Increasing order: oldest/lowest chapter first
+  language?: string
+  localizations?: Record<string, ChapterLocalization>
+}
+
+interface DetailedMangaLocalization extends MangaLocalization {
+  readingDirection?: ReadingDirection
+  description?: string
+  externalLink?: string
+  updatedAt?: number // Unix timestamp in milliseconds
+  authors?: string[]
+  genres?: Genre[]
+  customGenres?: string[]
+  remarks?: string
+  editable?: boolean
 }
 ```
 

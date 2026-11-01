@@ -9,6 +9,8 @@ This specification describes the JSON format and JavaScript API for plugins that
 
 JavaScript plugins are read-only sources. The app loads the manifest from a URL or from pasted JSON, then executes the callback scripts in a hidden WebKit web view.
 
+Use the [mankai-app/plugin](https://github.com/mankai-app/plugin) template as a starting point for a JavaScript source plugin.
+
 :::caution[Trusted plugins]
 
 Install only plugins you trust: a plugin can make network requests and execute arbitrary JavaScript in the app's plugin runtime.
@@ -66,29 +68,50 @@ interface JsPluginManifest {
   getImageHeaders?: Record<string, string>
   cooldown?: Cooldown
   capabilities?: PluginCapability[]
+  localizations?: Record<string, PluginLocalization>
 }
 ```
 
 ### Metadata fields
 
-| Field                   | Type                     | Description                                                                                                                                                |
-| :---------------------- | :----------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                    | `string`                 | Stable, globally unique plugin identifier. It is also used to scope persistent storage.                                                                    |
-| `name`                  | `string`                 | Display name. Defaults to the ID when omitted.                                                                                                             |
-| `version`               | `string`                 | Plugin version shown in the app and compared for updates.                                                                                                  |
-| `description`           | `string`                 | Short description displayed in source settings.                                                                                                            |
-| `authors`               | `string[]`               | Plugin authors. Defaults to `[]`.                                                                                                                          |
-| `repository`            | `string`                 | Source-code or project URL.                                                                                                                                |
-| `icon`                  | `string`                 | HTTP(S) URL of a custom source icon.                                                                                                                       |
-| `homePage`              | `string`                 | HTTP(S) URL of the source website. Preferred over `repository` for the website link.                                                                       |
-| `updatesUrl`            | `string`                 | URL of a manifest to check for updates.                                                                                                                    |
-| `availableGenres`       | `Genre[]`                | Genres supported by the source. Defaults to `[]`.                                                                                                          |
-| `availableCustomGenres` | `string[]`               | Custom genres supported by the source. Defaults to `[]`.                                                                                                   |
-| `scripts`               | `Record<string, string>` | JavaScript source keyed by the script names below. Unknown keys are ignored.                                                                               |
-| `configs`               | `Config[]`               | User-configurable values exposed to the scripts. Defaults to `[]`.                                                                                         |
-| `getImageHeaders`       | `Record<string, string>` | If present, Mankai downloads every image URL with these native request headers and does not call the `getImage` script.                                    |
-| `cooldown`              | `Cooldown`               | Optional request throttling and image concurrency limits.                                                                                                  |
-| `capabilities`          | `PluginCapability[]`     | Operations supported by the plugin. By default, all listed capabilities except `mangaUpdates`, `listByCustomGenre`, and `searchByCustomGenre` are enabled. |
+| Field                   | Type                                 | Description                                                                                                                                                |
+| :---------------------- | :----------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                    | `string`                             | Stable, globally unique plugin identifier. It is also used to scope persistent storage.                                                                    |
+| `name`                  | `string`                             | Display name. Defaults to the ID when omitted.                                                                                                             |
+| `version`               | `string`                             | Plugin version shown in the app and compared for updates.                                                                                                  |
+| `description`           | `string`                             | Short description displayed in source settings.                                                                                                            |
+| `authors`               | `string[]`                           | Plugin authors. Defaults to `[]`.                                                                                                                          |
+| `repository`            | `string`                             | Source-code or project URL.                                                                                                                                |
+| `icon`                  | `string`                             | HTTP(S) URL of a custom source icon.                                                                                                                       |
+| `homePage`              | `string`                             | HTTP(S) URL of the source website. Preferred over `repository` for the website link.                                                                       |
+| `updatesUrl`            | `string`                             | URL of a manifest to check for updates.                                                                                                                    |
+| `availableGenres`       | `Genre[]`                            | Genres supported by the source. Defaults to `[]`.                                                                                                          |
+| `availableCustomGenres` | `string[]`                           | Custom genres supported by the source. Defaults to `[]`.                                                                                                   |
+| `scripts`               | `Record<string, string>`             | JavaScript source keyed by the script names below. Unknown keys are ignored.                                                                               |
+| `configs`               | `Config[]`                           | User-configurable values exposed to the scripts. Defaults to `[]`.                                                                                         |
+| `getImageHeaders`       | `Record<string, string>`             | If present, Mankai downloads every image URL with these native request headers and does not call the `getImage` script.                                    |
+| `cooldown`              | `Cooldown`                           | Optional request throttling and image concurrency limits.                                                                                                  |
+| `capabilities`          | `PluginCapability[]`                 | Operations supported by the plugin. By default, all listed capabilities except `mangaUpdates`, `listByCustomGenre`, and `searchByCustomGenre` are enabled. |
+| `localizations`         | `Record<string, PluginLocalization>` | Optional source metadata overrides by language tag. See [Source metadata localizations](#source-localizations).                                            |
+
+<span id="source-localizations"></span>
+
+### Source metadata localizations
+
+Add `localizations` to the manifest to translate source metadata. Each language entry may override only the following fields:
+
+```ts
+interface PluginLocalization {
+  name?: string
+  description?: string
+  authors?: string[]
+  repository?: string
+  icon?: string
+  homePage?: string
+}
+```
+
+Source metadata follows the app language, independently of a book's language selection. Mankai tries the exact language tag, then removes the last subtag until it finds an entry: for example, `zh-Hant-TW` → `zh-Hant` → `zh`. Keys are case-sensitive and use hyphens. `zh-TW` does not match `zh-Hant`. In the first matching entry, omitted or `null` fields use the base metadata, rather than fields from another language entry. If no entry matches, all base values are used.
 
 ### Script format
 
@@ -301,6 +324,7 @@ interface Chapter {
   id: string
   title?: string
   locked?: boolean
+  localizations?: Record<string, ChapterLocalization>
 }
 
 interface Manga {
@@ -310,12 +334,15 @@ interface Manga {
   status?: Status
   latestChapter?: Chapter
   meta?: string
+  localizations?: Record<string, MangaLocalization>
 }
 
 interface ChapterGroup {
   id?: string
   title: string
   chapters: Chapter[]
+  language?: string
+  localizations?: Record<string, ChapterLocalization>
 }
 
 interface DetailedManga {
@@ -333,7 +360,33 @@ interface DetailedManga {
   customGenres?: string[]
   chapters?: ChapterGroup[]
   remarks?: string
+  editable?: boolean
   meta?: string
+  localizations?: Record<string, DetailedMangaLocalization>
+}
+
+interface ChapterLocalization {
+  title?: string
+}
+
+interface MangaLocalization {
+  title?: string
+  cover?: string
+  status?: Status
+  latestChapter?: Chapter
+  meta?: string
+}
+
+interface DetailedMangaLocalization extends MangaLocalization {
+  readingDirection?: ReadingDirection
+  description?: string
+  externalLink?: string
+  updatedAt?: number // Unix timestamp in milliseconds
+  authors?: string[]
+  genres?: Genre[]
+  customGenres?: string[]
+  remarks?: string
+  editable?: boolean
 }
 ```
 
@@ -342,6 +395,18 @@ interface DetailedManga {
 `authors`, `genres`, `customGenres`, and `chapters` default to empty arrays when omitted from a detailed manga.
 
 :::
+
+<span id="manga-localizations"></span>
+
+### Manga and chapter localizations
+
+Return optional `localizations` maps with manga, detailed manga, chapters, and chapter groups. They use the same [language matching rules](#source-localizations) as source metadata. A manga ID remains the same across languages. `MangaLocalization` overrides lightweight metadata, while `DetailedMangaLocalization` adds the detailed fields shown above. Chapters and groups can override only `title`.
+
+Books default to **Auto**, which uses the app language. The language menu on book details can select a specific language or **Default Language**, which uses base fields without applying a localization. Missing or `null` fields in the selected entry fall back to the base value. Arrays that are supplied replace the base arrays, including empty arrays. A localized `latestChapter` must be a chapter object with its own `id`.
+
+Keep all chapter groups in the top-level `chapters` array. Do not put `chapters` inside a manga localization. Set a group's `language` to identify the language of its page content. Mankai shows groups for the first matching exact or broader tag. If none match, it shows only groups with no `language`. **Default Language** also selects those untagged groups. Matching groups are not combined with broader or untagged groups. **Show All** on book details reveals every group.
+
+Use `localizations` to translate a group or chapter title without changing its content or ID. For different page content, supply separate chapters with distinct IDs and place them in the appropriate language groups. Language selection does not add an argument to the callbacks.
 
 ### Genres
 

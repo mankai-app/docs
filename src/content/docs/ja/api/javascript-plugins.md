@@ -9,6 +9,8 @@ sidebar:
 
 JavaScript プラグインは読み取り専用のソースです。アプリは URL または貼り付けられた JSON からマニフェストを読み込み、非表示の WebKit Web ビューでコールバックスクリプトを実行します。
 
+JavaScript ソースプラグインの作成には、[mankai-app/plugin](https://github.com/mankai-app/plugin) テンプレートを利用できます。
+
 :::caution[信頼できるプラグイン]
 
 プラグインはネットワークリクエストを送信し、アプリのプラグイン実行環境で任意の JavaScript を実行できるため、信頼できるものだけをインストールしてください。
@@ -66,29 +68,50 @@ interface JsPluginManifest {
   getImageHeaders?: Record<string, string>
   cooldown?: Cooldown
   capabilities?: PluginCapability[]
+  localizations?: Record<string, PluginLocalization>
 }
 ```
 
 ### メタデータのフィールド
 
-| フィールド              | 型                       | 説明                                                                                                                                     |
-| :---------------------- | :----------------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
-| `id`                    | `string`                 | 変更されない、全体で一意なプラグイン識別子です。永続ストレージの保存範囲の識別にも使います。                                             |
-| `name`                  | `string`                 | 表示名です。省略すると ID を使います。                                                                                                   |
-| `version`               | `string`                 | アプリに表示され、更新の比較に使われるプラグインのバージョンです。                                                                       |
-| `description`           | `string`                 | ソース設定に表示する短い説明です。                                                                                                       |
-| `authors`               | `string[]`               | プラグインの作者です。既定値は `[]` です。                                                                                               |
-| `repository`            | `string`                 | ソースコードまたはプロジェクトの URL です。                                                                                              |
-| `icon`                  | `string`                 | ソースのカスタムアイコンを指定する HTTP(S) URL です。                                                                                    |
-| `homePage`              | `string`                 | ソースのウェブサイトの HTTP(S) URL です。ウェブサイトへのリンクには `repository` より優先して使われます。                                |
-| `updatesUrl`            | `string`                 | 更新確認に使うマニフェストの URL です。                                                                                                  |
-| `availableGenres`       | `Genre[]`                | ソースが対応するジャンルです。既定値は `[]` です。                                                                                       |
-| `availableCustomGenres` | `string[]`               | ソースが対応するカスタムジャンルです。既定値は `[]` です。                                                                               |
-| `scripts`               | `Record<string, string>` | 下記のスクリプト名をキーとする JavaScript ソースです。未知のキーは無視されます。                                                         |
-| `configs`               | `Config[]`               | ユーザーが変更でき、スクリプトから参照できる設定です。既定値は `[]` です。                                                               |
-| `getImageHeaders`       | `Record<string, string>` | 指定すると、Mankai はすべての画像 URL をこのヘッダー付きのネイティブリクエストで取得し、`getImage` スクリプトを呼び出しません。          |
-| `cooldown`              | `Cooldown`               | 任意のリクエスト間隔と画像の同時取得数の制限です。                                                                                       |
-| `capabilities`          | `PluginCapability[]`     | プラグインが対応する操作です。既定では、記載された機能のうち `mangaUpdates`、`listByCustomGenre`、`searchByCustomGenre` 以外が有効です。 |
+| フィールド              | 型                                   | 説明                                                                                                                                     |
+| :---------------------- | :----------------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------- |
+| `id`                    | `string`                             | 変更されない、全体で一意なプラグイン識別子です。永続ストレージの保存範囲の識別にも使います。                                             |
+| `name`                  | `string`                             | 表示名です。省略すると ID を使います。                                                                                                   |
+| `version`               | `string`                             | アプリに表示され、更新の比較に使われるプラグインのバージョンです。                                                                       |
+| `description`           | `string`                             | ソース設定に表示する短い説明です。                                                                                                       |
+| `authors`               | `string[]`                           | プラグインの作者です。既定値は `[]` です。                                                                                               |
+| `repository`            | `string`                             | ソースコードまたはプロジェクトの URL です。                                                                                              |
+| `icon`                  | `string`                             | ソースのカスタムアイコンを指定する HTTP(S) URL です。                                                                                    |
+| `homePage`              | `string`                             | ソースのウェブサイトの HTTP(S) URL です。ウェブサイトへのリンクには `repository` より優先して使われます。                                |
+| `updatesUrl`            | `string`                             | 更新確認に使うマニフェストの URL です。                                                                                                  |
+| `availableGenres`       | `Genre[]`                            | ソースが対応するジャンルです。既定値は `[]` です。                                                                                       |
+| `availableCustomGenres` | `string[]`                           | ソースが対応するカスタムジャンルです。既定値は `[]` です。                                                                               |
+| `scripts`               | `Record<string, string>`             | 下記のスクリプト名をキーとする JavaScript ソースです。未知のキーは無視されます。                                                         |
+| `configs`               | `Config[]`                           | ユーザーが変更でき、スクリプトから参照できる設定です。既定値は `[]` です。                                                               |
+| `getImageHeaders`       | `Record<string, string>`             | 指定すると、Mankai はすべての画像 URL をこのヘッダー付きのネイティブリクエストで取得し、`getImage` スクリプトを呼び出しません。          |
+| `cooldown`              | `Cooldown`                           | 任意のリクエスト間隔と画像の同時取得数の制限です。                                                                                       |
+| `capabilities`          | `PluginCapability[]`                 | プラグインが対応する操作です。既定では、記載された機能のうち `mangaUpdates`、`listByCustomGenre`、`searchByCustomGenre` 以外が有効です。 |
+| `localizations`         | `Record<string, PluginLocalization>` | 言語タグごとのソースメタデータの上書きです。[ソースメタデータのローカライズ](#source-localizations)を参照してください。                  |
+
+<span id="source-localizations"></span>
+
+### ソースメタデータのローカライズ
+
+マニフェストに `localizations` を追加すると、ソースのメタデータを翻訳できます。各言語のエントリーで上書きできるフィールドは次のとおりです。
+
+```ts
+interface PluginLocalization {
+  name?: string
+  description?: string
+  authors?: string[]
+  repository?: string
+  icon?: string
+  homePage?: string
+}
+```
+
+ソースのメタデータは、本ごとの言語選択とは独立してアプリの言語に従います。Mankai は言語タグの完全一致を試し、見つからなければ末尾のサブタグを順に除きます。たとえば `zh-Hant-TW` → `zh-Hant` → `zh` の順です。キーは大文字と小文字を区別し、ハイフンを使います。`zh-TW` は `zh-Hant` には一致しません。最初に一致したエントリーで省略されたフィールドや `null` のフィールドには、別の言語エントリーではなく基本のメタデータを使います。一致するエントリーがなければ、すべて基本の値を使います。
 
 ### スクリプトの形式
 
@@ -301,6 +324,7 @@ interface Chapter {
   id: string
   title?: string
   locked?: boolean
+  localizations?: Record<string, ChapterLocalization>
 }
 
 interface Manga {
@@ -310,12 +334,15 @@ interface Manga {
   status?: Status
   latestChapter?: Chapter
   meta?: string
+  localizations?: Record<string, MangaLocalization>
 }
 
 interface ChapterGroup {
   id?: string
   title: string
   chapters: Chapter[]
+  language?: string
+  localizations?: Record<string, ChapterLocalization>
 }
 
 interface DetailedManga {
@@ -333,7 +360,33 @@ interface DetailedManga {
   customGenres?: string[]
   chapters?: ChapterGroup[]
   remarks?: string
+  editable?: boolean
   meta?: string
+  localizations?: Record<string, DetailedMangaLocalization>
+}
+
+interface ChapterLocalization {
+  title?: string
+}
+
+interface MangaLocalization {
+  title?: string
+  cover?: string
+  status?: Status
+  latestChapter?: Chapter
+  meta?: string
+}
+
+interface DetailedMangaLocalization extends MangaLocalization {
+  readingDirection?: ReadingDirection
+  description?: string
+  externalLink?: string
+  updatedAt?: number // Unix timestamp in milliseconds
+  authors?: string[]
+  genres?: Genre[]
+  customGenres?: string[]
+  remarks?: string
+  editable?: boolean
 }
 ```
 
@@ -342,6 +395,18 @@ interface DetailedManga {
 詳細な漫画情報で `authors`、`genres`、`customGenres`、`chapters` を省略すると、空の配列になります。
 
 :::
+
+<span id="manga-localizations"></span>
+
+### 漫画とチャプターのローカライズ
+
+漫画、詳細な漫画情報、チャプター、チャプターグループには、任意の `localizations` マップを返せます。ソースメタデータと同じ[言語の照合規則](#source-localizations)を使います。漫画の ID は言語によって変えません。`MangaLocalization` は簡易メタデータを上書きし、`DetailedMangaLocalization` は上記の詳細フィールドも上書きできます。チャプターとグループで上書きできるのは `title` だけです。
+
+本の既定の選択は**自動**で、アプリの言語を使います。本の詳細画面の言語メニューで、特定の言語や**デフォルトの言語**を選べます。後者はローカライズを適用せず基本のフィールドを使います。選択したエントリーで省略されたフィールドや `null` のフィールドは基本の値に戻ります。配列を指定すると、空の配列も含め基本の配列を置き換えます。ローカライズされた `latestChapter` は、自身の `id` を持つチャプターオブジェクトである必要があります。
+
+すべてのチャプターグループを最上位の `chapters` 配列に入れます。漫画のローカライズ内には `chapters` を入れません。グループの `language` はページのコンテンツ言語を示します。Mankai は完全一致またはサブタグを除いたタグで最初に一致した言語のグループを表示します。一致しなければ `language` のないグループだけを表示し、**デフォルトの言語**でもこれらのグループを選びます。一致したグループに、より広いタグのグループやタグのないグループを追加することはありません。詳細画面の**すべて表示**で全グループを表示できます。
+
+内容と ID を変えずにグループやチャプターのタイトルを翻訳するには、`localizations` を使います。ページ内容が異なる場合は、異なる ID を持つチャプターを用意し、対応する言語のグループに配置します。言語選択によってコールバックの引数が増えることはありません。
 
 ### ジャンル
 

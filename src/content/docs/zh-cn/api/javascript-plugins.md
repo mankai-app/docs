@@ -7,6 +7,8 @@ description: Mankai JavaScript 插件的清单、回调、数据类型与运行�
 
 JavaScript 插件是只读内容源。应用从网址或粘贴的 JSON 加载清单，然后在隐藏的 WebKit 网页视图中执行回调脚本。
 
+创建 JavaScript 来源插件时，可以使用 [mankai-app/plugin](https://github.com/mankai-app/plugin) 模板作为起点。
+
 :::caution[可信插件]
 
 请仅安装可信的插件，因为插件可以在应用的插件运行环境中发起网络请求并执行任意 JavaScript 代码。
@@ -66,6 +68,7 @@ interface JsPluginManifest {
   getImageHeaders?: Record<string, string>
   cooldown?: Cooldown
   capabilities?: PluginCapability[]
+  localizations?: Record<string, PluginLocalization>
 }
 ```
 
@@ -73,24 +76,44 @@ interface JsPluginManifest {
 
 ### 元数据字段
 
-| 字段                    | 类型                     | 说明                                                                                                               |
-| :---------------------- | :----------------------- | :----------------------------------------------------------------------------------------------------------------- |
-| `id`                    | `string`                 | 稳定且全局唯一的插件标识符，也用于划分持久存储的作用域。                                                           |
-| `name`                  | `string`                 | 显示名称，省略时使用 ID。                                                                                          |
-| `version`               | `string`                 | 在应用中显示并用于检查更新的插件版本。                                                                             |
-| `description`           | `string`                 | 在来源设置中显示的简短描述。                                                                                       |
-| `authors`               | `string[]`               | 插件作者，默认值为 `[]`。                                                                                          |
-| `repository`            | `string`                 | 源代码或项目的网址。                                                                                               |
-| `icon`                  | `string`                 | 自定义来源图标的 HTTP(S) 图片网址。                                                                                |
-| `homePage`              | `string`                 | 来源网站的 HTTP(S) 网址，网站链接优先使用此值而非 `repository`。                                                   |
-| `updatesUrl`            | `string`                 | 用于检查更新的清单网址。                                                                                           |
-| `availableGenres`       | `Genre[]`                | 内容源支持的漫画类型，默认值为 `[]`。                                                                              |
-| `availableCustomGenres` | `string[]`               | 内容源支持的自定义漫画类型，默认值为 `[]`。                                                                        |
-| `scripts`               | `Record<string, string>` | 以以下脚本名称为键的 JavaScript 源代码，未知的键会被忽略。                                                         |
-| `configs`               | `Config[]`               | 向脚本提供的用户可配置值，默认值为 `[]`。                                                                          |
-| `getImageHeaders`       | `Record<string, string>` | 如果存在，Mankai 使用这些原生请求标头下载所有图片网址，而不调用 `getImage` 脚本。                                  |
-| `cooldown`              | `Cooldown`               | 可选的请求节流和图片并发限制。                                                                                     |
-| `capabilities`          | `PluginCapability[]`     | 插件支持的操作，默认启用所列能力中除 `mangaUpdates`、`listByCustomGenre` 和 `searchByCustomGenre` 以外的所有能力。 |
+| 字段                    | 类型                                 | 说明                                                                                                               |
+| :---------------------- | :----------------------------------- | :----------------------------------------------------------------------------------------------------------------- |
+| `id`                    | `string`                             | 稳定且全局唯一的插件标识符，也用于划分持久存储的作用域。                                                           |
+| `name`                  | `string`                             | 显示名称，省略时使用 ID。                                                                                          |
+| `version`               | `string`                             | 在应用中显示并用于检查更新的插件版本。                                                                             |
+| `description`           | `string`                             | 在来源设置中显示的简短描述。                                                                                       |
+| `authors`               | `string[]`                           | 插件作者，默认值为 `[]`。                                                                                          |
+| `repository`            | `string`                             | 源代码或项目的网址。                                                                                               |
+| `icon`                  | `string`                             | 自定义来源图标的 HTTP(S) 图片网址。                                                                                |
+| `homePage`              | `string`                             | 来源网站的 HTTP(S) 网址，网站链接优先使用此值而非 `repository`。                                                   |
+| `updatesUrl`            | `string`                             | 用于检查更新的清单网址。                                                                                           |
+| `availableGenres`       | `Genre[]`                            | 内容源支持的漫画类型，默认值为 `[]`。                                                                              |
+| `availableCustomGenres` | `string[]`                           | 内容源支持的自定义漫画类型，默认值为 `[]`。                                                                        |
+| `scripts`               | `Record<string, string>`             | 以以下脚本名称为键的 JavaScript 源代码，未知的键会被忽略。                                                         |
+| `configs`               | `Config[]`                           | 向脚本提供的用户可配置值，默认值为 `[]`。                                                                          |
+| `getImageHeaders`       | `Record<string, string>`             | 如果存在，Mankai 使用这些原生请求标头下载所有图片网址，而不调用 `getImage` 脚本。                                  |
+| `cooldown`              | `Cooldown`                           | 可选的请求节流和图片并发限制。                                                                                     |
+| `capabilities`          | `PluginCapability[]`                 | 插件支持的操作，默认启用所列能力中除 `mangaUpdates`、`listByCustomGenre` 和 `searchByCustomGenre` 以外的所有能力。 |
+| `localizations`         | `Record<string, PluginLocalization>` | 按语言标签提供可选的来源元数据覆盖值。参阅[来源元数据本地化](#source-localizations)。                              |
+
+<span id="source-localizations"></span>
+
+### 来源元数据本地化
+
+在清单中添加 `localizations`，即可翻译来源元数据。各语言条目只能覆盖以下字段：
+
+```ts
+interface PluginLocalization {
+  name?: string
+  description?: string
+  authors?: string[]
+  repository?: string
+  icon?: string
+  homePage?: string
+}
+```
+
+来源元数据跟随应用语言，与单本书籍的语言选择无关。Mankai 先尝试完整语言标签，再逐步移除最后一个子标签，例如 `zh-Hant-TW` → `zh-Hant` → `zh`。键区分大小写，并使用连字符。`zh-TW` 不会匹配 `zh-Hant`。在首个匹配的条目中，省略或为 `null` 的字段使用基础元数据，不会从其他语言条目补齐。没有匹配条目时使用全部基础值。
 
 <span id="script-format"></span>
 
@@ -309,6 +332,7 @@ interface Chapter {
   id: string
   title?: string
   locked?: boolean
+  localizations?: Record<string, ChapterLocalization>
 }
 
 interface Manga {
@@ -318,12 +342,15 @@ interface Manga {
   status?: Status
   latestChapter?: Chapter
   meta?: string
+  localizations?: Record<string, MangaLocalization>
 }
 
 interface ChapterGroup {
   id?: string
   title: string
   chapters: Chapter[]
+  language?: string
+  localizations?: Record<string, ChapterLocalization>
 }
 
 interface DetailedManga {
@@ -341,7 +368,33 @@ interface DetailedManga {
   customGenres?: string[]
   chapters?: ChapterGroup[]
   remarks?: string
+  editable?: boolean
   meta?: string
+  localizations?: Record<string, DetailedMangaLocalization>
+}
+
+interface ChapterLocalization {
+  title?: string
+}
+
+interface MangaLocalization {
+  title?: string
+  cover?: string
+  status?: Status
+  latestChapter?: Chapter
+  meta?: string
+}
+
+interface DetailedMangaLocalization extends MangaLocalization {
+  readingDirection?: ReadingDirection
+  description?: string
+  externalLink?: string
+  updatedAt?: number // Unix timestamp in milliseconds
+  authors?: string[]
+  genres?: Genre[]
+  customGenres?: string[]
+  remarks?: string
+  editable?: boolean
 }
 ```
 
@@ -350,6 +403,18 @@ interface DetailedManga {
 漫画详情中省略的 `authors`、`genres`、`customGenres` 和 `chapters` 默认为空数组。
 
 :::
+
+<span id="manga-localizations"></span>
+
+### 漫画与章节本地化
+
+漫画、漫画详情、章节和章节组都可以返回可选的 `localizations` 映射，使用与来源元数据相同的[语言匹配规则](#source-localizations)。漫画 ID 在所有语言中保持不变。`MangaLocalization` 覆盖简要元数据，`DetailedMangaLocalization` 还可覆盖上方列出的详情字段。章节和章节组只能覆盖 `title`。
+
+书籍默认选择**自动**，使用应用语言。书籍详情的语言菜单可以选择特定语言，或选择**默认语言**以使用基础字段，不应用本地化覆盖。所选条目中省略或为 `null` 的字段回退到基础值。显式提供的数组会替换基础数组，空数组也会生效。本地化的 `latestChapter` 必须是包含自身 `id` 的章节对象。
+
+所有章节组都放在顶层 `chapters` 数组中，不要在漫画本地化条目内添加 `chapters`。章节组的 `language` 表示页面内容的语言。Mankai 显示首个匹配的完整或更宽泛语言标签对应的章节组。没有匹配时，只显示未设置 `language` 的章节组，**默认语言**也选择这些无标签章节组。匹配到的组不会与更宽泛标签或无标签的组合并。书籍详情中的**显示全部**可显示所有组。
+
+使用 `localizations` 翻译章节组或章节标题，不会改变内容或 ID。页面内容不同时，应使用不同 ID 的章节，并放入对应语言的章节组。语言选择不会给回调增加参数。
 
 <span id="genres"></span>
 

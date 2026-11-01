@@ -116,6 +116,11 @@ interface Chapter {
   id: string
   title?: string
   locked?: boolean
+  localizations?: Record<string, ChapterLocalization>
+}
+
+interface ChapterLocalization {
+  title?: string
 }
 ```
 

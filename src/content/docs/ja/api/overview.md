@@ -23,7 +23,7 @@ Mankai は内部でプラグインを使ってソースと通信します。HTTP
 | リモート画像処理サービス           | [画像処理 API](/ja/api/image-processors/)            | 設定可能な HTTP サービスでリーダーに表示する画像を処理します。任意で JWT 認証を使用できます。                          |
 | 持ち運べるブックアーカイブ         | [MMA 形式](/ja/api/mma-format/)                      | 本のメタデータ、チャプターグループ、ページ画像を含む ZIP アーカイブです。                                              |
 
-## 実装例
+## テンプレートと実装例
 
-- [plugin](https://github.com/mankai-app/plugin) には、JavaScript ソースプラグインの実装例があります。
-- [server](https://github.com/mankai-app/server) は、漫画の管理と同期に対応する互換 HTTP API を実装しています。
+- [plugin](https://github.com/mankai-app/plugin) は、JavaScript ソースプラグインを作成するためのテンプレートです。
+- [server](https://github.com/mankai-app/server) は、漫画の管理と同期に対応する互換 HTTP API の実装例です。

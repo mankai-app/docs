@@ -23,7 +23,7 @@ For help setting up and using the app, follow [Quick start](/guides/quick-start/
 | A remote image processing service      | [Image processor API](/api/image-processors/)  | A configurable HTTP service that processes reader images, with optional JWT authentication.                                  |
 | A portable book archive                | [MMA format](/api/mma-format/)                 | A ZIP archive containing book metadata, chapter groups, and page images.                                                     |
 
-## Example implementations
+## Templates and example implementations
 
-- [plugin](https://github.com/mankai-app/plugin) contains example JavaScript source plugins.
-- [server](https://github.com/mankai-app/server) implements the compatible HTTP API for manga management and syncing.
+- [plugin](https://github.com/mankai-app/plugin) is a template for creating JavaScript source plugins.
+- [server](https://github.com/mankai-app/server) is an example implementation of the compatible HTTP API for manga management and syncing.

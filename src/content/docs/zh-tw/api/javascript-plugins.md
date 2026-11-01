@@ -7,6 +7,8 @@ description: Mankai JavaScript 外掛模組的清單、回呼、資料類型與�
 
 JavaScript 外掛模組是唯讀內容源。應用程式從網址或貼上的 JSON 載入清單，然後在隱藏的 WebKit 網頁視圖中執行回呼腳本。
 
+建立 JavaScript 來源外掛模組時，可以使用 [mankai-app/plugin](https://github.com/mankai-app/plugin) 範本作為起點。
+
 :::caution[可信外掛模組]
 
 請僅安裝可信的外掛模組，因為外掛模組可以在應用程式的外掛模組執行環境中發起網路請求並執行任意 JavaScript 程式碼。
@@ -66,6 +68,7 @@ interface JsPluginManifest {
   getImageHeaders?: Record<string, string>
   cooldown?: Cooldown
   capabilities?: PluginCapability[]
+  localizations?: Record<string, PluginLocalization>
 }
 ```
 
@@ -73,24 +76,44 @@ interface JsPluginManifest {
 
 ### 中繼資料欄位
 
-| 欄位                    | 類型                     | 說明                                                                                                                   |
-| :---------------------- | :----------------------- | :--------------------------------------------------------------------------------------------------------------------- |
-| `id`                    | `string`                 | 穩定且全域唯一的外掛模組識別碼，也用於劃分永久儲存的範圍。                                                             |
-| `name`                  | `string`                 | 顯示名稱，省略時使用 ID。                                                                                              |
-| `version`               | `string`                 | 在應用程式中顯示並用於檢查更新的外掛模組版本。                                                                         |
-| `description`           | `string`                 | 在來源設定中顯示的簡短描述。                                                                                           |
-| `authors`               | `string[]`               | 外掛模組作者，預設值為 `[]`。                                                                                          |
-| `repository`            | `string`                 | 原始碼或專案的網址。                                                                                                   |
-| `icon`                  | `string`                 | 自訂來源圖示的 HTTP(S) 圖片網址。                                                                                      |
-| `homePage`              | `string`                 | 來源網站的 HTTP(S) 網址，網站連結優先使用此值而非 `repository`。                                                       |
-| `updatesUrl`            | `string`                 | 用於檢查更新的清單網址。                                                                                               |
-| `availableGenres`       | `Genre[]`                | 內容源支援的漫畫類型，預設值為 `[]`。                                                                                  |
-| `availableCustomGenres` | `string[]`               | 內容源支援的自訂漫畫類型，預設值為 `[]`。                                                                              |
-| `scripts`               | `Record<string, string>` | 以以下腳本名稱為鍵的 JavaScript 原始碼，未知的鍵會被忽略。                                                             |
-| `configs`               | `Config[]`               | 使用者可調整並供腳本讀取的設定值，預設值為 `[]`。                                                                      |
-| `getImageHeaders`       | `Record<string, string>` | 如果存在，Mankai 使用這些原生請求標頭下載所有圖片網址，而不呼叫 `getImage` 腳本。                                      |
-| `cooldown`              | `Cooldown`               | 可選的請求節流和圖片並行限制。                                                                                         |
-| `capabilities`          | `PluginCapability[]`     | 外掛模組支援的操作，預設啟用所列能力中除 `mangaUpdates`、`listByCustomGenre` 和 `searchByCustomGenre` 以外的所有能力。 |
+| 欄位                    | 類型                                 | 說明                                                                                                                   |
+| :---------------------- | :----------------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
+| `id`                    | `string`                             | 穩定且全域唯一的外掛模組識別碼，也用於劃分永久儲存的範圍。                                                             |
+| `name`                  | `string`                             | 顯示名稱，省略時使用 ID。                                                                                              |
+| `version`               | `string`                             | 在應用程式中顯示並用於檢查更新的外掛模組版本。                                                                         |
+| `description`           | `string`                             | 在來源設定中顯示的簡短描述。                                                                                           |
+| `authors`               | `string[]`                           | 外掛模組作者，預設值為 `[]`。                                                                                          |
+| `repository`            | `string`                             | 原始碼或專案的網址。                                                                                                   |
+| `icon`                  | `string`                             | 自訂來源圖示的 HTTP(S) 圖片網址。                                                                                      |
+| `homePage`              | `string`                             | 來源網站的 HTTP(S) 網址，網站連結優先使用此值而非 `repository`。                                                       |
+| `updatesUrl`            | `string`                             | 用於檢查更新的清單網址。                                                                                               |
+| `availableGenres`       | `Genre[]`                            | 內容源支援的漫畫類型，預設值為 `[]`。                                                                                  |
+| `availableCustomGenres` | `string[]`                           | 內容源支援的自訂漫畫類型，預設值為 `[]`。                                                                              |
+| `scripts`               | `Record<string, string>`             | 以以下腳本名稱為鍵的 JavaScript 原始碼，未知的鍵會被忽略。                                                             |
+| `configs`               | `Config[]`                           | 使用者可調整並供腳本讀取的設定值，預設值為 `[]`。                                                                      |
+| `getImageHeaders`       | `Record<string, string>`             | 如果存在，Mankai 使用這些原生請求標頭下載所有圖片網址，而不呼叫 `getImage` 腳本。                                      |
+| `cooldown`              | `Cooldown`                           | 可選的請求節流和圖片並行限制。                                                                                         |
+| `capabilities`          | `PluginCapability[]`                 | 外掛模組支援的操作，預設啟用所列能力中除 `mangaUpdates`、`listByCustomGenre` 和 `searchByCustomGenre` 以外的所有能力。 |
+| `localizations`         | `Record<string, PluginLocalization>` | 按語言標籤提供可選的來源中繼資料覆寫值。參閱[來源中繼資料本地化](#source-localizations)。                              |
+
+<span id="source-localizations"></span>
+
+### 來源中繼資料本地化
+
+在清單中加入 `localizations`，即可翻譯來源中繼資料。各語言項目只能覆寫以下欄位：
+
+```ts
+interface PluginLocalization {
+  name?: string
+  description?: string
+  authors?: string[]
+  repository?: string
+  icon?: string
+  homePage?: string
+}
+```
+
+來源中繼資料跟隨應用程式語言，與單本書籍的語言選擇無關。Mankai 先嘗試完整語言標籤，再逐步移除最後一個子標籤，例如 `zh-Hant-TW` → `zh-Hant` → `zh`。鍵區分大小寫，並使用連字號。`zh-TW` 不會符合 `zh-Hant`。在首個符合的項目中，省略或為 `null` 的欄位使用基礎中繼資料，不會從其他語言項目補齊。沒有符合的項目時使用全部基礎值。
 
 <span id="script-format"></span>
 
@@ -309,6 +332,7 @@ interface Chapter {
   id: string
   title?: string
   locked?: boolean
+  localizations?: Record<string, ChapterLocalization>
 }
 
 interface Manga {
@@ -318,12 +342,15 @@ interface Manga {
   status?: Status
   latestChapter?: Chapter
   meta?: string
+  localizations?: Record<string, MangaLocalization>
 }
 
 interface ChapterGroup {
   id?: string
   title: string
   chapters: Chapter[]
+  language?: string
+  localizations?: Record<string, ChapterLocalization>
 }
 
 interface DetailedManga {
@@ -341,7 +368,33 @@ interface DetailedManga {
   customGenres?: string[]
   chapters?: ChapterGroup[]
   remarks?: string
+  editable?: boolean
   meta?: string
+  localizations?: Record<string, DetailedMangaLocalization>
+}
+
+interface ChapterLocalization {
+  title?: string
+}
+
+interface MangaLocalization {
+  title?: string
+  cover?: string
+  status?: Status
+  latestChapter?: Chapter
+  meta?: string
+}
+
+interface DetailedMangaLocalization extends MangaLocalization {
+  readingDirection?: ReadingDirection
+  description?: string
+  externalLink?: string
+  updatedAt?: number // Unix timestamp in milliseconds
+  authors?: string[]
+  genres?: Genre[]
+  customGenres?: string[]
+  remarks?: string
+  editable?: boolean
 }
 ```
 
@@ -350,6 +403,18 @@ interface DetailedManga {
 漫畫詳細資訊中省略的 `authors`、`genres`、`customGenres` 和 `chapters` 預設為空陣列。
 
 :::
+
+<span id="manga-localizations"></span>
+
+### 漫畫與章節本地化
+
+漫畫、漫畫詳細資訊、章節和章節組都可以回傳可選的 `localizations` 對應表，使用與來源中繼資料相同的[語言比對規則](#source-localizations)。漫畫 ID 在所有語言中保持不變。`MangaLocalization` 覆寫簡要中繼資料，`DetailedMangaLocalization` 還可覆寫上方列出的詳細資訊欄位。章節和章節組只能覆寫 `title`。
+
+書籍預設選擇**自動**，使用應用程式語言。書籍詳細資訊的語言選單可以選擇特定語言，或選擇**預設語言**以使用基礎欄位，不套用本地化覆寫。所選項目中省略或為 `null` 的欄位會回到基礎值。明確提供的陣列會取代基礎陣列，空陣列也會生效。本地化的 `latestChapter` 必須是包含自身 `id` 的章節物件。
+
+所有章節組都放在頂層 `chapters` 陣列中，不要在漫畫本地化項目內加入 `chapters`。章節組的 `language` 表示頁面內容的語言。Mankai 顯示首個符合的完整或更廣泛語言標籤所對應的章節組。沒有符合項目時，只顯示未設定 `language` 的章節組，**預設語言**也選擇這些無標籤章節組。符合的組不會與更廣泛標籤或無標籤的組合併。書籍詳細資訊中的**顯示全部**可顯示所有組。
+
+使用 `localizations` 翻譯章節組或章節標題，不會改變內容或 ID。頁面內容不同時，應使用不同 ID 的章節，並放入對應語言的章節組。語言選擇不會為回呼增加參數。
 
 <span id="genres"></span>
 
