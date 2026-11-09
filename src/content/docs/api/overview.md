@@ -23,6 +23,8 @@ For help setting up and using the app, follow [Quick start](/guides/quick-start/
 | A remote image processing service      | [Image processor API](/api/image-processors/)  | A configurable HTTP service that processes reader images, with optional JWT authentication.                                  |
 | A portable book archive                | [MMA format](/api/mma-format/)                 | A ZIP archive containing book metadata, chapter groups, and page images.                                                     |
 
+To provide multiple languages in a source or archive, see [Localizations](/api/localizations/).
+
 ## Templates and example implementations
 
 - [plugin](https://github.com/mankai-app/plugin) is a template for creating JavaScript source plugins.

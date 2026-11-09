@@ -65,6 +65,7 @@ example.mma
   "readingDirection": 2,
   "authors": ["Example Author"],
   "genres": ["adventure"],
+  "customGenres": ["Treasure Hunting"],
   "description": "A two-chapter example.",
   "chapters": [
     {
@@ -89,6 +90,10 @@ example.mma
 
 <span id="manga-fields"></span>
 
+<span id="localizations"></span>
+
+<span id="本地化"></span>
+
 ### 漫畫欄位
 
 | 欄位               | 型別       | 必填 | 說明                                                                                                                                 |
@@ -104,9 +109,10 @@ example.mma
 | `updatedAt`        | `number`   | 否   | 以**毫秒**為單位的 Unix 時間戳記。                                                                                                   |
 | `authors`          | `string[]` | 否   | 作者名稱。預設為 `[]`。                                                                                                              |
 | `genres`           | `string[]` | 否   | Mankai 的[漫畫類型值](/zh-tw/api/javascript-plugins/#genres)，例如 `action` 或 `adventure`。預設為 `[]`。                            |
+| `customGenres`     | `string[]` | 否   | 自訂漫畫類型標籤。預設為 `[]`。                                                                                                      |
 | `chapters`         | `object[]` | 是   | 依序排列的章節群組，整體必須包含至少一個章節。                                                                                       |
 | `remarks`          | `string`   | 否   | 額外備註。                                                                                                                           |
-| `localizations`    | `object`   | 否   | 按語言標籤提供可選的漫畫詳細資訊覆寫值。參閱[本地化](#localizations)。                                                               |
+| `localizations`    | `object`   | 否   | 按語言標籤提供可選的漫畫詳細資訊覆寫值。參閱[本地化](/zh-tw/api/localizations/#mma-archives)。                                       |
 
 :::note[由 Mankai 管理的欄位]
 
@@ -153,14 +159,6 @@ Mankai 會保留群組和章節陣列的順序。頁面完全依照各章節 `im
 省略 `latestChapter` 時，Mankai 會按照提供的群組順序將章節展平，並使用最後一個章節。若有提供，其 ID 必須參照封存檔中某個已存在的章節。
 
 :::
-
-<span id="localizations"></span>
-
-## 本地化
-
-MMA 中繼資料支援與來源回應相同的[漫畫與章節本地化](/zh-tw/api/javascript-plugins/#manga-localizations)。使用漫畫層級的 `localizations` 覆寫詳細中繼資料、組層級的 `language` 標記頁面內容語言，以及組或章節的 `localizations` 覆寫標題。所有組都保留在頂層 `chapters` 陣列中，本地化項目不包含 `chapters`。
-
-本地化的 `cover` 必須是封存檔內相對路徑，遵循與基礎封面相同的驗證規則。每個本地化的 `latestChapter` 都需要一個與封存檔內現有章節符合的 `id`。章節 ID 必須在所有組和語言中保持唯一，每章仍須提供非空的 `images` 陣列。
 
 <span id="image-paths-and-covers"></span>
 

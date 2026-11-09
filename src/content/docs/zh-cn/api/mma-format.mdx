@@ -65,6 +65,7 @@ example.mma
   "readingDirection": 2,
   "authors": ["Example Author"],
   "genres": ["adventure"],
+  "customGenres": ["Treasure Hunting"],
   "description": "A two-chapter example.",
   "chapters": [
     {
@@ -89,6 +90,10 @@ example.mma
 
 <span id="manga-fields"></span>
 
+<span id="localizations"></span>
+
+<span id="本地化"></span>
+
 ### 漫画字段
 
 | 字段               | 类型       | 必填 | 说明                                                                                                                              |
@@ -104,9 +109,10 @@ example.mma
 | `updatedAt`        | `number`   | 否   | 以**毫秒**为单位的 Unix 时间戳。                                                                                                  |
 | `authors`          | `string[]` | 否   | 作者姓名，默认值为 `[]`。                                                                                                         |
 | `genres`           | `string[]` | 否   | Mankai 的[漫画类型值](/zh-cn/api/javascript-plugins/#genres)，例如 `action` 或 `adventure`。默认值为 `[]`。                       |
+| `customGenres`     | `string[]` | 否   | 自定义漫画类型标签。默认值为 `[]`。                                                                                               |
 | `chapters`         | `object[]` | 是   | 按顺序排列的章节组，所有组中合计至少包含一个章节。                                                                                |
 | `remarks`          | `string`   | 否   | 附加备注。                                                                                                                        |
-| `localizations`    | `object`   | 否   | 按语言标签提供可选的漫画详情覆盖值。参阅[本地化](#localizations)。                                                                |
+| `localizations`    | `object`   | 否   | 按语言标签提供可选的漫画详情覆盖值。参阅[本地化](/zh-cn/api/localizations/#mma-archives)。                                        |
 
 :::note[由 Mankai 管理的字段]
 
@@ -153,14 +159,6 @@ Mankai 保留章节组和章节数组的顺序。页面严格按照各章节 `im
 省略 `latestChapter` 时，Mankai 会按提供的顺序依次展开章节组，使用其中的最后一个章节。如果提供此字段，其 ID 必须指向归档中已有的章节，无论该章节属于哪个组。
 
 :::
-
-<span id="localizations"></span>
-
-## 本地化
-
-MMA 元数据支持与来源响应相同的[漫画与章节本地化](/zh-cn/api/javascript-plugins/#manga-localizations)。使用漫画级 `localizations` 覆盖详情元数据、组级 `language` 标记页面内容语言，以及组或章节的 `localizations` 覆盖标题。所有组都保留在顶层 `chapters` 数组中，本地化条目不包含 `chapters`。
-
-本地化的 `cover` 必须是归档内相对路径，遵循与基础封面相同的校验规则。每个本地化的 `latestChapter` 都需要一个与归档内现有章节匹配的 `id`。章节 ID 必须在所有组和语言中保持唯一，每章仍须提供非空的 `images` 数组。
 
 <span id="image-paths-and-covers"></span>
 

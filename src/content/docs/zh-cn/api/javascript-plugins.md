@@ -74,6 +74,10 @@ interface JsPluginManifest {
 
 <span id="metadata-fields"></span>
 
+<span id="source-localizations"></span>
+
+<span id="来源元数据本地化"></span>
+
 ### 元数据字段
 
 | 字段                    | 类型                                 | 说明                                                                                                               |
@@ -94,26 +98,7 @@ interface JsPluginManifest {
 | `getImageHeaders`       | `Record<string, string>`             | 如果存在，Mankai 使用这些原生请求标头下载所有图片网址，而不调用 `getImage` 脚本。                                  |
 | `cooldown`              | `Cooldown`                           | 可选的请求节流和图片并发限制。                                                                                     |
 | `capabilities`          | `PluginCapability[]`                 | 插件支持的操作，默认启用所列能力中除 `mangaUpdates`、`listByCustomGenre` 和 `searchByCustomGenre` 以外的所有能力。 |
-| `localizations`         | `Record<string, PluginLocalization>` | 按语言标签提供可选的来源元数据覆盖值。参阅[来源元数据本地化](#source-localizations)。                              |
-
-<span id="source-localizations"></span>
-
-### 来源元数据本地化
-
-在清单中添加 `localizations`，即可翻译来源元数据。各语言条目只能覆盖以下字段：
-
-```ts
-interface PluginLocalization {
-  name?: string
-  description?: string
-  authors?: string[]
-  repository?: string
-  icon?: string
-  homePage?: string
-}
-```
-
-来源元数据跟随应用语言，与单本书籍的语言选择无关。Mankai 先尝试完整语言标签，再逐步移除最后一个子标签，例如 `zh-Hant-TW` → `zh-Hant` → `zh`。键区分大小写，并使用连字符。`zh-TW` 不会匹配 `zh-Hant`。在首个匹配的条目中，省略或为 `null` 的字段使用基础元数据，不会从其他语言条目补齐。没有匹配条目时使用全部基础值。
+| `localizations`         | `Record<string, PluginLocalization>` | 按语言标签提供可选的来源元数据覆盖值。参阅[来源元数据本地化](/zh-cn/api/localizations/#source-localizations)。     |
 
 <span id="script-format"></span>
 
@@ -372,30 +357,6 @@ interface DetailedManga {
   meta?: string
   localizations?: Record<string, DetailedMangaLocalization>
 }
-
-interface ChapterLocalization {
-  title?: string
-}
-
-interface MangaLocalization {
-  title?: string
-  cover?: string
-  status?: Status
-  latestChapter?: Chapter
-  meta?: string
-}
-
-interface DetailedMangaLocalization extends MangaLocalization {
-  readingDirection?: ReadingDirection
-  description?: string
-  externalLink?: string
-  updatedAt?: number // Unix timestamp in milliseconds
-  authors?: string[]
-  genres?: Genre[]
-  customGenres?: string[]
-  remarks?: string
-  editable?: boolean
-}
 ```
 
 :::note[省略的字段]
@@ -406,15 +367,9 @@ interface DetailedMangaLocalization extends MangaLocalization {
 
 <span id="manga-localizations"></span>
 
-### 漫画与章节本地化
+<span id="漫画与章节本地化"></span>
 
-漫画、漫画详情、章节和章节组都可以返回可选的 `localizations` 映射，使用与来源元数据相同的[语言匹配规则](#source-localizations)。漫画 ID 在所有语言中保持不变。`MangaLocalization` 覆盖简要元数据，`DetailedMangaLocalization` 还可覆盖上方列出的详情字段。章节和章节组只能覆盖 `title`。
-
-书籍默认选择**自动**，使用应用语言。书籍详情的语言菜单可以选择特定语言，或选择**默认语言**以使用基础字段，不应用本地化覆盖。所选条目中省略或为 `null` 的字段回退到基础值。显式提供的数组会替换基础数组，空数组也会生效。本地化的 `latestChapter` 必须是包含自身 `id` 的章节对象。
-
-所有章节组都放在顶层 `chapters` 数组中，不要在漫画本地化条目内添加 `chapters`。章节组的 `language` 表示页面内容的语言。Mankai 显示首个匹配的完整或更宽泛语言标签对应的章节组。没有匹配时，只显示未设置 `language` 的章节组，**默认语言**也选择这些无标签章节组。匹配到的组不会与更宽泛标签或无标签的组合并。书籍详情中的**显示全部**可显示所有组。
-
-使用 `localizations` 翻译章节组或章节标题，不会改变内容或 ID。页面内容不同时，应使用不同 ID 的章节，并放入对应语言的章节组。语言选择不会给回调增加参数。
+类型和选择规则请参阅[漫画与章节本地化](/zh-cn/api/localizations/#manga-localizations)。语言选择不会给回调增加参数。
 
 <span id="genres"></span>
 

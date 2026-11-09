@@ -40,15 +40,6 @@ interface ServerInfoResponse {
   localizations?: Record<string, PluginLocalization>
 }
 
-interface PluginLocalization {
-  name?: string
-  description?: string
-  authors?: string[]
-  repository?: string
-  icon?: string
-  homePage?: string
-}
-
 interface Cooldown {
   default?: number
   getImage?: number
@@ -76,7 +67,7 @@ type PluginCapability =
 
 `default` 是插件执行非图片操作时两次调用之间的最小间隔，以毫秒为单位。`getImage` 单独设置图片请求之间的最小间隔。`getImageConcurrency` 可限制并发图片请求数量。
 
-可选的 `localizations` 映射按应用语言覆盖来源元数据。先匹配完整语言标签，再依次尝试更宽泛的标签，例如 `zh-Hant-TW` → `zh-Hant` → `zh`。所选条目缺少的字段使用基础值。匹配规则请参阅[来源元数据本地化](/zh-cn/api/javascript-plugins/#source-localizations)。
+可选的 `localizations` 映射按应用语言覆盖来源元数据。字段和匹配规则请参阅[来源元数据本地化](/zh-cn/api/localizations/#source-localizations)。
 
 :::note[能力与更新检查]
 
@@ -151,7 +142,7 @@ interface RefreshResponse {
 
 这些端点返回漫画及其章节的数据。用于列表、搜索和批量查询的轻量漫画条目共享下方定义的 `Manga` 结构，完整详情端点返回信息更丰富的 `MangaResponse` 结构。
 
-漫画、漫画详情、章节和章节组可返回 `localizations`，章节组还可声明内容的 `language`。这些字段与[漫画与章节本地化](/zh-cn/api/javascript-plugins/#manga-localizations)使用相同的类型和客户端选择规则。所有语言的组都放在顶层 `chapters` 数组中，漫画本地化条目不包含 `chapters`。漫画 ID 不随语言改变，不同内容的章节应使用不同 ID。这些端点不会新增语言查询参数。
+漫画、漫画详情、章节和章节组可返回 `localizations`，章节组还可声明内容的 `language`。类型和选择规则请参阅[漫画与章节本地化](/zh-cn/api/localizations/#manga-localizations)。这些端点不会新增语言查询参数。
 
 ### `GET /manga`
 
@@ -186,18 +177,6 @@ interface Manga {
   latestChapter?: Chapter
   meta?: string
   localizations?: Record<string, MangaLocalization>
-}
-
-interface ChapterLocalization {
-  title?: string
-}
-
-interface MangaLocalization {
-  title?: string
-  cover?: string
-  status?: Status
-  latestChapter?: Chapter
-  meta?: string
 }
 
 enum Status {
@@ -355,18 +334,6 @@ interface ChapterGroup {
   chapters: Chapter[] // Increasing order: oldest/lowest chapter first
   language?: string
   localizations?: Record<string, ChapterLocalization>
-}
-
-interface DetailedMangaLocalization extends MangaLocalization {
-  readingDirection?: ReadingDirection
-  description?: string
-  externalLink?: string
-  updatedAt?: number // Unix timestamp in milliseconds
-  authors?: string[]
-  genres?: Genre[]
-  customGenres?: string[]
-  remarks?: string
-  editable?: boolean
 }
 ```
 

@@ -23,6 +23,8 @@ Mankai 在內部使用外掛模組與來源互動。HTTP 來源需要實作可�
 | 遠端圖片處理服務          | [圖片處理器 API](/zh-tw/api/image-processors/)        | 透過可設定的 HTTP 服務處理閱讀器圖片，並可選擇啟用 JWT 認證。                     |
 | 可攜式書籍封存檔          | [MMA 格式](/zh-tw/api/mma-format/)                    | 以 ZIP 封存檔儲存書籍中繼資料、章節群組和頁面圖片。                               |
 
+如需在來源或封存檔中提供多語言內容，請參閱[本地化](/zh-tw/api/localizations/)。
+
 ## 範本與實作範例
 
 - [plugin](https://github.com/mankai-app/plugin) 是用於建立 JavaScript 來源外掛模組的範本。

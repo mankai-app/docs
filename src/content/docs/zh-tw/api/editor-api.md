@@ -118,11 +118,9 @@ interface Chapter {
   locked?: boolean
   localizations?: Record<string, ChapterLocalization>
 }
-
-interface ChapterLocalization {
-  title?: string
-}
 ```
+
+`ChapterLocalization` 的型別請參閱[漫畫與章節本地化](/zh-tw/api/localizations/#manga-localizations)。
 
 <span id="chapter-management"></span>
 

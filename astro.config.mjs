@@ -100,6 +100,7 @@ export default defineConfig({
             { slug: 'api/editor-api' },
             { slug: 'api/image-processors' },
             { slug: 'api/mma-format' },
+            { slug: 'api/localizations' },
           ],
         },
       ],

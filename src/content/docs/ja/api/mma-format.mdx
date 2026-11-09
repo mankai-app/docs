@@ -59,6 +59,7 @@ ZIP 内で、これらの項目を追加の親フォルダに入れないでく�
   "readingDirection": 2,
   "authors": ["Example Author"],
   "genres": ["adventure"],
+  "customGenres": ["Treasure Hunting"],
   "description": "A two-chapter example.",
   "chapters": [
     {
@@ -81,6 +82,10 @@ ZIP 内で、これらの項目を追加の親フォルダに入れないでく�
 }
 ```
 
+<span id="localizations"></span>
+
+<span id="ローカライズ"></span>
+
 ### 漫画のフィールド
 
 | フィールド         | 型         | 必須   | 説明                                                                                                                                                                               |
@@ -96,9 +101,10 @@ ZIP 内で、これらの項目を追加の親フォルダに入れないでく�
 | `updatedAt`        | `number`   | いいえ | **ミリ秒**単位の Unix タイムスタンプです。                                                                                                                                         |
 | `authors`          | `string[]` | いいえ | 作者名です。既定値は `[]` です。                                                                                                                                                   |
 | `genres`           | `string[]` | いいえ | `action` や `adventure` などの、Mankai の[ジャンルの値](/ja/api/javascript-plugins/#ジャンル)です。既定値は `[]` です。                                                            |
+| `customGenres`     | `string[]` | いいえ | カスタムジャンルのラベルです。既定値は `[]` です。                                                                                                                                 |
 | `chapters`         | `object[]` | はい   | 順序付きのチャプターグループです。全体で少なくとも 1 つのチャプターを含める必要があります。                                                                                        |
 | `remarks`          | `string`   | いいえ | 追加の備考です。                                                                                                                                                                   |
-| `localizations`    | `object`   | いいえ | 言語タグごとの詳細な漫画メタデータの上書きです。[ローカライズ](#localizations)を参照してください。                                                                                 |
+| `localizations`    | `object`   | いいえ | 言語タグごとの詳細な漫画メタデータの上書きです。[ローカライズ](/ja/api/localizations/#mma-archives)を参照してください。                                                            |
 
 :::note[Mankai が管理するフィールド]
 
@@ -141,14 +147,6 @@ Mankai はグループとチャプターの配列順を保持します。ペー�
 `latestChapter` を省略すると、Mankai は指定された順序でグループ内のチャプターを連結し、最後のチャプターを使用します。指定する場合、ID はアーカイブ内に存在するチャプターを参照する必要があります。
 
 :::
-
-<span id="localizations"></span>
-
-## ローカライズ
-
-MMA のメタデータは、ソースのレスポンスと同じ[漫画とチャプターのローカライズ](/ja/api/javascript-plugins/#manga-localizations)に対応します。漫画の `localizations` で詳細メタデータを上書きし、グループの `language` でページのコンテンツ言語を指定します。グループやチャプターの `localizations` はタイトルの上書きに使います。全グループは最上位の `chapters` 配列に置き、ローカライズのエントリーには `chapters` を含めません。
-
-ローカライズされた `cover` もアーカイブ内の相対パスにし、基本の表紙と同じ検証規則に従います。各ローカライズの `latestChapter` には、アーカイブ内のいずれかのチャプターに一致する `id` が必要です。チャプター ID は全グループ・全言語を通じて一意にし、各チャプターに空でない `images` 配列を用意します。
 
 ## 画像パスと表紙
 

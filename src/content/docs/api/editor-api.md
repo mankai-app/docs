@@ -116,11 +116,9 @@ interface Chapter {
   locked?: boolean
   localizations?: Record<string, ChapterLocalization>
 }
-
-interface ChapterLocalization {
-  title?: string
-}
 ```
+
+See [Manga and chapter localizations](/api/localizations/#manga-localizations) for the `ChapterLocalization` type.
 
 ## Chapter management
 

@@ -59,6 +59,7 @@ The root of `metadata.json` is a manga object. It uses Mankai's detailed manga f
   "readingDirection": 2,
   "authors": ["Example Author"],
   "genres": ["adventure"],
+  "customGenres": ["Treasure Hunting"],
   "description": "A two-chapter example.",
   "chapters": [
     {
@@ -81,6 +82,8 @@ The root of `metadata.json` is a manga object. It uses Mankai's detailed manga f
 }
 ```
 
+<span id="localizations"></span>
+
 ### Manga fields
 
 | Field              | Type       | Required | Meaning                                                                                                                                                         |
@@ -96,9 +99,10 @@ The root of `metadata.json` is a manga object. It uses Mankai's detailed manga f
 | `updatedAt`        | `number`   | No       | Unix timestamp in **milliseconds**.                                                                                                                             |
 | `authors`          | `string[]` | No       | Author names. Defaults to `[]`.                                                                                                                                 |
 | `genres`           | `string[]` | No       | Mankai [genre values](/api/javascript-plugins/#genres), such as `action` or `adventure`. Defaults to `[]`.                                                      |
+| `customGenres`     | `string[]` | No       | Custom genre labels. Defaults to `[]`.                                                                                                                          |
 | `chapters`         | `object[]` | Yes      | Ordered chapter groups, containing at least one chapter overall.                                                                                                |
 | `remarks`          | `string`   | No       | Additional remarks.                                                                                                                                             |
-| `localizations`    | `object`   | No       | Optional detailed manga overrides by language tag. See [Localizations](#localizations).                                                                         |
+| `localizations`    | `object`   | No       | Optional detailed manga overrides by language tag. See [Localizations](/api/localizations/#mma-archives).                                                       |
 
 :::note[Fields managed by Mankai]
 
@@ -141,12 +145,6 @@ Mankai preserves group and chapter array order. Pages follow the exact order of 
 When `latestChapter` is omitted, Mankai uses the last chapter after flattening the groups in their supplied order. If you include it, its ID must refer to an existing chapter anywhere in the archive.
 
 :::
-
-## Localizations
-
-MMA metadata supports the same [manga and chapter localizations](/api/javascript-plugins/#manga-localizations) as source responses. Use a manga-level `localizations` map for detailed metadata overrides, a group-level `language` for page content, and group or chapter `localizations` maps for title overrides. Keep every group in the top-level `chapters` array. Localization entries do not contain `chapters`.
-
-Localized `cover` values must be archive-relative paths and follow the same validation rules as the base cover. Every localized `latestChapter` needs an `id` matching a chapter anywhere in the archive. Chapter IDs must remain unique across all groups and languages. Each chapter still requires its own nonempty `images` array.
 
 ## Image paths and covers
 

@@ -40,15 +40,6 @@ interface ServerInfoResponse {
   localizations?: Record<string, PluginLocalization>
 }
 
-interface PluginLocalization {
-  name?: string
-  description?: string
-  authors?: string[]
-  repository?: string
-  icon?: string
-  homePage?: string
-}
-
 interface Cooldown {
   default?: number
   getImage?: number
@@ -76,7 +67,7 @@ type PluginCapability =
 
 `default` is the optional minimum delay between non-image plugin calls, expressed in milliseconds. `getImage` configures a separate minimum delay between image calls. `getImageConcurrency` optionally limits the number of concurrent image requests.
 
-The optional `localizations` map overrides source metadata for the app language. It uses exact language tags with progressively broader fallback, such as `zh-Hant-TW` → `zh-Hant` → `zh`. Missing fields in the selected entry use base values. See [Source metadata localizations](/api/javascript-plugins/#source-localizations) for the matching rules.
+The optional `localizations` map overrides source metadata for the app language. See [Source metadata localizations](/api/localizations/#source-localizations) for the fields and matching rules.
 
 :::note[Capabilities and update checks]
 
@@ -147,7 +138,7 @@ interface RefreshResponse {
 
 These endpoints return data about manga and their chapters. Lightweight manga entries (used in lists, search, and batch lookups) use the `Manga` type defined below. The full details endpoint returns the more detailed `MangaResponse` type.
 
-Manga, detailed manga, chapters, and chapter groups can return `localizations`. Groups can also declare their content `language`. These fields use the same types and client-side selection rules as [Manga and chapter localizations](/api/javascript-plugins/#manga-localizations). Include all language groups in the top-level `chapters` array. Manga localizations do not contain `chapters`. Manga IDs remain language-independent, and different chapter content needs distinct chapter IDs. No language query parameter is added to these endpoints.
+Manga, detailed manga, chapters, and chapter groups can return `localizations`. Groups can also declare their content `language`. See [Manga and chapter localizations](/api/localizations/#manga-localizations) for the types and language selection rules. No language query parameter is added to these endpoints.
 
 ### `GET /manga`
 
@@ -182,18 +173,6 @@ interface Manga {
   latestChapter?: Chapter
   meta?: string
   localizations?: Record<string, MangaLocalization>
-}
-
-interface ChapterLocalization {
-  title?: string
-}
-
-interface MangaLocalization {
-  title?: string
-  cover?: string
-  status?: Status
-  latestChapter?: Chapter
-  meta?: string
 }
 
 enum Status {
@@ -351,18 +330,6 @@ interface ChapterGroup {
   chapters: Chapter[] // Increasing order: oldest/lowest chapter first
   language?: string
   localizations?: Record<string, ChapterLocalization>
-}
-
-interface DetailedMangaLocalization extends MangaLocalization {
-  readingDirection?: ReadingDirection
-  description?: string
-  externalLink?: string
-  updatedAt?: number // Unix timestamp in milliseconds
-  authors?: string[]
-  genres?: Genre[]
-  customGenres?: string[]
-  remarks?: string
-  editable?: boolean
 }
 ```
 

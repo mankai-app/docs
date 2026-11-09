@@ -72,6 +72,10 @@ interface JsPluginManifest {
 }
 ```
 
+<span id="source-localizations"></span>
+
+<span id="source-metadata-localizations"></span>
+
 ### Metadata fields
 
 | Field                   | Type                                 | Description                                                                                                                                                |
@@ -92,26 +96,7 @@ interface JsPluginManifest {
 | `getImageHeaders`       | `Record<string, string>`             | If present, Mankai downloads every image URL with these native request headers and does not call the `getImage` script.                                    |
 | `cooldown`              | `Cooldown`                           | Optional request throttling and image concurrency limits.                                                                                                  |
 | `capabilities`          | `PluginCapability[]`                 | Operations supported by the plugin. By default, all listed capabilities except `mangaUpdates`, `listByCustomGenre`, and `searchByCustomGenre` are enabled. |
-| `localizations`         | `Record<string, PluginLocalization>` | Optional source metadata overrides by language tag. See [Source metadata localizations](#source-localizations).                                            |
-
-<span id="source-localizations"></span>
-
-### Source metadata localizations
-
-Add `localizations` to the manifest to translate source metadata. Each language entry may override only the following fields:
-
-```ts
-interface PluginLocalization {
-  name?: string
-  description?: string
-  authors?: string[]
-  repository?: string
-  icon?: string
-  homePage?: string
-}
-```
-
-Source metadata follows the app language, independently of a book's language selection. Mankai tries the exact language tag, then removes the last subtag until it finds an entry: for example, `zh-Hant-TW` → `zh-Hant` → `zh`. Keys are case-sensitive and use hyphens. `zh-TW` does not match `zh-Hant`. In the first matching entry, omitted or `null` fields use the base metadata, rather than fields from another language entry. If no entry matches, all base values are used.
+| `localizations`         | `Record<string, PluginLocalization>` | Optional source metadata overrides by language tag. See [Source metadata localizations](/api/localizations/#source-localizations).                         |
 
 ### Script format
 
@@ -364,30 +349,6 @@ interface DetailedManga {
   meta?: string
   localizations?: Record<string, DetailedMangaLocalization>
 }
-
-interface ChapterLocalization {
-  title?: string
-}
-
-interface MangaLocalization {
-  title?: string
-  cover?: string
-  status?: Status
-  latestChapter?: Chapter
-  meta?: string
-}
-
-interface DetailedMangaLocalization extends MangaLocalization {
-  readingDirection?: ReadingDirection
-  description?: string
-  externalLink?: string
-  updatedAt?: number // Unix timestamp in milliseconds
-  authors?: string[]
-  genres?: Genre[]
-  customGenres?: string[]
-  remarks?: string
-  editable?: boolean
-}
 ```
 
 :::note[Omitted fields]
@@ -398,15 +359,9 @@ interface DetailedMangaLocalization extends MangaLocalization {
 
 <span id="manga-localizations"></span>
 
-### Manga and chapter localizations
+<span id="manga-and-chapter-localizations"></span>
 
-Return optional `localizations` maps with manga, detailed manga, chapters, and chapter groups. They use the same [language matching rules](#source-localizations) as source metadata. A manga ID remains the same across languages. `MangaLocalization` overrides lightweight metadata, while `DetailedMangaLocalization` adds the detailed fields shown above. Chapters and groups can override only `title`.
-
-Books default to **Auto**, which uses the app language. The language menu on book details can select a specific language or **Default Language**, which uses base fields without applying a localization. Missing or `null` fields in the selected entry fall back to the base value. Arrays that are supplied replace the base arrays, including empty arrays. A localized `latestChapter` must be a chapter object with its own `id`.
-
-Keep all chapter groups in the top-level `chapters` array. Do not put `chapters` inside a manga localization. Set a group's `language` to identify the language of its page content. Mankai shows groups for the first matching exact or broader tag. If none match, it shows only groups with no `language`. **Default Language** also selects those untagged groups. Matching groups are not combined with broader or untagged groups. **Show All** on book details reveals every group.
-
-Use `localizations` to translate a group or chapter title without changing its content or ID. For different page content, supply separate chapters with distinct IDs and place them in the appropriate language groups. Language selection does not add an argument to the callbacks.
+See [Manga and chapter localizations](/api/localizations/#manga-localizations) for the types and language selection rules. Language selection does not add an argument to the callbacks.
 
 ### Genres
 
