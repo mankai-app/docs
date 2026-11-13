@@ -67,7 +67,7 @@ type PluginCapability =
 
 `default` は、画像以外のプラグイン呼び出し間に設ける最小待機時間です。省略可能で、単位はミリ秒です。`getImage` は画像の呼び出しに対して別の最小待機時間を設定します。`getImageConcurrency` を指定すると、画像リクエストの同時実行数を制限できます。
 
-任意の `localizations` マップで、アプリの言語に応じたソースメタデータを上書きできます。フィールドと照合規則は、[ソースメタデータのローカライズ](/ja/api/localizations/#source-localizations)を参照してください。
+任意の `localizations` マップで、アプリの言語に応じたソースメタデータを上書きできます。読み取り専用ソースでは、クエリの `customGenre` に、適用された `availableCustomGenres` の値を渡します。対応フィールドとフォールバックの規則は、[ソースメタデータのローカライズ](/ja/api/localizations/#source-localizations)を参照してください。
 
 :::note[機能と更新確認]
 

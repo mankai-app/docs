@@ -1,11 +1,11 @@
 ---
 title: 本地化
-description: 翻譯來源和漫畫中繼資料，並提供不同語言的章節群組。
+description: 翻譯來源、圖片處理器和漫畫的中繼資料，並提供不同語言的章節群組。
 sidebar:
   order: 8
 ---
 
-JavaScript 外掛模組、Mankai 相容伺服器和 MMA 封存檔可透過 `localizations` 翻譯中繼資料。使用章節群組的 `language` 標記頁面內容的語言。
+JavaScript 外掛模組、Mankai 相容伺服器、遠端圖片處理器和 MMA 封存檔可透過 `localizations` 翻譯中繼資料。使用章節群組的 `language` 標記頁面內容的語言。
 
 <span id="language-matching"></span>
 
@@ -27,6 +27,42 @@ interface PluginLocalization {
   repository?: string
   icon?: string
   homePage?: string
+  availableCustomGenres?: string[]
+  configs?: Record<string, ConfigLocalization>
+}
+```
+
+對於 JavaScript 外掛模組和唯讀的 Mankai 相容來源，本地化的 `availableCustomGenres` 會取代整份基礎篩選清單。若要在該語言下隱藏自訂類型篩選選項，請設為 `[]`。Mankai 在取得清單和搜尋時會將選取的字串當作 `customGenre` 傳遞，因此請支援所有已提供的篩選清單中的字串。
+
+JavaScript 外掛模組和遠端圖片處理器可使用 [`configs`](#configuration-localizations) 翻譯設定標籤。Mankai 相容來源使用應用程式內建的登入欄位。
+
+<span id="remote-image-processor-localizations"></span>
+
+## 遠端圖片處理器本地化
+
+在遠端圖片處理器的 `GET /` 回應中加入 `localizations`。Mankai 依應用程式語言選擇中繼資料項目。
+
+```ts
+interface RemoteLocalization {
+  name?: string
+  description?: string
+  authors?: string[]
+  repository?: string
+  configs?: Record<string, ConfigLocalization>
+}
+```
+
+<span id="configuration-localizations"></span>
+
+## 設定本地化
+
+在各語言項目中，`configs` 依基礎設定項目的 `key` 提供翻譯後的 `name`、`description` 和 `select` 選項標籤。`options` 以原始選項值為鍵。省略的標籤會使用基礎設定。Mankai 儲存原始的鍵和值，並透過 `getConfigs()` 或 `/process` 請求傳遞。
+
+```ts
+interface ConfigLocalization {
+  name?: string
+  description?: string
+  options?: Record<string, string>
 }
 ```
 

@@ -375,7 +375,7 @@ historical, sports, mature, mecha
 
 :::note[カスタムジャンル]
 
-`availableCustomGenres` にはソース独自のジャンルの絞り込み候補を、`customGenres` には各漫画のカスタムラベルを入れます。どちらも文字列の配列で、既定値は `[]` です。Mankai はこれらの名前を変更せずに表示し、そのまま渡します。
+`availableCustomGenres` にはソース独自のジャンルの絞り込み候補を、`customGenres` には各漫画のカスタムラベルを入れます。どちらも文字列の配列で、既定値は `[]` です。Mankai は適用された候補リストの名前を表示し、選択された名前をそのまま渡します。候補リストの翻訳については、[ソースメタデータのローカライズ](/ja/api/localizations/#source-localizations)を参照してください。
 
 カスタムジャンルで絞り込むには、`list` と `listByCustomGenre`、または `search` と `searchByCustomGenre` を有効にします。選択時は `genre` が `"all"`、`customGenre` が選択された名前になります。Mankai は対応するカスタムジャンル機能が有効な場合にのみ、`getList` の第 4 引数または `search` の第 6 引数として `customGenre` を追加します。未選択時は `null` を渡します。
 
@@ -514,6 +514,8 @@ interface Config {
   supportsOpacity?: boolean
 }
 ```
+
+設定名、説明、選択肢ラベルの翻訳については、[設定のローカライズ](/ja/api/localizations/#configuration-localizations)を参照してください。
 
 :::note[色の不透明度]
 

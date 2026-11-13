@@ -67,7 +67,7 @@ type PluginCapability =
 
 `default` 是插件执行非图片操作时两次调用之间的最小间隔，以毫秒为单位。`getImage` 单独设置图片请求之间的最小间隔。`getImageConcurrency` 可限制并发图片请求数量。
 
-可选的 `localizations` 映射按应用语言覆盖来源元数据。字段和匹配规则请参阅[来源元数据本地化](/zh-cn/api/localizations/#source-localizations)。
+可选的 `localizations` 映射按应用语言覆盖来源元数据。对于只读来源，`customGenre` 查询参数的值来自当前的 `availableCustomGenres` 列表。支持的字段和回退规则请参阅[来源元数据本地化](/zh-cn/api/localizations/#source-localizations)。
 
 :::note[能力与更新检查]
 

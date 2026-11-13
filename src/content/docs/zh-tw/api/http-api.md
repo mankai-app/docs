@@ -67,7 +67,7 @@ type PluginCapability =
 
 `default` 是外掛模組執行非圖片操作時兩次呼叫之間的最小間隔，以毫秒為單位。`getImage` 單獨設定圖片請求之間的最小間隔。`getImageConcurrency` 可限制並行圖片請求數量。
 
-可選的 `localizations` 對應表按應用程式語言覆寫來源中繼資料。欄位和比對規則請參閱[來源中繼資料本地化](/zh-tw/api/localizations/#source-localizations)。
+可選的 `localizations` 對應表依應用程式語言覆寫來源中繼資料。對於唯讀來源，`customGenre` 查詢參數的值來自目前的 `availableCustomGenres` 清單。支援的欄位和後備規則請參閱[來源中繼資料本地化](/zh-tw/api/localizations/#source-localizations)。
 
 :::note[能力與更新檢查]
 

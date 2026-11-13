@@ -385,7 +385,7 @@ historical, sports, mature, mecha
 
 :::note[自定义漫画类型]
 
-使用 `availableCustomGenres` 提供内容源的自定义类型筛选选项，使用 `customGenres` 提供单部漫画的自定义标签。两者均为字符串数组，默认值为 `[]`。Mankai 会原样显示和传回这些名称。
+使用 `availableCustomGenres` 提供内容源的自定义类型筛选选项，使用 `customGenres` 提供单部漫画的自定义标签。两者均为字符串数组，默认值为 `[]`。Mankai 会显示当前筛选列表中的名称，并原样传递选中的名称。筛选列表的翻译方式请参阅[来源元数据本地化](/zh-cn/api/localizations/#source-localizations)。
 
 自定义类型筛选需要同时启用 `list` 和 `listByCustomGenre`，或同时启用 `search` 和 `searchByCustomGenre`。选择自定义类型时，`genre` 为 `"all"`，`customGenre` 为选中的名称。仅当启用对应的自定义类型能力时，Mankai 才会将 `customGenre` 作为第四个参数传给 `getList`，或作为第六个参数传给 `search`。未选择自定义类型时传入 `null`。
 
@@ -536,6 +536,8 @@ interface Config {
   supportsOpacity?: boolean
 }
 ```
+
+如需翻译配置名称、说明和选项标签，请参阅[配置本地化](/zh-cn/api/localizations/#configuration-localizations)。
 
 :::note[颜色不透明度]
 

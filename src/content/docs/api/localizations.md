@@ -1,11 +1,11 @@
 ---
 title: Localizations
-description: Translate source and manga metadata and provide chapter groups in different languages.
+description: Translate source, image processor, and manga metadata and provide chapter groups in different languages.
 sidebar:
   order: 8
 ---
 
-Use `localizations` to translate metadata in JavaScript plugins, Mankai Compatible servers, and MMA archives. Use a chapter group's `language` to identify the language of its pages.
+Use `localizations` to translate metadata in JavaScript plugins, Mankai Compatible servers, remote image processors, and MMA archives. Use a chapter group's `language` to identify the language of its pages.
 
 ## Language matching
 
@@ -25,6 +25,38 @@ interface PluginLocalization {
   repository?: string
   icon?: string
   homePage?: string
+  availableCustomGenres?: string[]
+  configs?: Record<string, ConfigLocalization>
+}
+```
+
+In JavaScript plugins and read-only Mankai Compatible sources, a localized `availableCustomGenres` replaces the entire base filter list. Use `[]` to offer no custom genre filters for that language. Mankai sends the selected string as `customGenre` in list and search calls, so accept the strings from every filter list you publish.
+
+JavaScript plugins and remote image processors can translate configuration labels with [`configs`](#configuration-localizations). Mankai Compatible sources use the app’s built-in sign-in fields.
+
+## Remote image processor localizations
+
+Add `localizations` to the remote image processor’s `GET /` response. Mankai uses the app language to select a metadata entry.
+
+```ts
+interface RemoteLocalization {
+  name?: string
+  description?: string
+  authors?: string[]
+  repository?: string
+  configs?: Record<string, ConfigLocalization>
+}
+```
+
+## Configuration localizations
+
+Within a language entry, `configs` maps each base configuration `key` to its translated `name`, `description`, and `select` option labels. For `options`, use each original option value as the key. Omitted labels use the base configuration. Mankai saves and sends the original keys and values through `getConfigs()` or the `/process` request.
+
+```ts
+interface ConfigLocalization {
+  name?: string
+  description?: string
+  options?: Record<string, string>
 }
 ```
 

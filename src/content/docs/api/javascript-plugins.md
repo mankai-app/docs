@@ -375,7 +375,7 @@ historical, sports, mature, mecha
 
 :::note[Custom genres]
 
-Use `availableCustomGenres` for the source's custom filter names and `customGenres` for a manga's custom labels. Both are string arrays and default to `[]`. Mankai displays and passes these names unchanged.
+Use `availableCustomGenres` for the source's custom filter names and `customGenres` for a manga's custom labels. Both are string arrays and default to `[]`. Mankai displays and passes the names from the active filter list. See [Source metadata localizations](/api/localizations/#source-localizations) for localized filter lists.
 
 Enable `list` with `listByCustomGenre` or `search` with `searchByCustomGenre` to filter by custom genre. When selected, `genre` is `"all"` and `customGenre` is the selected name. Mankai appends `customGenre` as the fourth `getList` argument or sixth `search` argument only when the corresponding custom genre capability is enabled, passing `null` when none is selected.
 
@@ -514,6 +514,8 @@ interface Config {
   supportsOpacity?: boolean
 }
 ```
+
+To translate names, descriptions, and option labels, see [Configuration localizations](/api/localizations/#configuration-localizations).
 
 :::note[Color opacity]
 

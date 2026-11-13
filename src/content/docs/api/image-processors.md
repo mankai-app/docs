@@ -42,6 +42,7 @@ interface ImageProcessorInfo {
   repository?: string
   authenticationEnabled?: boolean // Default: false
   configs?: Config[] // Default: []
+  localizations?: Record<string, RemoteLocalization>
 }
 
 type ConfigType =
@@ -60,6 +61,8 @@ interface Config {
   supportsOpacity?: boolean // Used by "color", defaults to false
 }
 ```
+
+Use `localizations` to translate processor metadata and configuration labels for the app language. See [Remote image processor localizations](/api/localizations/#remote-image-processor-localizations).
 
 :::note[Color opacity]
 

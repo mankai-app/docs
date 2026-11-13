@@ -44,6 +44,7 @@ interface ImageProcessorInfo {
   repository?: string
   authenticationEnabled?: boolean // Default: false
   configs?: Config[] // Default: []
+  localizations?: Record<string, RemoteLocalization>
 }
 
 type ConfigType =
@@ -62,6 +63,8 @@ interface Config {
   supportsOpacity?: boolean // Used by "color", defaults to false
 }
 ```
+
+使用 `localizations` 按应用语言翻译处理器元数据和配置标签。参阅[远程图片处理器本地化](/zh-cn/api/localizations/#remote-image-processor-localizations)。
 
 :::note[颜色不透明度]
 

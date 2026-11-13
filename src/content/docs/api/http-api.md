@@ -67,7 +67,7 @@ type PluginCapability =
 
 `default` is the optional minimum delay between non-image plugin calls, expressed in milliseconds. `getImage` configures a separate minimum delay between image calls. `getImageConcurrency` optionally limits the number of concurrent image requests.
 
-The optional `localizations` map overrides source metadata for the app language. See [Source metadata localizations](/api/localizations/#source-localizations) for the fields and matching rules.
+The optional `localizations` map overrides source metadata for the app language. For read-only sources, `customGenre` query values come from the active `availableCustomGenres` list. See [Source metadata localizations](/api/localizations/#source-localizations) for supported fields and fallback rules.
 
 :::note[Capabilities and update checks]
 

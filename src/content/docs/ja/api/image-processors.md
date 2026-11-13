@@ -42,6 +42,7 @@ interface ImageProcessorInfo {
   repository?: string
   authenticationEnabled?: boolean // Default: false
   configs?: Config[] // Default: []
+  localizations?: Record<string, RemoteLocalization>
 }
 
 type ConfigType =
@@ -60,6 +61,8 @@ interface Config {
   supportsOpacity?: boolean // Used by "color", defaults to false
 }
 ```
+
+`localizations` を使うと、アプリの言語に応じて処理サービスのメタデータと設定ラベルを翻訳できます。[リモート画像処理サービスのローカライズ](/ja/api/localizations/#remote-image-processor-localizations)を参照してください。
 
 :::note[色の不透明度]
 

@@ -1,11 +1,11 @@
 ---
 title: ローカライズ
-description: ソースと漫画のメタデータを翻訳し、複数の言語でチャプターグループを提供します。
+description: ソース、画像処理サービス、漫画のメタデータを翻訳し、複数の言語でチャプターグループを提供します。
 sidebar:
   order: 8
 ---
 
-JavaScript プラグイン、Mankai 互換サーバー、MMA アーカイブでは、`localizations` を使ってメタデータを翻訳できます。チャプターグループの `language` はページの言語を示します。
+JavaScript プラグイン、Mankai 互換サーバー、リモート画像処理サービス、MMA アーカイブでは、`localizations` を使ってメタデータを翻訳できます。チャプターグループの `language` はページの言語を示します。
 
 <span id="language-matching"></span>
 
@@ -27,6 +27,42 @@ interface PluginLocalization {
   repository?: string
   icon?: string
   homePage?: string
+  availableCustomGenres?: string[]
+  configs?: Record<string, ConfigLocalization>
+}
+```
+
+JavaScript プラグインと読み取り専用の Mankai 互換ソースでは、ローカライズされた `availableCustomGenres` が元の絞り込み候補をすべて置き換えます。その言語でカスタムジャンルの候補を表示しない場合は `[]` を指定します。Mankai は一覧取得や検索で選択された文字列を `customGenre` として渡すため、公開するすべての候補リストの文字列を受け付けてください。
+
+JavaScript プラグインとリモート画像処理サービスでは、[`configs`](#configuration-localizations) で設定のラベルを翻訳できます。Mankai 互換ソースでは、アプリに組み込まれたログイン欄を使用します。
+
+<span id="remote-image-processor-localizations"></span>
+
+## リモート画像処理サービスのローカライズ
+
+リモート画像処理サービスの `GET /` レスポンスに `localizations` を追加します。Mankai はアプリの言語に応じてメタデータのエントリーを選びます。
+
+```ts
+interface RemoteLocalization {
+  name?: string
+  description?: string
+  authors?: string[]
+  repository?: string
+  configs?: Record<string, ConfigLocalization>
+}
+```
+
+<span id="configuration-localizations"></span>
+
+## 設定のローカライズ
+
+各言語のエントリー内の `configs` では、元の設定の `key` ごとに、翻訳した `name`、`description`、`select` の選択肢ラベルを指定します。`options` のキーには元の選択肢の値を使います。省略したラベルには元の設定を使います。Mankai は元のキーと値を保存し、`getConfigs()` の戻り値や `/process` リクエストで渡します。
+
+```ts
+interface ConfigLocalization {
+  name?: string
+  description?: string
+  options?: Record<string, string>
 }
 ```
 

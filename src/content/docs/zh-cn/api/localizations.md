@@ -1,11 +1,11 @@
 ---
 title: 本地化
-description: 翻译来源和漫画元数据，并提供不同语言的章节组。
+description: 翻译来源、图片处理器和漫画的元数据，并提供不同语言的章节组。
 sidebar:
   order: 8
 ---
 
-JavaScript 插件、Mankai 兼容服务器和 MMA 归档可通过 `localizations` 翻译元数据。使用章节组的 `language` 标记页面内容的语言。
+JavaScript 插件、Mankai 兼容服务器、远程图片处理器和 MMA 归档可通过 `localizations` 翻译元数据。使用章节组的 `language` 标记页面内容的语言。
 
 <span id="language-matching"></span>
 
@@ -27,6 +27,42 @@ interface PluginLocalization {
   repository?: string
   icon?: string
   homePage?: string
+  availableCustomGenres?: string[]
+  configs?: Record<string, ConfigLocalization>
+}
+```
+
+对于 JavaScript 插件和只读的 Mankai 兼容来源，本地化的 `availableCustomGenres` 会替换整个基础筛选列表。如需在该语言下隐藏自定义类型筛选选项，请设为 `[]`。Mankai 在获取列表和搜索时会将选中的字符串作为 `customGenre` 传递，因此请支持所有已提供的筛选列表中的字符串。
+
+JavaScript 插件和远程图片处理器可使用 [`configs`](#configuration-localizations) 翻译配置标签。Mankai 兼容来源使用应用内置的登录字段。
+
+<span id="remote-image-processor-localizations"></span>
+
+## 远程图片处理器本地化
+
+在远程图片处理器的 `GET /` 响应中添加 `localizations`。Mankai 根据应用语言选择元数据条目。
+
+```ts
+interface RemoteLocalization {
+  name?: string
+  description?: string
+  authors?: string[]
+  repository?: string
+  configs?: Record<string, ConfigLocalization>
+}
+```
+
+<span id="configuration-localizations"></span>
+
+## 配置本地化
+
+在各语言条目中，`configs` 按基础配置项的 `key` 提供翻译后的 `name`、`description` 和 `select` 选项标签。`options` 以原始选项值为键。省略的标签使用基础配置。Mankai 保存原始键和值，并通过 `getConfigs()` 或 `/process` 请求传递。
+
+```ts
+interface ConfigLocalization {
+  name?: string
+  description?: string
+  options?: Record<string, string>
 }
 ```
 
