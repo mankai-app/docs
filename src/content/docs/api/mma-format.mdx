@@ -91,7 +91,7 @@ The root of `metadata.json` is a manga object. It uses Mankai's detailed manga f
 | `id`               | `string`   | Yes      | Manga identifier in the metadata. File-based sources replace it with their own file identity when opening the book.                                             |
 | `title`            | `string`   | No       | Display title.                                                                                                                                                  |
 | `cover`            | `string`   | No       | Path to a cover image inside the archive.                                                                                                                       |
-| `status`           | `number`   | No       | `0` = any, `1` = ongoing, `2` = completed.                                                                                                                      |
+| `status`           | `number`   | No       | `0` = unknown, `1` = ongoing, `2` = completed.                                                                                                                  |
 | `readingDirection` | `number`   | No       | `1` = left to right, `2` = right to left, `3` = vertical.                                                                                                       |
 | `latestChapter`    | `object`   | No       | A chapter reference with required `id` and optional `title` and `locked` fields. Its ID must match a chapter in `chapters`. No `images` field is required here. |
 | `description`      | `string`   | No       | Manga description.                                                                                                                                              |

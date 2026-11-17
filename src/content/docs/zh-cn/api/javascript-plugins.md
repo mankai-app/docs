@@ -40,11 +40,17 @@ type PluginCapability =
   | 'listByGenre'
   | 'listByCustomGenre'
   | 'listByStatus'
+  | 'listByUpdateTime'
+  | 'listByPopularity'
+  | 'listByCustomSort'
   | 'search'
   | 'searchByGenre'
   | 'searchByCustomGenre'
   | 'searchByStatus'
   | 'searchByAuthor'
+  | 'searchByUpdateTime'
+  | 'searchByPopularity'
+  | 'searchByCustomSort'
   | 'mangaDetails'
   | 'batchMangas'
   | 'mangaUpdates'
@@ -63,6 +69,7 @@ interface JsPluginManifest {
   updatesUrl?: string
   availableGenres?: Genre[]
   availableCustomGenres?: string[]
+  availableCustomSorts?: string[]
   scripts?: Record<ScriptName, string>
   configs?: Config[]
   getImageHeaders?: Record<string, string>
@@ -80,25 +87,26 @@ interface JsPluginManifest {
 
 ### 元数据字段
 
-| 字段                    | 类型                                 | 说明                                                                                                               |
-| :---------------------- | :----------------------------------- | :----------------------------------------------------------------------------------------------------------------- |
-| `id`                    | `string`                             | 稳定且全局唯一的插件标识符，也用于划分持久存储的作用域。                                                           |
-| `name`                  | `string`                             | 显示名称，省略时使用 ID。                                                                                          |
-| `version`               | `string`                             | 在应用中显示并用于检查更新的插件版本。                                                                             |
-| `description`           | `string`                             | 在来源设置中显示的简短描述。                                                                                       |
-| `authors`               | `string[]`                           | 插件作者，默认值为 `[]`。                                                                                          |
-| `repository`            | `string`                             | 源代码或项目的网址。                                                                                               |
-| `icon`                  | `string`                             | 自定义来源图标的 HTTP(S) 图片网址。                                                                                |
-| `homePage`              | `string`                             | 来源网站的 HTTP(S) 网址，网站链接优先使用此值而非 `repository`。                                                   |
-| `updatesUrl`            | `string`                             | 用于检查更新的清单网址。                                                                                           |
-| `availableGenres`       | `Genre[]`                            | 内容源支持的漫画类型，默认值为 `[]`。                                                                              |
-| `availableCustomGenres` | `string[]`                           | 内容源支持的自定义漫画类型，默认值为 `[]`。                                                                        |
-| `scripts`               | `Record<string, string>`             | 以以下脚本名称为键的 JavaScript 源代码，未知的键会被忽略。                                                         |
-| `configs`               | `Config[]`                           | 向脚本提供的用户可配置值，默认值为 `[]`。                                                                          |
-| `getImageHeaders`       | `Record<string, string>`             | 如果存在，Mankai 使用这些原生请求标头下载所有图片网址，而不调用 `getImage` 脚本。                                  |
-| `cooldown`              | `Cooldown`                           | 可选的请求节流和图片并发限制。                                                                                     |
-| `capabilities`          | `PluginCapability[]`                 | 插件支持的操作，默认启用所列能力中除 `mangaUpdates`、`listByCustomGenre` 和 `searchByCustomGenre` 以外的所有能力。 |
-| `localizations`         | `Record<string, PluginLocalization>` | 按语言标签提供可选的来源元数据覆盖值。参阅[来源元数据本地化](/zh-cn/api/localizations/#source-localizations)。     |
+| 字段                    | 类型                                 | 说明                                                                                                           |
+| :---------------------- | :----------------------------------- | :------------------------------------------------------------------------------------------------------------- |
+| `id`                    | `string`                             | 稳定且全局唯一的插件标识符，也用于划分持久存储的作用域。                                                       |
+| `name`                  | `string`                             | 显示名称，省略时使用 ID。                                                                                      |
+| `version`               | `string`                             | 在应用中显示并用于检查更新的插件版本。                                                                         |
+| `description`           | `string`                             | 在来源设置中显示的简短描述。                                                                                   |
+| `authors`               | `string[]`                           | 插件作者，默认值为 `[]`。                                                                                      |
+| `repository`            | `string`                             | 源代码或项目的网址。                                                                                           |
+| `icon`                  | `string`                             | 自定义来源图标的 HTTP(S) 图片网址。                                                                            |
+| `homePage`              | `string`                             | 来源网站的 HTTP(S) 网址，网站链接优先使用此值而非 `repository`。                                               |
+| `updatesUrl`            | `string`                             | 用于检查更新的清单网址。                                                                                       |
+| `availableGenres`       | `Genre[]`                            | 内容源支持的漫画类型，默认值为 `[]`。                                                                          |
+| `availableCustomGenres` | `string[]`                           | 内容源支持的自定义漫画类型，默认值为 `[]`。                                                                    |
+| `availableCustomSorts`  | `string[]`                           | 内容源提供的自定义排序选项，默认值为 `[]`。                                                                    |
+| `scripts`               | `Record<string, string>`             | 以以下脚本名称为键的 JavaScript 源代码，未知的键会被忽略。                                                     |
+| `configs`               | `Config[]`                           | 向脚本提供的用户可配置值，默认值为 `[]`。                                                                      |
+| `getImageHeaders`       | `Record<string, string>`             | 如果存在，Mankai 使用这些原生请求标头下载所有图片网址，而不调用 `getImage` 脚本。                              |
+| `cooldown`              | `Cooldown`                           | 可选的请求节流和图片并发限制。                                                                                 |
+| `capabilities`          | `PluginCapability[]`                 | 插件支持的操作。                                                                                               |
+| `localizations`         | `Record<string, PluginLocalization>` | 按语言标签提供可选的来源元数据覆盖值。参阅[来源元数据本地化](/zh-cn/api/localizations/#source-localizations)。 |
 
 <span id="script-format"></span>
 
@@ -128,17 +136,11 @@ export{isOnline as default};
 
 ## 回调脚本
 
-可选字段 `capabilities` 接受下列值。
-
 :::note[默认能力]
 
-省略时，所列能力中除 `mangaUpdates`、`listByCustomGenre` 和 `searchByCustomGenre` 以外的所有能力都会启用。这三项能力必须显式列出才会启用。插件可以使用此字段声明自己实现的操作，让应用避免调用不支持的回调。
+省略 `capabilities` 时，Mankai 默认启用 `onlineCheck`、`suggestions`、`list`、`search`、`mangaDetails`、`batchMangas`、`chapter` 和 `image`。如支持筛选、排序、按作者搜索或 `mangaUpdates`，请将相应能力与已实现的操作一同明确列出。
 
 :::
-
-```text
-onlineCheck, suggestions, list, listByGenre, listByCustomGenre, listByStatus, search, searchByGenre, searchByCustomGenre, searchByStatus, searchByAuthor, mangaDetails, batchMangas, mangaUpdates, chapter, image
-```
 
 :::note[更新检查]
 
@@ -148,17 +150,17 @@ onlineCheck, suggestions, list, listByGenre, listByCustomGenre, listByStatus, se
 
 键与函数签名如下。
 
-| 键                 | 函数签名                                                     | 返回值                               |
-| :----------------- | :----------------------------------------------------------- | :----------------------------------- |
-| `isOnline`         | `isOnline()`                                                 | `boolean`                            |
-| `getSuggestion`    | `getSuggestion(query)`                                       | `string[]`                           |
-| `search`           | `search(query, page, genre, status, isAuthor, customGenre?)` | `Manga[]`                            |
-| `getList`          | `getList(page, genre, status, customGenre?)`                 | `Manga[]`                            |
-| `getMangas`        | `getMangas(ids)`                                             | `Manga[]`                            |
-| `getMangaUpdates`  | `getMangaUpdates(mangas)`                                    | `MangaUpdate[]` 元数据补丁与更新标记 |
-| `getDetailedManga` | `getDetailedManga(id)`                                       | `DetailedManga`                      |
-| `getChapter`       | `getChapter(manga, chapter)`                                 | 图片网址数组 `string[]`              |
-| `getImage`         | `getImage(url)`                                              | Base64 图片数据或图片代理请求对象    |
+| 键                 | 函数签名                                                                             | 返回值                               |
+| :----------------- | :----------------------------------------------------------------------------------- | :----------------------------------- |
+| `isOnline`         | `isOnline()`                                                                         | `boolean`                            |
+| `getSuggestion`    | `getSuggestion(query)`                                                               | `string[]`                           |
+| `search`           | `search(query, page, genre?, status?, isAuthor, customGenre?, sortBy?, customSort?)` | `Manga[]`                            |
+| `getList`          | `getList(page, genre?, status?, customGenre?, sortBy?, customSort?)`                 | `Manga[]`                            |
+| `getMangas`        | `getMangas(ids)`                                                                     | `Manga[]`                            |
+| `getMangaUpdates`  | `getMangaUpdates(mangas)`                                                            | `MangaUpdate[]` 元数据补丁与更新标记 |
+| `getDetailedManga` | `getDetailedManga(id)`                                                               | `DetailedManga`                      |
+| `getChapter`       | `getChapter(manga, chapter)`                                                         | 图片网址数组 `string[]`              |
+| `getImage`         | `getImage(url)`                                                                      | Base64 图片数据或图片代理请求对象    |
 
 以下说明各参数与返回结果。
 
@@ -183,13 +185,13 @@ async function getSuggestion(query) {
 export{getSuggestion as default};
 ```
 
-### `search(query, page, genre, status, isAuthor, customGenre?)`
+### `search(query, page, genre?, status?, isAuthor, customGenre?, sortBy?, customSort?)`
 
-按标题或作者搜索漫画。`page` 是从 1 开始的页码。`genre` 是[漫画类型](#genres)中的一个字符串，`status` 是[状态](#statuses)中的一个数值。当 `isAuthor` 为 `true` 时，搜索内容源的作者字段而不是标题字段。返回轻量的 `Manga` 对象数组。
+按标题或作者搜索漫画。`page` 是从 1 开始的页码。筛选和排序的取值请参阅[漫画类型](#genres)、[状态](#statuses)和[排序方式](#sort-orders)。`genre` 和 `status` 未设置时分别传入 `null`。当 `isAuthor` 为 `true` 时，搜索内容源的作者字段。返回轻量的 `Manga` 对象数组。
 
-### `getList(page, genre, status, customGenre?)`
+### `getList(page, genre?, status?, customGenre?, sortBy?, customSort?)`
 
-返回内容源的分页列表，使用与 `search` 相同的 `page`、`genre` 和 `status` 参数。
+返回内容源的分页列表，使用与 `search` 相同的筛选和排序参数。对这两个回调，Mankai 都会省略末尾未设置的参数，后续参数有值时则用 `null` 填充中间未设置的参数。
 
 ### `getMangas(ids)`
 
@@ -375,19 +377,19 @@ interface DetailedManga {
 
 ### 漫画类型
 
-`availableGenres` 和 `genres` 接受以下预定义字符串值，`genre` 参数也使用这些值。
+`availableGenres` 和 `genres` 接受以下预定义字符串值。
 
 ```text
-all, action, romance, yuri, boysLove, otokonoko, schoolLife, adventure,
+action, romance, yuri, boysLove, otokonoko, schoolLife, adventure,
 harem, speculativeFiction, war, suspense, fanFiction, comedy, magic, horror,
 historical, sports, mature, mecha
 ```
 
 :::note[自定义漫画类型]
 
-使用 `availableCustomGenres` 提供内容源的自定义类型筛选选项，使用 `customGenres` 提供单部漫画的自定义标签。两者均为字符串数组，默认值为 `[]`。Mankai 会显示当前筛选列表中的名称，并原样传递选中的名称。筛选列表的翻译方式请参阅[来源元数据本地化](/zh-cn/api/localizations/#source-localizations)。
+使用 `availableCustomGenres` 提供内容源的自定义类型筛选选项，使用 `customGenres` 提供单部漫画的自定义标签。两者均为字符串数组，默认值为 `[]`。筛选和排序选项的翻译方式请参阅[来源元数据本地化](/zh-cn/api/localizations/#source-localizations)。
 
-自定义类型筛选需要同时启用 `list` 和 `listByCustomGenre`，或同时启用 `search` 和 `searchByCustomGenre`。选择自定义类型时，`genre` 为 `"all"`，`customGenre` 为选中的名称。仅当启用对应的自定义类型能力时，Mankai 才会将 `customGenre` 作为第四个参数传给 `getList`，或作为第六个参数传给 `search`。未选择自定义类型时传入 `null`。
+`genre` 为预定义漫画类型或 `"custom"`。选择自定义类型时，`customGenre` 为 `availableCustomGenres` 中选中的名称。预定义类型需要启用 `listByGenre` 或 `searchByGenre`，自定义类型需要启用 `listByCustomGenre` 或 `searchByCustomGenre`。
 
 :::
 
@@ -395,11 +397,25 @@ historical, sports, mature, mecha
 
 ### 状态
 
+状态筛选接受 `1`（连载中）或 `2`（已完结），需要启用 `listByStatus` 或 `searchByStatus`。
+
 | 名称        | 值  |
 | :---------- | :-- |
-| `any`       | `0` |
+| `unknown`   | `0` |
 | `onGoing`   | `1` |
 | `completed` | `2` |
+
+<span id="sort-orders"></span>
+
+### 排序方式
+
+`sortBy` 指定排序方式。未设置时采用内容源的默认顺序。值为 `"custom"` 时，`customSort` 为 `availableCustomSorts` 中选中的名称。
+
+| 排序选项     | 排序方式           | 列表能力           | 搜索能力             |
+| :----------- | :----------------- | :----------------- | :------------------- |
+| `updateTime` | 最近更新的排在前面 | `listByUpdateTime` | `searchByUpdateTime` |
+| `popularity` | 人气最高的排在前面 | `listByPopularity` | `searchByPopularity` |
+| `custom`     | 内容源自定义顺序   | `listByCustomSort` | `searchByCustomSort` |
 
 <span id="reading-directions"></span>
 

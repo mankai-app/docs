@@ -26,11 +26,14 @@ interface PluginLocalization {
   icon?: string
   homePage?: string
   availableCustomGenres?: string[]
+  availableCustomSorts?: string[]
   configs?: Record<string, ConfigLocalization>
 }
 ```
 
 In JavaScript plugins and read-only Mankai Compatible sources, a localized `availableCustomGenres` replaces the entire base filter list. Use `[]` to offer no custom genre filters for that language. Mankai sends the selected string as `customGenre` in list and search calls, so accept the strings from every filter list you publish.
+
+A localized `availableCustomSorts` replaces the entire base list of custom sorts for JavaScript plugins and Mankai Compatible sources, including editor-enabled sources. Use `[]` to hide custom sort options for that language. Mankai sends the selected string as `customSort` in list and search calls. Accept the strings from every sort list you publish.
 
 JavaScript plugins and remote image processors can translate configuration labels with [`configs`](#configuration-localizations). Mankai Compatible sources use the app’s built-in sign-in fields.
 

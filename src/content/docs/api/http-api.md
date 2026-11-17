@@ -35,6 +35,7 @@ interface ServerInfoResponse {
   homePage?: string
   availableGenres?: Genre[]
   availableCustomGenres?: string[] // Read-only sources, default: []
+  availableCustomSorts?: string[] // Default: []
   cooldown?: Cooldown
   capabilities?: PluginCapability[]
   localizations?: Record<string, PluginLocalization>
@@ -53,11 +54,17 @@ type PluginCapability =
   | 'listByGenre'
   | 'listByCustomGenre'
   | 'listByStatus'
+  | 'listByUpdateTime'
+  | 'listByPopularity'
+  | 'listByCustomSort'
   | 'search'
   | 'searchByGenre'
   | 'searchByCustomGenre'
   | 'searchByStatus'
   | 'searchByAuthor'
+  | 'searchByUpdateTime'
+  | 'searchByPopularity'
+  | 'searchByCustomSort'
   | 'mangaDetails'
   | 'batchMangas'
   | 'mangaUpdates'
@@ -67,11 +74,11 @@ type PluginCapability =
 
 `default` is the optional minimum delay between non-image plugin calls, expressed in milliseconds. `getImage` configures a separate minimum delay between image calls. `getImageConcurrency` optionally limits the number of concurrent image requests.
 
-The optional `localizations` map overrides source metadata for the app language. For read-only sources, `customGenre` query values come from the active `availableCustomGenres` list. See [Source metadata localizations](/api/localizations/#source-localizations) for supported fields and fallback rules.
+The optional `localizations` map overrides source metadata for the app language. The `customGenre` and `customSort` query values come from the active `availableCustomGenres` and `availableCustomSorts` lists. See [Source metadata localizations](/api/localizations/#source-localizations) for fallback rules and supported fields.
 
 :::note[Capabilities and update checks]
 
-When `capabilities` is omitted, all listed capabilities except `mangaUpdates`, `listByCustomGenre`, and `searchByCustomGenre` are enabled. These three capabilities must be listed explicitly.
+When `capabilities` is omitted, Mankai enables `onlineCheck`, `suggestions`, `list`, `search`, `mangaDetails`, `batchMangas`, `chapter`, and `image`. List any supported filters, sorting options, author search, and `mangaUpdates` explicitly alongside the operations you implement.
 
 Plugins with either `batchMangas` or `mangaUpdates` can participate in library update checks. Include `mangaUpdates` when the server should control which manga are marked as updated through `POST /manga/updates`. Exclude `mangaUpdates` to use Mankai's default behavior, which calls `POST /manga`, refreshes the returned metadata, and compares the returned latest chapters. The default behavior requires `batchMangas`.
 
@@ -142,16 +149,18 @@ Manga, detailed manga, chapters, and chapter groups can return `localizations`. 
 
 ### `GET /manga`
 
-Retrieve a paginated list of manga, optionally filtered by genre, status, or both.
+Retrieve a paginated list of manga with optional genre and status filters and a sort order.
 
 **Query parameters**
 
-| Parameter     | Type     | Default   | Required | Description                                                  |
-| :------------ | :------- | :-------- | :------- | :----------------------------------------------------------- |
-| `page`        | `number` | `1`       | No       | The page number to retrieve.                                 |
-| `genre`       | `string` | `"all"`   | No       | Filter results by a single genre.                            |
-| `customGenre` | `string` | Omitted   | No       | Exact custom genre name. Requires `listByCustomGenre`.       |
-| `status`      | `number` | `0` (Any) | No       | Filter by status: `0` = Any, `1` = OnGoing, `2` = Completed. |
+| Parameter     | Type     | Default | Required | Description                                                                |
+| :------------ | :------- | :------ | :------- | :------------------------------------------------------------------------- |
+| `page`        | `number` | `1`     | No       | The page number to retrieve.                                               |
+| `genre`       | `string` | Omitted | No       | A built-in genre or `"custom"`.                                            |
+| `customGenre` | `string` | Omitted | No       | Exact custom genre name when `genre=custom`. Requires `listByCustomGenre`. |
+| `status`      | `number` | Omitted | No       | `1` for ongoing or `2` for completed.                                      |
+| `sortBy`      | `string` | Omitted | No       | `updateTime`, `popularity`, or `custom`. See [Sorting](#sorting).          |
+| `customSort`  | `string` | Omitted | No       | Exact custom sort name when `sortBy=custom`.                               |
 
 **Response — `200 OK`**
 
@@ -176,7 +185,7 @@ interface Manga {
 }
 
 enum Status {
-  Any = 0,
+  Unknown = 0,
   OnGoing = 1,
   Completed = 2,
 }
@@ -283,7 +292,6 @@ interface MangaResponse {
 }
 
 enum Genre {
-  All = 'all',
   Action = 'action',
   Romance = 'romance',
   Yuri = 'yuri',
@@ -306,7 +314,7 @@ enum Genre {
 }
 
 enum Status {
-  Any = 0,
+  Unknown = 0,
   OnGoing = 1,
   Completed = 2,
 }
@@ -359,18 +367,30 @@ Search for manga by title or author.
 
 **Query parameters**
 
-| Parameter     | Type      | Default   | Required | Description                                                  |
-| :------------ | :-------- | :-------- | :------- | :----------------------------------------------------------- |
-| `query`       | `string`  | `null`    | Yes      | The search query string.                                     |
-| `page`        | `number`  | `1`       | No       | The page number to retrieve.                                 |
-| `genre`       | `string`  | `"all"`   | No       | Filter results by a single genre.                            |
-| `customGenre` | `string`  | Omitted   | No       | Exact custom genre name. Requires `searchByCustomGenre`.     |
-| `status`      | `number`  | `0` (Any) | No       | Filter by status: `0` = Any, `1` = OnGoing, `2` = Completed. |
-| `isAuthor`    | `boolean` | `false`   | No       | Search the authors field instead of the title field.         |
+| Parameter     | Type      | Default | Required | Description                                                                  |
+| :------------ | :-------- | :------ | :------- | :--------------------------------------------------------------------------- |
+| `query`       | `string`  | `null`  | Yes      | The search query string.                                                     |
+| `page`        | `number`  | `1`     | No       | The page number to retrieve.                                                 |
+| `genre`       | `string`  | Omitted | No       | A built-in genre or `"custom"`.                                              |
+| `customGenre` | `string`  | Omitted | No       | Exact custom genre name when `genre=custom`. Requires `searchByCustomGenre`. |
+| `status`      | `number`  | Omitted | No       | `1` for ongoing or `2` for completed.                                        |
+| `sortBy`      | `string`  | Omitted | No       | `updateTime`, `popularity`, or `custom`. See [Sorting](#sorting).            |
+| `customSort`  | `string`  | Omitted | No       | Exact custom sort name when `sortBy=custom`.                                 |
+| `isAuthor`    | `boolean` | `false` | No       | Search the authors field instead of the title field.                         |
 
 **Response — `200 OK`**
 
 Returns the same `MangaListResponse` shape as [`GET /manga`](#get-manga).
+
+### Sorting
+
+Mankai omits unset filters and sort parameters. Use the source's default order when `sortBy` is omitted. Built-in genres and status filters require the corresponding `listByGenre`, `searchByGenre`, `listByStatus`, or `searchByStatus` capability. Custom genres are available to read-only sources.
+
+| Sort         | Order                       | List capability    | Search capability    |
+| :----------- | :-------------------------- | :----------------- | :------------------- |
+| `updateTime` | Most recently updated first | `listByUpdateTime` | `searchByUpdateTime` |
+| `popularity` | Most popular first          | `listByPopularity` | `searchByPopularity` |
+| `custom`     | Source-defined order        | `listByCustomSort` | `searchByCustomSort` |
 
 ## Suggestions
 

@@ -28,11 +28,14 @@ interface PluginLocalization {
   icon?: string
   homePage?: string
   availableCustomGenres?: string[]
+  availableCustomSorts?: string[]
   configs?: Record<string, ConfigLocalization>
 }
 ```
 
 JavaScript プラグインと読み取り専用の Mankai 互換ソースでは、ローカライズされた `availableCustomGenres` が元の絞り込み候補をすべて置き換えます。その言語でカスタムジャンルの候補を表示しない場合は `[]` を指定します。Mankai は一覧取得や検索で選択された文字列を `customGenre` として渡すため、公開するすべての候補リストの文字列を受け付けてください。
+
+JavaScript プラグインと Mankai 互換ソースでは、ローカライズされた `availableCustomSorts` が元のカスタム並び替え候補をすべて置き換えます。エディター対応ソースでも利用できます。その言語でカスタム並び替えの候補を表示しない場合は `[]` を指定します。Mankai は一覧取得や検索で選択された文字列を `customSort` として渡すため、公開するすべての候補リストの文字列を受け付けてください。
 
 JavaScript プラグインとリモート画像処理サービスでは、[`configs`](#configuration-localizations) で設定のラベルを翻訳できます。Mankai 互換ソースでは、アプリに組み込まれたログイン欄を使用します。
 

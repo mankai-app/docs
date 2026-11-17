@@ -28,11 +28,14 @@ interface PluginLocalization {
   icon?: string
   homePage?: string
   availableCustomGenres?: string[]
+  availableCustomSorts?: string[]
   configs?: Record<string, ConfigLocalization>
 }
 ```
 
 对于 JavaScript 插件和只读的 Mankai 兼容来源，本地化的 `availableCustomGenres` 会替换整个基础筛选列表。如需在该语言下隐藏自定义类型筛选选项，请设为 `[]`。Mankai 在获取列表和搜索时会将选中的字符串作为 `customGenre` 传递，因此请支持所有已提供的筛选列表中的字符串。
+
+对于 JavaScript 插件和 Mankai 兼容来源，本地化的 `availableCustomSorts` 会替换整个基础自定义排序列表，支持编辑器的来源也适用。将其设为 `[]` 可隐藏该语言下的自定义排序选项。Mankai 在获取列表和搜索时会将选中的字符串作为 `customSort` 传递，因此请支持所有已提供的排序列表中的字符串。
 
 JavaScript 插件和远程图片处理器可使用 [`configs`](#configuration-localizations) 翻译配置标签。Mankai 兼容来源使用应用内置的登录字段。
 

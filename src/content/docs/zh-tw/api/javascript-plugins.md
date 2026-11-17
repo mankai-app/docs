@@ -40,11 +40,17 @@ type PluginCapability =
   | 'listByGenre'
   | 'listByCustomGenre'
   | 'listByStatus'
+  | 'listByUpdateTime'
+  | 'listByPopularity'
+  | 'listByCustomSort'
   | 'search'
   | 'searchByGenre'
   | 'searchByCustomGenre'
   | 'searchByStatus'
   | 'searchByAuthor'
+  | 'searchByUpdateTime'
+  | 'searchByPopularity'
+  | 'searchByCustomSort'
   | 'mangaDetails'
   | 'batchMangas'
   | 'mangaUpdates'
@@ -63,6 +69,7 @@ interface JsPluginManifest {
   updatesUrl?: string
   availableGenres?: Genre[]
   availableCustomGenres?: string[]
+  availableCustomSorts?: string[]
   scripts?: Record<ScriptName, string>
   configs?: Config[]
   getImageHeaders?: Record<string, string>
@@ -80,25 +87,26 @@ interface JsPluginManifest {
 
 ### 中繼資料欄位
 
-| 欄位                    | 類型                                 | 說明                                                                                                                   |
-| :---------------------- | :----------------------------------- | :--------------------------------------------------------------------------------------------------------------------- |
-| `id`                    | `string`                             | 穩定且全域唯一的外掛模組識別碼，也用於劃分永久儲存的範圍。                                                             |
-| `name`                  | `string`                             | 顯示名稱，省略時使用 ID。                                                                                              |
-| `version`               | `string`                             | 在應用程式中顯示並用於檢查更新的外掛模組版本。                                                                         |
-| `description`           | `string`                             | 在來源設定中顯示的簡短描述。                                                                                           |
-| `authors`               | `string[]`                           | 外掛模組作者，預設值為 `[]`。                                                                                          |
-| `repository`            | `string`                             | 原始碼或專案的網址。                                                                                                   |
-| `icon`                  | `string`                             | 自訂來源圖示的 HTTP(S) 圖片網址。                                                                                      |
-| `homePage`              | `string`                             | 來源網站的 HTTP(S) 網址，網站連結優先使用此值而非 `repository`。                                                       |
-| `updatesUrl`            | `string`                             | 用於檢查更新的清單網址。                                                                                               |
-| `availableGenres`       | `Genre[]`                            | 內容源支援的漫畫類型，預設值為 `[]`。                                                                                  |
-| `availableCustomGenres` | `string[]`                           | 內容源支援的自訂漫畫類型，預設值為 `[]`。                                                                              |
-| `scripts`               | `Record<string, string>`             | 以以下腳本名稱為鍵的 JavaScript 原始碼，未知的鍵會被忽略。                                                             |
-| `configs`               | `Config[]`                           | 使用者可調整並供腳本讀取的設定值，預設值為 `[]`。                                                                      |
-| `getImageHeaders`       | `Record<string, string>`             | 如果存在，Mankai 使用這些原生請求標頭下載所有圖片網址，而不呼叫 `getImage` 腳本。                                      |
-| `cooldown`              | `Cooldown`                           | 可選的請求節流和圖片並行限制。                                                                                         |
-| `capabilities`          | `PluginCapability[]`                 | 外掛模組支援的操作，預設啟用所列能力中除 `mangaUpdates`、`listByCustomGenre` 和 `searchByCustomGenre` 以外的所有能力。 |
-| `localizations`         | `Record<string, PluginLocalization>` | 按語言標籤提供可選的來源中繼資料覆寫值。參閱[來源中繼資料本地化](/zh-tw/api/localizations/#source-localizations)。     |
+| 欄位                    | 類型                                 | 說明                                                                                                               |
+| :---------------------- | :----------------------------------- | :----------------------------------------------------------------------------------------------------------------- |
+| `id`                    | `string`                             | 穩定且全域唯一的外掛模組識別碼，也用於劃分永久儲存的範圍。                                                         |
+| `name`                  | `string`                             | 顯示名稱，省略時使用 ID。                                                                                          |
+| `version`               | `string`                             | 在應用程式中顯示並用於檢查更新的外掛模組版本。                                                                     |
+| `description`           | `string`                             | 在來源設定中顯示的簡短描述。                                                                                       |
+| `authors`               | `string[]`                           | 外掛模組作者，預設值為 `[]`。                                                                                      |
+| `repository`            | `string`                             | 原始碼或專案的網址。                                                                                               |
+| `icon`                  | `string`                             | 自訂來源圖示的 HTTP(S) 圖片網址。                                                                                  |
+| `homePage`              | `string`                             | 來源網站的 HTTP(S) 網址，網站連結優先使用此值而非 `repository`。                                                   |
+| `updatesUrl`            | `string`                             | 用於檢查更新的清單網址。                                                                                           |
+| `availableGenres`       | `Genre[]`                            | 內容源支援的漫畫類型，預設值為 `[]`。                                                                              |
+| `availableCustomGenres` | `string[]`                           | 內容源支援的自訂漫畫類型，預設值為 `[]`。                                                                          |
+| `availableCustomSorts`  | `string[]`                           | 內容源提供的自訂排序選項，預設值為 `[]`。                                                                          |
+| `scripts`               | `Record<string, string>`             | 以以下腳本名稱為鍵的 JavaScript 原始碼，未知的鍵會被忽略。                                                         |
+| `configs`               | `Config[]`                           | 使用者可調整並供腳本讀取的設定值，預設值為 `[]`。                                                                  |
+| `getImageHeaders`       | `Record<string, string>`             | 如果存在，Mankai 使用這些原生請求標頭下載所有圖片網址，而不呼叫 `getImage` 腳本。                                  |
+| `cooldown`              | `Cooldown`                           | 可選的請求節流和圖片並行限制。                                                                                     |
+| `capabilities`          | `PluginCapability[]`                 | 外掛模組支援的操作。                                                                                               |
+| `localizations`         | `Record<string, PluginLocalization>` | 按語言標籤提供可選的來源中繼資料覆寫值。參閱[來源中繼資料本地化](/zh-tw/api/localizations/#source-localizations)。 |
 
 <span id="script-format"></span>
 
@@ -128,17 +136,11 @@ export{isOnline as default};
 
 ## 回呼腳本
 
-可選欄位 `capabilities` 接受下列值。
-
 :::note[預設能力]
 
-省略時，所列能力中除 `mangaUpdates`、`listByCustomGenre` 和 `searchByCustomGenre` 以外的所有能力都會啟用。這三項能力必須明確列出才會啟用。外掛模組可以使用此欄位宣告自己實作的操作，讓應用程式避免呼叫不支援的回呼。
+省略 `capabilities` 時，Mankai 預設啟用 `onlineCheck`、`suggestions`、`list`、`search`、`mangaDetails`、`batchMangas`、`chapter` 和 `image`。若支援篩選、排序、依作者搜尋或 `mangaUpdates`，請將對應的能力與已實作的操作一併明確列出。
 
 :::
-
-```text
-onlineCheck, suggestions, list, listByGenre, listByCustomGenre, listByStatus, search, searchByGenre, searchByCustomGenre, searchByStatus, searchByAuthor, mangaDetails, batchMangas, mangaUpdates, chapter, image
-```
 
 :::note[更新檢查]
 
@@ -148,17 +150,17 @@ onlineCheck, suggestions, list, listByGenre, listByCustomGenre, listByStatus, se
 
 鍵與函式簽名如下。
 
-| 鍵                 | 函式簽名                                                     | 回傳值                                     |
-| :----------------- | :----------------------------------------------------------- | :----------------------------------------- |
-| `isOnline`         | `isOnline()`                                                 | `boolean`                                  |
-| `getSuggestion`    | `getSuggestion(query)`                                       | `string[]`                                 |
-| `search`           | `search(query, page, genre, status, isAuthor, customGenre?)` | `Manga[]`                                  |
-| `getList`          | `getList(page, genre, status, customGenre?)`                 | `Manga[]`                                  |
-| `getMangas`        | `getMangas(ids)`                                             | `Manga[]`                                  |
-| `getMangaUpdates`  | `getMangaUpdates(mangas)`                                    | `MangaUpdate[]` 中繼資料局部更新與更新標記 |
-| `getDetailedManga` | `getDetailedManga(id)`                                       | `DetailedManga`                            |
-| `getChapter`       | `getChapter(manga, chapter)`                                 | 圖片網址陣列 `string[]`                    |
-| `getImage`         | `getImage(url)`                                              | Base64 圖片資料或圖片代理請求物件          |
+| 鍵                 | 函式簽名                                                                             | 回傳值                                     |
+| :----------------- | :----------------------------------------------------------------------------------- | :----------------------------------------- |
+| `isOnline`         | `isOnline()`                                                                         | `boolean`                                  |
+| `getSuggestion`    | `getSuggestion(query)`                                                               | `string[]`                                 |
+| `search`           | `search(query, page, genre?, status?, isAuthor, customGenre?, sortBy?, customSort?)` | `Manga[]`                                  |
+| `getList`          | `getList(page, genre?, status?, customGenre?, sortBy?, customSort?)`                 | `Manga[]`                                  |
+| `getMangas`        | `getMangas(ids)`                                                                     | `Manga[]`                                  |
+| `getMangaUpdates`  | `getMangaUpdates(mangas)`                                                            | `MangaUpdate[]` 中繼資料局部更新與更新標記 |
+| `getDetailedManga` | `getDetailedManga(id)`                                                               | `DetailedManga`                            |
+| `getChapter`       | `getChapter(manga, chapter)`                                                         | 圖片網址陣列 `string[]`                    |
+| `getImage`         | `getImage(url)`                                                                      | Base64 圖片資料或圖片代理請求物件          |
 
 以下說明各參數與回傳結果。
 
@@ -183,13 +185,13 @@ async function getSuggestion(query) {
 export{getSuggestion as default};
 ```
 
-### `search(query, page, genre, status, isAuthor, customGenre?)`
+### `search(query, page, genre?, status?, isAuthor, customGenre?, sortBy?, customSort?)`
 
-按標題或作者搜尋漫畫。`page` 是從 1 開始的頁碼。`genre` 是[漫畫類型](#genres)中的一個字串，`status` 是[狀態](#statuses)中的一個數值。當 `isAuthor` 為 `true` 時，搜尋內容源的作者欄位而不是標題欄位。回傳輕量的 `Manga` 物件陣列。
+按標題或作者搜尋漫畫。`page` 是從 1 開始的頁碼。篩選和排序的取值請參閱[漫畫類型](#genres)、[狀態](#statuses)和[排序方式](#sort-orders)。`genre` 和 `status` 未設定時分別傳入 `null`。當 `isAuthor` 為 `true` 時，搜尋內容源的作者欄位。回傳輕量的 `Manga` 物件陣列。
 
-### `getList(page, genre, status, customGenre?)`
+### `getList(page, genre?, status?, customGenre?, sortBy?, customSort?)`
 
-回傳內容源的分頁清單，使用與 `search` 相同的 `page`、`genre` 和 `status` 參數。
+回傳內容源的分頁清單，使用與 `search` 相同的篩選和排序參數。在這兩個回呼中，Mankai 都會省略末尾未設定的參數，後續參數有值時則以 `null` 填入中間未設定的參數。
 
 ### `getMangas(ids)`
 
@@ -375,19 +377,19 @@ interface DetailedManga {
 
 ### 漫畫類型
 
-`availableGenres` 和 `genres` 接受以下預定義字串值，`genre` 參數也使用這些值。
+`availableGenres` 和 `genres` 接受以下預先定義的字串值。
 
 ```text
-all, action, romance, yuri, boysLove, otokonoko, schoolLife, adventure,
+action, romance, yuri, boysLove, otokonoko, schoolLife, adventure,
 harem, speculativeFiction, war, suspense, fanFiction, comedy, magic, horror,
 historical, sports, mature, mecha
 ```
 
 :::note[自訂漫畫類型]
 
-使用 `availableCustomGenres` 提供內容源的自訂類型篩選選項，使用 `customGenres` 提供單部漫畫的自訂標籤。兩者均為字串陣列，預設值為 `[]`。Mankai 會顯示目前篩選清單中的名稱，並原樣傳遞選取的名稱。篩選清單的翻譯方式請參閱[來源中繼資料本地化](/zh-tw/api/localizations/#source-localizations)。
+使用 `availableCustomGenres` 提供內容源的自訂類型篩選選項，使用 `customGenres` 提供單部漫畫的自訂標籤。兩者均為字串陣列，預設值為 `[]`。篩選和排序選項的翻譯方式請參閱[來源中繼資料本地化](/zh-tw/api/localizations/#source-localizations)。
 
-自訂類型篩選需要同時啟用 `list` 和 `listByCustomGenre`，或同時啟用 `search` 和 `searchByCustomGenre`。選取自訂類型時，`genre` 為 `"all"`，`customGenre` 為選取的名稱。僅當啟用對應的自訂類型能力時，Mankai 才會將 `customGenre` 作為第四個參數傳給 `getList`，或作為第六個參數傳給 `search`。未選取自訂類型時傳入 `null`。
+`genre` 為預先定義的漫畫類型或 `"custom"`。選取自訂類型時，`customGenre` 為 `availableCustomGenres` 中選取的名稱。預先定義的類型需要啟用 `listByGenre` 或 `searchByGenre`，自訂類型需要啟用 `listByCustomGenre` 或 `searchByCustomGenre`。
 
 :::
 
@@ -395,11 +397,25 @@ historical, sports, mature, mecha
 
 ### 狀態
 
+狀態篩選接受 `1`（連載中）或 `2`（已完結），需要啟用 `listByStatus` 或 `searchByStatus`。
+
 | 名稱        | 值  |
 | :---------- | :-- |
-| `any`       | `0` |
+| `unknown`   | `0` |
 | `onGoing`   | `1` |
 | `completed` | `2` |
+
+<span id="sort-orders"></span>
+
+### 排序方式
+
+`sortBy` 指定排序方式。未設定時採用內容源的預設順序。值為 `"custom"` 時，`customSort` 為 `availableCustomSorts` 中選取的名稱。
+
+| 排序選項     | 排序方式           | 清單能力           | 搜尋能力             |
+| :----------- | :----------------- | :----------------- | :------------------- |
+| `updateTime` | 最近更新的排在前面 | `listByUpdateTime` | `searchByUpdateTime` |
+| `popularity` | 人氣最高的排在前面 | `listByPopularity` | `searchByPopularity` |
+| `custom`     | 內容源自訂順序     | `listByCustomSort` | `searchByCustomSort` |
 
 <span id="reading-directions"></span>
 

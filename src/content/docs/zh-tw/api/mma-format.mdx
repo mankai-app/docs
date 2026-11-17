@@ -101,7 +101,7 @@ example.mma
 | `id`               | `string`   | 是   | 中繼資料中的漫畫識別碼。檔案式內容源在開啟書籍時會以自己的檔案識別碼取代。                                                           |
 | `title`            | `string`   | 否   | 顯示標題。                                                                                                                           |
 | `cover`            | `string`   | 否   | 封存檔內封面圖片的路徑。                                                                                                             |
-| `status`           | `number`   | 否   | `0` = 不限，`1` = 連載中，`2` = 已完結。                                                                                             |
+| `status`           | `number`   | 否   | `0` = 未知，`1` = 連載中，`2` = 已完結。                                                                                             |
 | `readingDirection` | `number`   | 否   | `1` = 由左至右，`2` = 由右至左，`3` = 垂直。                                                                                         |
 | `latestChapter`    | `object`   | 否   | 章節參照，包含必填的 `id`，以及可選的 `title` 和 `locked` 欄位。其 ID 必須與 `chapters` 中的某個章節相符。此處不需要 `images` 欄位。 |
 | `description`      | `string`   | 否   | 漫畫簡介。                                                                                                                           |

@@ -35,6 +35,7 @@ interface ServerInfoResponse {
   homePage?: string
   availableGenres?: Genre[]
   availableCustomGenres?: string[] // Read-only sources, default: []
+  availableCustomSorts?: string[] // Default: []
   cooldown?: Cooldown
   capabilities?: PluginCapability[]
   localizations?: Record<string, PluginLocalization>
@@ -53,11 +54,17 @@ type PluginCapability =
   | 'listByGenre'
   | 'listByCustomGenre'
   | 'listByStatus'
+  | 'listByUpdateTime'
+  | 'listByPopularity'
+  | 'listByCustomSort'
   | 'search'
   | 'searchByGenre'
   | 'searchByCustomGenre'
   | 'searchByStatus'
   | 'searchByAuthor'
+  | 'searchByUpdateTime'
+  | 'searchByPopularity'
+  | 'searchByCustomSort'
   | 'mangaDetails'
   | 'batchMangas'
   | 'mangaUpdates'
@@ -67,11 +74,11 @@ type PluginCapability =
 
 `default` は、画像以外のプラグイン呼び出し間に設ける最小待機時間です。省略可能で、単位はミリ秒です。`getImage` は画像の呼び出しに対して別の最小待機時間を設定します。`getImageConcurrency` を指定すると、画像リクエストの同時実行数を制限できます。
 
-任意の `localizations` マップで、アプリの言語に応じたソースメタデータを上書きできます。読み取り専用ソースでは、クエリの `customGenre` に、適用された `availableCustomGenres` の値を渡します。対応フィールドとフォールバックの規則は、[ソースメタデータのローカライズ](/ja/api/localizations/#source-localizations)を参照してください。
+任意の `localizations` マップで、アプリの言語に応じたソースメタデータを上書きできます。クエリの `customGenre` と `customSort` には、適用された `availableCustomGenres` と `availableCustomSorts` から選択した値が入ります。対応フィールドとフォールバックの規則は、[ソースメタデータのローカライズ](/ja/api/localizations/#source-localizations)を参照してください。
 
 :::note[機能と更新確認]
 
-`capabilities` を省略すると、記載された機能のうち `mangaUpdates`、`listByCustomGenre`、`searchByCustomGenre` 以外が有効になります。この 3 つの機能は明示的な指定が必要です。
+`capabilities` を省略すると、Mankai は `onlineCheck`、`suggestions`、`list`、`search`、`mangaDetails`、`batchMangas`、`chapter`、`image` を有効にします。絞り込み、並び替え、作者検索、`mangaUpdates` に対応する場合は、実装する操作とともに明示的に指定してください。
 
 `batchMangas` または `mangaUpdates` のいずれかを持つプラグインは、ライブラリの更新確認に対応できます。`POST /manga/updates` を通じて、どの漫画を更新ありとして扱うかサーバー側で制御する場合は、`mangaUpdates` を含めてください。Mankai の標準の動作を使用する場合は、`mangaUpdates` を含めないでください。標準の動作では `POST /manga` を呼び出し、返されたメタデータでローカルの情報を更新し、最新チャプターを保存済みの情報と比較します。この動作には `batchMangas` が必要です。
 
@@ -142,16 +149,18 @@ interface RefreshResponse {
 
 ### `GET /manga`
 
-ページ分割された漫画の一覧を取得します。必要に応じて、ジャンルや連載状況で絞り込めます。
+ページ分割された漫画の一覧を取得します。ジャンルや連載状況での絞り込みと、並び順の指定ができます。
 
 **クエリパラメーター**
 
-| パラメーター  | 型       | 既定値        | 必須   | 説明                                                                     |
-| :------------ | :------- | :------------ | :----- | :----------------------------------------------------------------------- |
-| `page`        | `number` | `1`           | いいえ | 取得するページの番号です。                                               |
-| `genre`       | `string` | `"all"`       | いいえ | 1 つのジャンルで結果を絞り込みます。                                     |
-| `customGenre` | `string` | 省略          | いいえ | カスタムジャンル名をそのまま指定します。`listByCustomGenre` が必要です。 |
-| `status`      | `number` | `0`（すべて） | いいえ | 連載状況で絞り込みます。`0` はすべて、`1` は連載中、`2` は完結です。     |
+| パラメーター  | 型       | 既定値 | 必須   | 説明                                                                                          |
+| :------------ | :------- | :----- | :----- | :-------------------------------------------------------------------------------------------- |
+| `page`        | `number` | `1`    | いいえ | 取得するページの番号です。                                                                    |
+| `genre`       | `string` | 省略   | いいえ | 定義済みのジャンルまたは `"custom"`。                                                         |
+| `customGenre` | `string` | 省略   | いいえ | `genre=custom` の場合に指定するカスタムジャンル名です。`listByCustomGenre` が必要です。       |
+| `status`      | `number` | 省略   | いいえ | `1` は連載中、`2` は完結です。                                                                |
+| `sortBy`      | `string` | 省略   | いいえ | `updateTime`、`popularity`、`custom` のいずれかです。[並び替え](#sorting)を参照してください。 |
+| `customSort`  | `string` | 省略   | いいえ | `sortBy=custom` の場合に指定するカスタムの並び替え名です。                                    |
 
 **レスポンス — `200 OK`**
 
@@ -176,7 +185,7 @@ interface Manga {
 }
 
 enum Status {
-  Any = 0,
+  Unknown = 0,
   OnGoing = 1,
   Completed = 2,
 }
@@ -283,7 +292,6 @@ interface MangaResponse {
 }
 
 enum Genre {
-  All = 'all',
   Action = 'action',
   Romance = 'romance',
   Yuri = 'yuri',
@@ -306,7 +314,7 @@ enum Genre {
 }
 
 enum Status {
-  Any = 0,
+  Unknown = 0,
   OnGoing = 1,
   Completed = 2,
 }
@@ -359,18 +367,32 @@ type ChapterResponse = string[]
 
 **クエリパラメーター**
 
-| パラメーター  | 型        | 既定値        | 必須   | 説明                                                                       |
-| :------------ | :-------- | :------------ | :----- | :------------------------------------------------------------------------- |
-| `query`       | `string`  | `null`        | はい   | 検索する文字列です。                                                       |
-| `page`        | `number`  | `1`           | いいえ | 取得するページの番号です。                                                 |
-| `genre`       | `string`  | `"all"`       | いいえ | 1 つのジャンルで結果を絞り込みます。                                       |
-| `customGenre` | `string`  | 省略          | いいえ | カスタムジャンル名をそのまま指定します。`searchByCustomGenre` が必要です。 |
-| `status`      | `number`  | `0`（すべて） | いいえ | 連載状況で絞り込みます。`0` はすべて、`1` は連載中、`2` は完結です。       |
-| `isAuthor`    | `boolean` | `false`       | いいえ | タイトルの代わりに作者のフィールドを検索します。                           |
+| パラメーター  | 型        | 既定値  | 必須   | 説明                                                                                          |
+| :------------ | :-------- | :------ | :----- | :-------------------------------------------------------------------------------------------- |
+| `query`       | `string`  | `null`  | はい   | 検索する文字列です。                                                                          |
+| `page`        | `number`  | `1`     | いいえ | 取得するページの番号です。                                                                    |
+| `genre`       | `string`  | 省略    | いいえ | 定義済みのジャンルまたは `"custom"`。                                                         |
+| `customGenre` | `string`  | 省略    | いいえ | `genre=custom` の場合に指定するカスタムジャンル名です。`searchByCustomGenre` が必要です。     |
+| `status`      | `number`  | 省略    | いいえ | `1` は連載中、`2` は完結です。                                                                |
+| `sortBy`      | `string`  | 省略    | いいえ | `updateTime`、`popularity`、`custom` のいずれかです。[並び替え](#sorting)を参照してください。 |
+| `customSort`  | `string`  | 省略    | いいえ | `sortBy=custom` の場合に指定するカスタムの並び替え名です。                                    |
+| `isAuthor`    | `boolean` | `false` | いいえ | タイトルの代わりに作者のフィールドを検索します。                                              |
 
 **レスポンス — `200 OK`**
 
 [`GET /manga`](#get-manga) と同じ `MangaListResponse` 型を返します。
+
+<span id="sorting"></span>
+
+### 並び替え
+
+Mankai は未指定の絞り込みと並び替えのパラメーターを省略します。`sortBy` が省略された場合は、ソースの既定の順序を使ってください。定義済みジャンルと連載状況の絞り込みには、対応する `listByGenre`、`searchByGenre`、`listByStatus`、`searchByStatus` が必要です。カスタムジャンルは読み取り専用ソースで利用できます。
+
+| 並び替え     | 並び順           | 一覧の機能         | 検索の機能           |
+| :----------- | :--------------- | :----------------- | :------------------- |
+| `updateTime` | 更新が新しい順   | `listByUpdateTime` | `searchByUpdateTime` |
+| `popularity` | 人気が高い順     | `listByPopularity` | `searchByPopularity` |
+| `custom`     | ソース独自の順序 | `listByCustomSort` | `searchByCustomSort` |
 
 ## 検索候補
 

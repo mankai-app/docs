@@ -35,6 +35,7 @@ interface ServerInfoResponse {
   homePage?: string
   availableGenres?: Genre[]
   availableCustomGenres?: string[] // Read-only sources, default: []
+  availableCustomSorts?: string[] // Default: []
   cooldown?: Cooldown
   capabilities?: PluginCapability[]
   localizations?: Record<string, PluginLocalization>
@@ -53,11 +54,17 @@ type PluginCapability =
   | 'listByGenre'
   | 'listByCustomGenre'
   | 'listByStatus'
+  | 'listByUpdateTime'
+  | 'listByPopularity'
+  | 'listByCustomSort'
   | 'search'
   | 'searchByGenre'
   | 'searchByCustomGenre'
   | 'searchByStatus'
   | 'searchByAuthor'
+  | 'searchByUpdateTime'
+  | 'searchByPopularity'
+  | 'searchByCustomSort'
   | 'mangaDetails'
   | 'batchMangas'
   | 'mangaUpdates'
@@ -67,11 +74,11 @@ type PluginCapability =
 
 `default` 是插件执行非图片操作时两次调用之间的最小间隔，以毫秒为单位。`getImage` 单独设置图片请求之间的最小间隔。`getImageConcurrency` 可限制并发图片请求数量。
 
-可选的 `localizations` 映射按应用语言覆盖来源元数据。对于只读来源，`customGenre` 查询参数的值来自当前的 `availableCustomGenres` 列表。支持的字段和回退规则请参阅[来源元数据本地化](/zh-cn/api/localizations/#source-localizations)。
+可选的 `localizations` 映射按应用语言覆盖来源元数据。`customGenre` 和 `customSort` 查询参数的值来自当前的 `availableCustomGenres` 和 `availableCustomSorts` 列表。支持的字段和回退规则请参阅[来源元数据本地化](/zh-cn/api/localizations/#source-localizations)。
 
 :::note[能力与更新检查]
 
-省略 `capabilities` 时，所列能力中除 `mangaUpdates`、`listByCustomGenre` 和 `searchByCustomGenre` 以外的所有能力都会启用。这三项能力必须显式列出才会启用。
+省略 `capabilities` 时，Mankai 默认启用 `onlineCheck`、`suggestions`、`list`、`search`、`mangaDetails`、`batchMangas`、`chapter` 和 `image`。如支持筛选、排序、按作者搜索或 `mangaUpdates`，请将相应能力与已实现的操作一同明确列出。
 
 支持 `batchMangas` 或 `mangaUpdates` 的插件可以参与书库更新检查。如果需要服务器通过 `POST /manga/updates` 决定哪些漫画应标记为有更新，请包含 `mangaUpdates`。省略 `mangaUpdates` 时，Mankai 使用默认行为，调用 `POST /manga`、刷新返回的元数据并比较返回的最新章节。默认行为要求支持 `batchMangas`。
 
@@ -146,16 +153,18 @@ interface RefreshResponse {
 
 ### `GET /manga`
 
-获取分页漫画列表，可按类型、状态或两者进行筛选。
+获取分页漫画列表，可按类型和状态筛选并指定排序方式。
 
 **查询参数**
 
-| 参数          | 类型     | 默认值      | 必填 | 说明                                                 |
-| :------------ | :------- | :---------- | :--- | :--------------------------------------------------- |
-| `page`        | `number` | `1`         | 否   | 要获取的页码。                                       |
-| `genre`       | `string` | `"all"`     | 否   | 按单个漫画类型筛选结果。                             |
-| `customGenre` | `string` | 省略        | 否   | 完整的自定义类型名称，需要启用 `listByCustomGenre`。 |
-| `status`      | `number` | `0`（全部） | 否   | 按状态筛选，`0` = 全部，`1` = 连载中，`2` = 已完结。 |
+| 参数          | 类型     | 默认值 | 必填 | 说明                                                                      |
+| :------------ | :------- | :----- | :--- | :------------------------------------------------------------------------ |
+| `page`        | `number` | `1`    | 否   | 要获取的页码。                                                            |
+| `genre`       | `string` | 省略   | 否   | 预定义漫画类型或 `"custom"`。                                             |
+| `customGenre` | `string` | 省略   | 否   | `genre=custom` 时指定完整的自定义类型名称，需要启用 `listByCustomGenre`。 |
+| `status`      | `number` | 省略   | 否   | `1` 表示连载中，`2` 表示已完结。                                          |
+| `sortBy`      | `string` | 省略   | 否   | `updateTime`、`popularity` 或 `custom`。参阅[排序](#sorting)。            |
+| `customSort`  | `string` | 省略   | 否   | `sortBy=custom` 时指定完整的自定义排序名称。                              |
 
 **响应 — `200 OK`**
 
@@ -180,7 +189,7 @@ interface Manga {
 }
 
 enum Status {
-  Any = 0,
+  Unknown = 0,
   OnGoing = 1,
   Completed = 2,
 }
@@ -287,7 +296,6 @@ interface MangaResponse {
 }
 
 enum Genre {
-  All = 'all',
   Action = 'action',
   Romance = 'romance',
   Yuri = 'yuri',
@@ -310,7 +318,7 @@ enum Genre {
 }
 
 enum Status {
-  Any = 0,
+  Unknown = 0,
   OnGoing = 1,
   Completed = 2,
 }
@@ -365,18 +373,32 @@ type ChapterResponse = string[]
 
 **查询参数**
 
-| 参数          | 类型      | 默认值      | 必填 | 说明                                                   |
-| :------------ | :-------- | :---------- | :--- | :----------------------------------------------------- |
-| `query`       | `string`  | `null`      | 是   | 搜索查询字符串。                                       |
-| `page`        | `number`  | `1`         | 否   | 要获取的页码。                                         |
-| `genre`       | `string`  | `"all"`     | 否   | 按单个漫画类型筛选结果。                               |
-| `customGenre` | `string`  | 省略        | 否   | 完整的自定义类型名称，需要启用 `searchByCustomGenre`。 |
-| `status`      | `number`  | `0`（全部） | 否   | 按状态筛选，`0` = 全部，`1` = 连载中，`2` = 已完结。   |
-| `isAuthor`    | `boolean` | `false`     | 否   | 搜索作者字段而不是标题字段。                           |
+| 参数          | 类型      | 默认值  | 必填 | 说明                                                                        |
+| :------------ | :-------- | :------ | :--- | :-------------------------------------------------------------------------- |
+| `query`       | `string`  | `null`  | 是   | 搜索查询字符串。                                                            |
+| `page`        | `number`  | `1`     | 否   | 要获取的页码。                                                              |
+| `genre`       | `string`  | 省略    | 否   | 预定义漫画类型或 `"custom"`。                                               |
+| `customGenre` | `string`  | 省略    | 否   | `genre=custom` 时指定完整的自定义类型名称，需要启用 `searchByCustomGenre`。 |
+| `status`      | `number`  | 省略    | 否   | `1` 表示连载中，`2` 表示已完结。                                            |
+| `sortBy`      | `string`  | 省略    | 否   | `updateTime`、`popularity` 或 `custom`。参阅[排序](#sorting)。              |
+| `customSort`  | `string`  | 省略    | 否   | `sortBy=custom` 时指定完整的自定义排序名称。                                |
+| `isAuthor`    | `boolean` | `false` | 否   | 搜索作者字段而不是标题字段。                                                |
 
 **响应 — `200 OK`**
 
 返回与 [`GET /manga`](#get-manga) 相同的 `MangaListResponse` 结构。
+
+<span id="sorting"></span>
+
+### 排序
+
+Mankai 会省略未设置的筛选及排序参数。省略 `sortBy` 时，应采用内容源的默认顺序。预定义类型与状态筛选需要启用相应的 `listByGenre`、`searchByGenre`、`listByStatus` 或 `searchByStatus`。只读来源支持自定义类型。
+
+| 排序选项     | 排序方式           | 列表能力           | 搜索能力             |
+| :----------- | :----------------- | :----------------- | :------------------- |
+| `updateTime` | 最近更新的排在前面 | `listByUpdateTime` | `searchByUpdateTime` |
+| `popularity` | 人气最高的排在前面 | `listByPopularity` | `searchByPopularity` |
+| `custom`     | 内容源自定义顺序   | `listByCustomSort` | `searchByCustomSort` |
 
 <span id="suggestion"></span>
 
