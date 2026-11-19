@@ -61,49 +61,17 @@
 :root[data-theme='dark'] .screenshot-dark {
   display: block;
 }
+.hero:has(> .hero-html > .hero-screenshots) {
+  padding-block-end: 0.75rem;
+}
 .hero-screenshots {
-  position: relative;
   width: 100%;
-  aspect-ratio: 6 / 5;
+  aspect-ratio: 1173 / 920;
+  background: url('/screenshots/hero-light.webp') center / contain no-repeat;
+  filter: drop-shadow(0 0.4rem 0.5rem rgb(0 0 0 / 15%));
 }
-.hero-device {
-  position: absolute;
-  filter: drop-shadow(0 0.6rem 0.8rem rgb(0 0 0 / 15%));
-}
-.hero-screen {
-  position: absolute;
-  overflow: hidden;
-}
-.hero-screen img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-.hero-device .device-frame {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-}
-.hero-ipad {
-  top: 5%;
-  left: 0;
-  width: 88%;
-  aspect-ratio: 2640 / 1920;
-}
-.hero-iphone {
-  right: 0;
-  bottom: 0;
-  width: 36%;
-  aspect-ratio: 1419 / 2796;
-}
-/* Screen insets match the transparent openings in the supplied frames. */
-.hero-ipad .hero-screen {
-  inset: 7.34375% 5.30303% 7.239583% 5.30303%;
-}
-.hero-iphone .hero-screen {
-  inset: 4.291845% 8.45666%;
+:root[data-theme='dark'] .hero-screenshots {
+  background-image: url('/screenshots/hero-dark.webp');
 }
 /* Size language names by their rendered text, including Japanese and Chinese. */
 header.header starlight-lang-select select {

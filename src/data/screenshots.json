@@ -1,30 +1,4 @@
 {
-  "sync-configuration": {
-    "phone": {
-      "light": {
-        "src": "/screenshots/en/guides/sync-configuration-phone-light.webp",
-        "width": 1206,
-        "height": 2622
-      },
-      "dark": {
-        "src": "/screenshots/en/guides/sync-configuration-phone-dark.webp",
-        "width": 1206,
-        "height": 2622
-      }
-    },
-    "tablet": {
-      "light": {
-        "src": "/screenshots/en/guides/sync-configuration-tablet-light.webp",
-        "width": 2360,
-        "height": 1640
-      },
-      "dark": {
-        "src": "/screenshots/en/guides/sync-configuration-tablet-dark.webp",
-        "width": 2360,
-        "height": 1640
-      }
-    }
-  },
   "sync-status": {
     "phone": {
       "light": {
@@ -49,31 +23,17 @@
         "width": 2360,
         "height": 1640
       }
-    }
-  },
-  "quick-start-import": {
-    "phone": {
-      "light": {
-        "src": "/screenshots/en/guides/quick-start-import-phone-light.webp",
-        "width": 1206,
-        "height": 2622
-      },
-      "dark": {
-        "src": "/screenshots/en/guides/quick-start-import-phone-dark.webp",
-        "width": 1206,
-        "height": 2622
-      }
     },
-    "tablet": {
+    "duo": {
       "light": {
-        "src": "/screenshots/en/guides/quick-start-import-tablet-light.webp",
-        "width": 2360,
-        "height": 1640
+        "src": "/screenshots/en/guides/sync-status-duo-light.webp",
+        "width": 2853,
+        "height": 2007
       },
       "dark": {
-        "src": "/screenshots/en/guides/quick-start-import-tablet-dark.webp",
-        "width": 2360,
-        "height": 1640
+        "src": "/screenshots/en/guides/sync-status-duo-dark.webp",
+        "width": 2853,
+        "height": 2007
       }
     }
   },
@@ -101,6 +61,18 @@
         "width": 2360,
         "height": 1640
       }
+    },
+    "duo": {
+      "light": {
+        "src": "/screenshots/en/guides/quick-start-imported-book-duo-light.webp",
+        "width": 2853,
+        "height": 2007
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/quick-start-imported-book-duo-dark.webp",
+        "width": 2853,
+        "height": 2007
+      }
     }
   },
   "quick-start-first-read": {
@@ -126,6 +98,18 @@
         "src": "/screenshots/en/guides/quick-start-first-read-tablet-dark.webp",
         "width": 2360,
         "height": 1640
+      }
+    },
+    "duo": {
+      "light": {
+        "src": "/screenshots/en/guides/quick-start-first-read-duo-light.webp",
+        "width": 2853,
+        "height": 2007
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/quick-start-first-read-duo-dark.webp",
+        "width": 2853,
+        "height": 2007
       }
     }
   },
@@ -153,31 +137,17 @@
         "width": 2360,
         "height": 1640
       }
-    }
-  },
-  "sources-network": {
-    "phone": {
-      "light": {
-        "src": "/screenshots/en/guides/sources-network-phone-light.webp",
-        "width": 1206,
-        "height": 2622
-      },
-      "dark": {
-        "src": "/screenshots/en/guides/sources-network-phone-dark.webp",
-        "width": 1206,
-        "height": 2622
-      }
     },
-    "tablet": {
+    "duo": {
       "light": {
-        "src": "/screenshots/en/guides/sources-network-tablet-light.webp",
-        "width": 2360,
-        "height": 1640
+        "src": "/screenshots/en/guides/sources-add-files-duo-light.webp",
+        "width": 2853,
+        "height": 2007
       },
       "dark": {
-        "src": "/screenshots/en/guides/sources-network-tablet-dark.webp",
-        "width": 2360,
-        "height": 1640
+        "src": "/screenshots/en/guides/sources-add-files-duo-dark.webp",
+        "width": 2853,
+        "height": 2007
       }
     }
   },
@@ -205,31 +175,17 @@
         "width": 2360,
         "height": 1640
       }
-    }
-  },
-  "sources-add-source": {
-    "phone": {
-      "light": {
-        "src": "/screenshots/en/guides/sources-add-source-phone-light.webp",
-        "width": 1206,
-        "height": 2622
-      },
-      "dark": {
-        "src": "/screenshots/en/guides/sources-add-source-phone-dark.webp",
-        "width": 1206,
-        "height": 2622
-      }
     },
-    "tablet": {
+    "duo": {
       "light": {
-        "src": "/screenshots/en/guides/sources-add-source-tablet-light.webp",
-        "width": 2360,
-        "height": 1640
+        "src": "/screenshots/en/guides/sources-types-duo-light.webp",
+        "width": 2853,
+        "height": 2007
       },
       "dark": {
-        "src": "/screenshots/en/guides/sources-add-source-tablet-dark.webp",
-        "width": 2360,
-        "height": 1640
+        "src": "/screenshots/en/guides/sources-types-duo-dark.webp",
+        "width": 2853,
+        "height": 2007
       }
     }
   },
@@ -257,6 +213,18 @@
         "width": 2360,
         "height": 1640
       }
+    },
+    "duo": {
+      "light": {
+        "src": "/screenshots/en/guides/library-collections-duo-light.webp",
+        "width": 2853,
+        "height": 2007
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/library-collections-duo-dark.webp",
+        "width": 2853,
+        "height": 2007
+      }
     }
   },
   "library-download-chapters": {
@@ -282,6 +250,18 @@
         "src": "/screenshots/en/guides/library-download-chapters-tablet-dark.webp",
         "width": 2360,
         "height": 1640
+      }
+    },
+    "duo": {
+      "light": {
+        "src": "/screenshots/en/guides/library-download-chapters-duo-light.webp",
+        "width": 2853,
+        "height": 2007
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/library-download-chapters-duo-dark.webp",
+        "width": 2853,
+        "height": 2007
       }
     }
   },
@@ -309,6 +289,18 @@
         "width": 2360,
         "height": 1640
       }
+    },
+    "duo": {
+      "light": {
+        "src": "/screenshots/en/guides/library-downloads-duo-light.webp",
+        "width": 2853,
+        "height": 2007
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/library-downloads-duo-dark.webp",
+        "width": 2853,
+        "height": 2007
+      }
     }
   },
   "library-export-chapters": {
@@ -334,6 +326,18 @@
         "src": "/screenshots/en/guides/library-export-chapters-tablet-dark.webp",
         "width": 2360,
         "height": 1640
+      }
+    },
+    "duo": {
+      "light": {
+        "src": "/screenshots/en/guides/library-export-chapters-duo-light.webp",
+        "width": 2853,
+        "height": 2007
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/library-export-chapters-duo-dark.webp",
+        "width": 2853,
+        "height": 2007
       }
     }
   },
@@ -361,6 +365,18 @@
         "width": 2360,
         "height": 1640
       }
+    },
+    "duo": {
+      "light": {
+        "src": "/screenshots/en/guides/reading-chapters-duo-light.webp",
+        "width": 2853,
+        "height": 2007
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/reading-chapters-duo-dark.webp",
+        "width": 2853,
+        "height": 2007
+      }
     }
   },
   "reading-controls": {
@@ -386,6 +402,18 @@
         "src": "/screenshots/en/guides/reading-controls-tablet-dark.webp",
         "width": 2360,
         "height": 1640
+      }
+    },
+    "duo": {
+      "light": {
+        "src": "/screenshots/en/guides/reading-controls-duo-light.webp",
+        "width": 2853,
+        "height": 2007
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/reading-controls-duo-dark.webp",
+        "width": 2853,
+        "height": 2007
       }
     }
   },
@@ -413,6 +441,18 @@
         "width": 2360,
         "height": 1640
       }
+    },
+    "duo": {
+      "light": {
+        "src": "/screenshots/en/guides/reading-preferences-duo-light.webp",
+        "width": 2853,
+        "height": 2007
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/reading-preferences-duo-dark.webp",
+        "width": 2853,
+        "height": 2007
+      }
     }
   },
   "image-processing": {
@@ -439,6 +479,18 @@
         "width": 2360,
         "height": 1640
       }
+    },
+    "duo": {
+      "light": {
+        "src": "/screenshots/en/guides/image-processing-duo-light.webp",
+        "width": 2853,
+        "height": 2007
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/image-processing-duo-dark.webp",
+        "width": 2853,
+        "height": 2007
+      }
     }
   },
   "sync-source": {
@@ -464,6 +516,94 @@
         "src": "/screenshots/en/guides/sync-source-tablet-dark.webp",
         "width": 2360,
         "height": 1640
+      }
+    },
+    "duo": {
+      "light": {
+        "src": "/screenshots/en/guides/sync-source-duo-light.webp",
+        "width": 2853,
+        "height": 2007
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/sync-source-duo-dark.webp",
+        "width": 2853,
+        "height": 2007
+      }
+    }
+  },
+  "library-catalog": {
+    "phone": {
+      "light": {
+        "src": "/screenshots/en/guides/library-catalog-phone-light.webp",
+        "width": 1206,
+        "height": 2622
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/library-catalog-phone-dark.webp",
+        "width": 1206,
+        "height": 2622
+      }
+    },
+    "tablet": {
+      "light": {
+        "src": "/screenshots/en/guides/library-catalog-tablet-light.webp",
+        "width": 2360,
+        "height": 1640
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/library-catalog-tablet-dark.webp",
+        "width": 2360,
+        "height": 1640
+      }
+    },
+    "duo": {
+      "light": {
+        "src": "/screenshots/en/guides/library-catalog-duo-light.webp",
+        "width": 2853,
+        "height": 2007
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/library-catalog-duo-dark.webp",
+        "width": 2853,
+        "height": 2007
+      }
+    }
+  },
+  "library-search": {
+    "phone": {
+      "light": {
+        "src": "/screenshots/en/guides/library-search-phone-light.webp",
+        "width": 1206,
+        "height": 2622
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/library-search-phone-dark.webp",
+        "width": 1206,
+        "height": 2622
+      }
+    },
+    "tablet": {
+      "light": {
+        "src": "/screenshots/en/guides/library-search-tablet-light.webp",
+        "width": 2360,
+        "height": 1640
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/library-search-tablet-dark.webp",
+        "width": 2360,
+        "height": 1640
+      }
+    },
+    "duo": {
+      "light": {
+        "src": "/screenshots/en/guides/library-search-duo-light.webp",
+        "width": 2853,
+        "height": 2007
+      },
+      "dark": {
+        "src": "/screenshots/en/guides/library-search-duo-dark.webp",
+        "width": 2853,
+        "height": 2007
       }
     }
   }

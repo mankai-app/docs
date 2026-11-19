@@ -243,11 +243,11 @@ type MangaUpdatesResponse = MangaUpdate[]
 ```json
 [
   {
-    "id": "one-piece",
+    "id": "ongoing-series",
     "updates": true,
     "latestChapter": {
-      "id": "1124",
-      "title": "Chapter 1124"
+      "id": "24",
+      "title": "Chapter 24"
     }
   },
   {

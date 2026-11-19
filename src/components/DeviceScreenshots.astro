@@ -1,17 +1,30 @@
 ---
-import screenshotImages from '@/data/screenshots.json'
+import {
+  screenshotDevices,
+  screenshots,
+  type ScreenshotScene,
+} from '@/data/screenshot-assets'
 
 interface Props {
   id: string
-  scene?: keyof typeof screenshotImages
+  scene?: ScreenshotScene
   title: string
-  phone: string
-  tablet: string
+  caption?: string
+  phone?: string
+  tablet?: string
+  duo?: string
   lang?: 'en' | 'ja' | 'zh-cn' | 'zh-tw'
 }
 
-const { id, scene = id, title, phone, tablet, lang = 'en' } = Astro.props
-const images = screenshotImages[scene as keyof typeof screenshotImages]
+const {
+  id,
+  scene = id,
+  title,
+  caption = title,
+  lang = 'en',
+  ...captions
+} = Astro.props
+const images = screenshots[scene as ScreenshotScene]
 const labels = {
   en: { device: 'Screenshot device', fullSize: 'Open full-size screenshot' },
   ja: {
@@ -21,10 +34,19 @@ const labels = {
   'zh-cn': { device: '截图设备', fullSize: '打开原尺寸截图' },
   'zh-tw': { device: '螢幕截圖裝置', fullSize: '開啟原尺寸截圖' },
 }[lang]
-const devices = [
-  { name: 'iPhone', kind: 'phone', caption: phone, images: images?.phone },
-  { name: 'iPad', kind: 'tablet', caption: tablet, images: images?.tablet },
-].filter((device) => device.images?.light || device.images?.dark)
+const icons = {
+  phone: '/icons/iphone.gen3.svg',
+  tablet: '/icons/ipad.gen2.landscape.svg',
+  duo: '/icons/iphone.duo.svg',
+}
+const devices = screenshotDevices
+  .map((device) => ({
+    ...device,
+    caption: captions[device.kind] ?? caption,
+    icon: icons[device.kind],
+    images: images?.[device.kind],
+  }))
+  .filter((device) => device.images?.light || device.images?.dark)
 const appearances = ['light', 'dark'] as const
 ---
 
@@ -51,25 +73,11 @@ const appearances = ['light', 'dark'] as const
                   aria-controls={`${id}-${device.kind}-panel`}
                 />
                 <span class="device-option">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.6"
+                  <span
+                    class="device-icon"
+                    style={`--device-icon: url('${device.icon}')`}
                     aria-hidden="true"
-                  >
-                    <rect
-                      x={device.kind === 'phone' ? 6 : 3}
-                      y={device.kind === 'phone' ? 2 : 4}
-                      width={device.kind === 'phone' ? 12 : 18}
-                      height={device.kind === 'phone' ? 20 : 16}
-                      rx="2.5"
-                    />
-                    <path
-                      d={device.kind === 'phone' ? 'M10 18h4' : 'M6 10v4'}
-                      stroke-linecap="round"
-                    />
-                  </svg>
+                  />
                   {device.name}
                 </span>
               </label>
@@ -177,6 +185,7 @@ const appearances = ['light', 'dark'] as const
   }
   .segments {
     display: flex;
+    flex-wrap: wrap;
     gap: 0.2rem;
     padding: 0.2rem;
     border-radius: 0.6rem;
@@ -204,10 +213,12 @@ const appearances = ['light', 'dark'] as const
       background 160ms ease,
       box-shadow 160ms ease;
   }
-  .device-option svg {
+  .device-icon {
     flex-shrink: 0;
     width: 1rem;
     height: 1rem;
+    background-color: currentColor;
+    mask: var(--device-icon) center / contain no-repeat;
   }
   .device-label:hover .device-option {
     color: var(--sl-color-white);
@@ -241,7 +252,9 @@ const appearances = ['light', 'dark'] as const
   .screenshots:has(.device-choice[value='phone']:checked)
     .device-panel[data-device='phone'],
   .screenshots:has(.device-choice[value='tablet']:checked)
-    .device-panel[data-device='tablet'] {
+    .device-panel[data-device='tablet'],
+  .screenshots:has(.device-choice[value='duo']:checked)
+    .device-panel[data-device='duo'] {
     display: block;
   }
   .device-stage {
@@ -279,7 +292,7 @@ const appearances = ['light', 'dark'] as const
     height: auto;
     border-radius: 0.85rem;
   }
-  .device.tablet {
+  .device:is(.tablet, .duo) {
     border-radius: 0.5rem;
   }
   .expand-icon {
@@ -319,6 +332,9 @@ const appearances = ['light', 'dark'] as const
       flex-direction: column;
       align-items: flex-start;
       padding: 1rem;
+    }
+    .device-option {
+      padding-inline: 0.55rem;
     }
     .device-stage {
       --preview-image-height: 26rem;

@@ -1,24 +1,24 @@
 ---
-import screenshotImages from '@/data/screenshots.json'
+import {
+  screenshotDevices,
+  screenshots,
+  type ScreenshotScene,
+} from '@/data/screenshot-assets'
 
 interface Props {
-  scene: keyof typeof screenshotImages
+  scene: ScreenshotScene
   title: string
 }
 
 const { scene, title } = Astro.props
-const images = screenshotImages[scene]
-const devices = [
-  { key: 'phone', name: 'iPhone' },
-  { key: 'tablet', name: 'iPad' },
-] as const
+const images = screenshots[scene]
 const appearances = [
   { key: 'light', name: 'Light' },
   { key: 'dark', name: 'Dark' },
 ] as const
-const variants = devices.flatMap((device) =>
+const variants = screenshotDevices.flatMap((device) =>
   appearances.flatMap((appearance) => {
-    const asset = images[device.key]?.[appearance.key]
+    const asset = images[device.kind]?.[appearance.key]
     return asset ? [{ device: device.name, appearance, asset }] : []
   }),
 )
@@ -72,7 +72,7 @@ const variants = devices.flatMap((device) =>
   }
   .gallery-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1rem;
   }
   .gallery-shot {
@@ -131,11 +131,6 @@ const variants = devices.flatMap((device) =>
   .screenshot-gallery a:focus-visible {
     outline: 2px solid var(--sl-color-text-accent);
     outline-offset: 4px;
-  }
-  @container (max-width: 48rem) {
-    .gallery-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
   }
   @container (max-width: 30rem) {
     .gallery-grid {

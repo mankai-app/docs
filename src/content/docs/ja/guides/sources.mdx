@@ -51,16 +51,7 @@ import DeviceScreenshots from '@/components/DeviceScreenshots.astro'
 <DeviceScreenshots
   id="sources-types"
   title="ソースの種類を選ぶ"
-  phone="iPhone のソース追加画面。ローカルソース、リモートソース、連携のセクションと QR コードボタンが表示されています。"
-  tablet="iPad のソース追加画面。ローカルソース、リモートソース、連携のセクションと QR コードボタンが表示されています。"
-  lang="ja"
-/>
-
-<DeviceScreenshots
-  id="sources-add-source"
-  title="Mankai 互換ソースを設定する"
-  phone="iPhone の Mankai 互換サーバー設定画面。API URL と認証情報の入力欄が表示されています。"
-  tablet="iPad の Mankai 互換サーバー設定画面。API URL と認証情報の入力欄が表示されています。"
+  caption="ソース追加画面にローカルソース、リモートソース、連携サービス、QR コードボタンが表示されています。"
   lang="ja"
 />
 
@@ -83,8 +74,7 @@ OPDS 経由での MMA ファイルの読み込みには対応していません�
 <DeviceScreenshots
   id="sources-add-files"
   title="ファイルのソースを選ぶ"
-  phone="iPhone のファイル追加画面。ローカル共有、リモート共有、カタログが表示されています。"
-  tablet="iPad のファイル追加画面。ローカル共有、リモート共有、カタログが表示されています。"
+  caption="ファイル追加画面にローカル共有、リモート共有、カタログが表示されています。"
   lang="ja"
 />
 
@@ -98,20 +88,10 @@ OPDS 経由での MMA ファイルの読み込みには対応していません�
 4. **インポート**をタップします。成功すると、保存先のインポート用フォルダが開きます。
 
 <DeviceScreenshots
-  id="sources-import-file"
-  scene="quick-start-import"
-  title="本のインポート"
-  phone="iPhone のインポート画面。CBZ ファイルとローカルディレクトリを選択しています。"
-  tablet="iPad のインポート画面。CBZ ファイルとローカルディレクトリを選択しています。"
-  lang="ja"
-/>
-
-<DeviceScreenshots
   id="sources-imported-book"
   scene="quick-start-imported-book"
   title="インポートした本"
-  phone="iPhone のフォルダ画面。インポートした CBZ 形式の本が表示されています。"
-  tablet="iPad のフォルダ画面。インポートした CBZ 形式の本が表示されています。"
+  caption="インポート先のフォルダに CBZ ファイルが表示されています。"
   lang="ja"
 />
 
@@ -145,14 +125,6 @@ SMB の共有や NFS のエクスポートが 1 つだけ見つかった場合�
 :::
 
 追加後は**ファイル**から開けます。ネットワーク上の本を閲覧・読書する間は、ソースに接続できる状態を保ってください。
-
-<DeviceScreenshots
-  id="sources-network"
-  title="ネットワーク共有を設定する"
-  phone="iPhone の WebDAV 設定画面。表示名、サーバー URL、認証情報を設定できます。"
-  tablet="iPad の WebDAV 設定画面。表示名、サーバー URL、認証情報を設定できます。"
-  lang="ja"
-/>
 
 ### OPDS カタログに接続する
 
