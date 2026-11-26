@@ -29,7 +29,7 @@ mankai://add-plugins?<type>=<base62-url>&<type>=<base62-url>
 | `kavita`     | Kavitaサーバー   | サーバーのベース URL                                        | `name`、`username`、`password`、`apiKey`   |
 | `suwayomi`   | Suwayomiサーバー | サーバーのベース URL                                        | `name`、`username`、`password`、`authMode` |
 
-HTTP または HTTPS の絶対 URL を使います。ファイルシステムのソースや、SMB、SFTP、NFS、WebDAV、OPDS などのファイル共有は、このリンクでは追加できません。
+HTTP または HTTPS の絶対 URL を使います。ファイルシステムのソースや、SMB、FTP、SFTP、FTPS、NFS、WebDAV、OPDS などのファイル共有は、このリンクでは追加できません。
 
 ## ソースの設定
 

@@ -63,7 +63,7 @@ Providers can create links using the [add-source link reference](/api/source-lin
 
 ## File-based sources
 
-File-based sources let you read book files you manage yourself, including CBZ, CBR, EPUB, PDF, and MMA. Connect a local filesystem folder or a network share through SMB, SFTP, NFS, or WebDAV. You can also connect an OPDS catalog to open supported book files or stream pages when available. Open these sources from **Files**.
+File-based sources let you read book files you manage yourself, including CBZ, CBR, EPUB, PDF, and MMA. Connect a local filesystem folder or a network share through SMB, FTP, SFTP, FTPS, NFS, or WebDAV. You can also connect an OPDS catalog to open supported book files or stream pages when available. Open these sources from **Files**.
 
 :::note[OPDS format support]
 
@@ -107,16 +107,16 @@ Connecting a folder lets Mankai browse that location. Use **Imports** to copy se
 
 ### Connect a network share
 
-1. Open **Files → Add Files** and choose **SMB**, **SFTP**, **NFS**, or **WebDAV** under **Remote Shares**.
+1. Open **Files → Add Files** and choose **SMB**, **FTP**, **NFS**, or **WebDAV** under **Remote Shares**.
 2. Enter the connection details supplied by your server administrator.
 3. Follow the steps for your source type below.
 
-| Source     | Details to enter                                   | Finish                                                                |
-| ---------- | -------------------------------------------------- | --------------------------------------------------------------------- |
-| **SMB**    | Host, port, and any required username and password | Tap **Select Share**, choose a share if prompted, then tap **Add**    |
-| **SFTP**   | Host, port, username, and password                 | Tap **Add**                                                           |
-| **NFS**    | Host                                               | Tap **Select Export**, choose an export if prompted, then tap **Add** |
-| **WebDAV** | Server URL and any required username and password  | Tap **Add**                                                           |
+| Source     | Details to enter                                                                                             | Finish                                                                |
+| ---------- | ------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------------- |
+| **SMB**    | Host, port, and any required username and password                                                           | Tap **Select Share**, choose a share if prompted, then tap **Add**    |
+| **FTP**    | Protocol (FTP, SFTP, explicit FTPS, or implicit FTPS), host, optional port, and any required sign-in details | Tap **Add**                                                           |
+| **NFS**    | Host                                                                                                         | Tap **Select Export**, choose an export if prompted, then tap **Add** |
+| **WebDAV** | Server URL and any required username and password                                                            | Tap **Add**                                                           |
 
 :::note[Automatic share selection]
 

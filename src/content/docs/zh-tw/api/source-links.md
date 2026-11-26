@@ -29,7 +29,7 @@ mankai://add-plugins?<type>=<base62-url>&<type>=<base62-url>
 | `kavita`   | Kavita 伺服器   | 伺服器基礎 URL                                               | `name`、`username`、`password`、`apiKey`   |
 | `suwayomi` | Suwayomi 伺服器 | 伺服器基礎 URL                                               | `name`、`username`、`password`、`authMode` |
 
-使用絕對 HTTP 或 HTTPS URL。檔案系統來源及 SMB、SFTP、NFS、WebDAV、OPDS 等檔案共用無法透過此連結安裝。
+使用絕對 HTTP 或 HTTPS URL。檔案系統來源及 SMB、FTP、SFTP、FTPS、NFS、WebDAV、OPDS 等檔案共用無法透過此連結安裝。
 
 ## 來源設定
 

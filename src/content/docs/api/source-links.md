@@ -29,7 +29,7 @@ Source URL values must use **Base62**, not Base64. See [Base62 on Wikipedia](htt
 | `kavita`   | Kavita Server     | Server base URL                                                                         | `name`, `username`, `password`, `apiKey`    |
 | `suwayomi` | Suwayomi Server   | Server base URL                                                                         | `name`, `username`, `password`, `authMode`  |
 
-Use absolute HTTP or HTTPS URLs. File System sources and file shares such as SMB, SFTP, NFS, WebDAV, and OPDS cannot be installed through this link.
+Use absolute HTTP or HTTPS URLs. File System sources and file shares such as SMB, FTP, SFTP, FTPS, NFS, WebDAV, and OPDS cannot be installed through this link.
 
 ## Source settings
 
