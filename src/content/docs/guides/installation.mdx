@@ -4,6 +4,8 @@ description: Choose the paid App Store release, free sideloading, or a free buil
 prev: false
 ---
 
+import SideloadLinks from '@/components/SideloadLinks.astro'
+
 Choose how to install Mankai on your iPhone or iPad.
 
 | Method            | Cost | Availability  |
@@ -18,7 +20,14 @@ Choose how to install Mankai on your iPhone or iPad.
 
 ## Sideload
 
-**Free.** Download the IPA file from the [latest release](https://github.com/mankai-app/mankai/releases/latest) for sideloading.
+**Free.** You can also find the IPA in the [latest release](https://github.com/mankai-app/mankai/releases/latest) on GitHub.
+
+<SideloadLinks
+  stableLabel="Stable source"
+  nightlyLabel="Nightly source"
+  stableDownloadLabel="Download stable IPA"
+  nightlyDownloadLabel="Download nightly IPA"
+/>
 
 AltStore is one option for sideloading. See the [AltStore FAQ](https://faq.altstore.io) for setup and installation instructions.
 

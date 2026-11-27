@@ -4,6 +4,8 @@ description: 了解 App Store、侧载和从源码构建三种安装方式的费
 prev: false
 ---
 
+import SideloadLinks from '@/components/SideloadLinks.astro'
+
 选择在 iPhone 或 iPad 上安装 Mankai 的方式。
 
 | 方式       | 费用 | 可用状态 |
@@ -18,7 +20,14 @@ prev: false
 
 ## 侧载
 
-**免费。** 从[最新发布版本](https://github.com/mankai-app/mankai/releases/latest)下载 IPA 文件进行侧载。
+**免费。** 从[最新发布版本](https://github.com/mankai-app/mankai/releases/latest)也可下载 IPA 文件。
+
+<SideloadLinks
+  stableLabel="稳定版源"
+  nightlyLabel="Nightly 版源"
+  stableDownloadLabel="下载稳定版 IPA"
+  nightlyDownloadLabel="下载 Nightly 版 IPA"
+/>
 
 AltStore 是一种可选的侧载工具。设置和安装步骤请参阅 [AltStore FAQ](https://faq.altstore.io)。
 

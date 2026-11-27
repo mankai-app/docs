@@ -4,6 +4,8 @@ description: App Store、サイドロード、ソースコードからのビル�
 prev: false
 ---
 
+import SideloadLinks from '@/components/SideloadLinks.astro'
+
 iPhone または iPad に Mankai をインストールする方法を選びます。
 
 | 方法                   | 費用 | 提供状況 |
@@ -18,7 +20,14 @@ iPhone または iPad に Mankai をインストールする方法を選びま�
 
 ## サイドロード
 
-**無料。** [最新リリース](https://github.com/mankai-app/mankai/releases/latest)から IPA ファイルをダウンロードしてサイドロードできます。
+**無料。** [最新リリース](https://github.com/mankai-app/mankai/releases/latest)からも IPA ファイルをダウンロードできます。
+
+<SideloadLinks
+  stableLabel="安定版ソース"
+  nightlyLabel="Nightly 版ソース"
+  stableDownloadLabel="安定版 IPA をダウンロード"
+  nightlyDownloadLabel="Nightly 版 IPA をダウンロード"
+/>
 
 サイドロードには AltStore を利用する方法があります。セットアップとインストールの手順は [AltStore FAQ](https://faq.altstore.io) を参照してください。
 
